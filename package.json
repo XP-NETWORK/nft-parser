@@ -1,5 +1,7 @@
 {
-  "dependencies": {
-    "@types/node": "^17.0.35"
-  }
+    "name": "nft-parser",
+    "version": "0.1.0",
+    "dependencies": {
+        "@types/node": "^17.0.35"
+    }
 }
