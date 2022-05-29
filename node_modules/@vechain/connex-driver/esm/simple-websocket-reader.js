@@ -1,0 +1,55 @@
+import * as WebSocket from 'isomorphic-ws';
+export class SimpleWebSocketReader {
+    constructor(url, timeout = 30 * 1000) {
+        this.timeout = timeout;
+        this.callbacks = [];
+        this.ws = new WebSocket(url);
+        this.ws.onmessage = ev => {
+            try {
+                const cbs = this.callbacks;
+                this.callbacks = [];
+                cbs.forEach(cb => cb(ev.data));
+            }
+            catch (err) {
+                this.setError(err);
+                this.ws.close();
+            }
+        };
+        this.ws.onerror = ev => {
+            this.setError(ev.error);
+            this.ws.close();
+        };
+        this.ws.onclose = () => {
+            this.setError(new Error('closed'));
+        };
+    }
+    read() {
+        return new Promise((resolve, reject) => {
+            if (this.error) {
+                return reject(this.error);
+            }
+            const timer = setTimeout(() => {
+                reject(new Error('ws read timeout'));
+            }, this.timeout);
+            this.callbacks.push((data, err) => {
+                clearTimeout(timer);
+                if (err) {
+                    return reject(err);
+                }
+                resolve(data);
+            });
+        });
+    }
+    close() {
+        this.ws.close();
+    }
+    setError(err) {
+        if (!this.error) {
+            this.error = err;
+            const cbs = this.callbacks;
+            this.callbacks = [];
+            cbs.forEach(cb => cb(null, err));
+        }
+    }
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2ltcGxlLXdlYnNvY2tldC1yZWFkZXIuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvc2ltcGxlLXdlYnNvY2tldC1yZWFkZXIudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxLQUFLLFNBQVMsTUFBTSxlQUFlLENBQUE7QUFHMUMsTUFBTSxPQUFPLHFCQUFxQjtJQUs5QixZQUFZLEdBQVcsRUFBbUIsVUFBVSxFQUFFLEdBQUcsSUFBSTtRQUFuQixZQUFPLEdBQVAsT0FBTyxDQUFZO1FBSHJELGNBQVMsR0FBRyxFQUErQyxDQUFBO1FBSS9ELElBQUksQ0FBQyxFQUFFLEdBQUcsSUFBSSxTQUFTLENBQUMsR0FBRyxDQUFDLENBQUE7UUFDNUIsSUFBSSxDQUFDLEVBQUUsQ0FBQyxTQUFTLEdBQUcsRUFBRSxDQUFDLEVBQUU7WUFDckIsSUFBSTtnQkFDQSxNQUFNLEdBQUcsR0FBRyxJQUFJLENBQUMsU0FBUyxDQUFBO2dCQUMxQixJQUFJLENBQUMsU0FBUyxHQUFHLEVBQUUsQ0FBQTtnQkFDbkIsR0FBRyxDQUFDLE9BQU8sQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxFQUFFLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQTthQUNqQztZQUFDLE9BQU8sR0FBRyxFQUFFO2dCQUNWLElBQUksQ0FBQyxRQUFRLENBQUMsR0FBRyxDQUFDLENBQUE7Z0JBQ2xCLElBQUksQ0FBQyxFQUFFLENBQUMsS0FBSyxFQUFFLENBQUE7YUFDbEI7UUFDTCxDQUFDLENBQUE7UUFDRCxJQUFJLENBQUMsRUFBRSxDQUFDLE9BQU8sR0FBRyxFQUFFLENBQUMsRUFBRTtZQUNuQixJQUFJLENBQUMsUUFBUSxDQUFDLEVBQUUsQ0FBQyxLQUFLLENBQUMsQ0FBQTtZQUN2QixJQUFJLENBQUMsRUFBRSxDQUFDLEtBQUssRUFBRSxDQUFBO1FBQ25CLENBQUMsQ0FBQTtRQUNELElBQUksQ0FBQyxFQUFFLENBQUMsT0FBTyxHQUFHLEdBQUcsRUFBRTtZQUNuQixJQUFJLENBQUMsUUFBUSxDQUFDLElBQUksS0FBSyxDQUFDLFFBQVEsQ0FBQyxDQUFDLENBQUE7UUFDdEMsQ0FBQyxDQUFBO0lBQ0wsQ0FBQztJQUVNLElBQUk7UUFDUCxPQUFPLElBQUksT0FBTyxDQUFNLENBQUMsT0FBTyxFQUFFLE1BQU0sRUFBRSxFQUFFO1lBQ3hDLElBQUksSUFBSSxDQUFDLEtBQUssRUFBRTtnQkFDWixPQUFPLE1BQU0sQ0FBQyxJQUFJLENBQUMsS0FBSyxDQUFDLENBQUE7YUFDNUI7WUFFRCxNQUFNLEtBQUssR0FBRyxVQUFVLENBQUMsR0FBRyxFQUFFO2dCQUMxQixNQUFNLENBQUMsSUFBSSxLQUFLLENBQUMsaUJBQWlCLENBQUMsQ0FBQyxDQUFBO1lBQ3hDLENBQUMsRUFBRSxJQUFJLENBQUMsT0FBTyxDQUFDLENBQUE7WUFFaEIsSUFBSSxDQUFDLFNBQVMsQ0FBQyxJQUFJLENBQUMsQ0FBQyxJQUFJLEVBQUUsR0FBRyxFQUFFLEVBQUU7Z0JBQzlCLFlBQVksQ0FBQyxLQUFLLENBQUMsQ0FBQTtnQkFDbkIsSUFBSSxHQUFHLEVBQUU7b0JBQ0wsT0FBTyxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUE7aUJBQ3JCO2dCQUNELE9BQU8sQ0FBQyxJQUFJLENBQUMsQ0FBQTtZQUNqQixDQUFDLENBQUMsQ0FBQTtRQUNOLENBQUMsQ0FBQyxDQUFBO0lBQ04sQ0FBQztJQUVNLEtBQUs7UUFDUixJQUFJLENBQUMsRUFBRSxDQUFDLEtBQUssRUFBRSxDQUFBO0lBQ25CLENBQUM7SUFFTyxRQUFRLENBQUMsR0FBVTtRQUN2QixJQUFJLENBQUMsSUFBSSxDQUFDLEtBQUssRUFBRTtZQUNiLElBQUksQ0FBQyxLQUFLLEdBQUcsR0FBRyxDQUFBO1lBRWhCLE1BQU0sR0FBRyxHQUFHLElBQUksQ0FBQyxTQUFTLENBQUE7WUFDMUIsSUFBSSxDQUFDLFNBQVMsR0FBRyxFQUFFLENBQUE7WUFDbkIsR0FBRyxDQUFDLE9BQU8sQ0FBQyxFQUFFLENBQUMsRUFBRSxDQUFDLEVBQUUsQ0FBQyxJQUFJLEVBQUUsR0FBRyxDQUFDLENBQUMsQ0FBQTtTQUNuQztJQUNMLENBQUM7Q0FDSiJ9
