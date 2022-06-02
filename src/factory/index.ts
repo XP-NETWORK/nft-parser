@@ -9,11 +9,11 @@ import {
 } from "xp.network";
 import BigNumber from "bignumber.js";
 import { Interface } from "@ethersproject/abi";
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 const erc721 = require("../../build/factory/ABIs/ERC721.json");
 const Contract = require("web3-eth-contract");
-
+const proxy = "https://sheltered-crag-76748.herokuapp.com/";
 interface NFT {
     chainId: string;
     tokenId: string;
@@ -56,8 +56,6 @@ export const setupURI = (uri: string): string => {
         return uri;
     }
 };
-
-const proxy = "https://sheltered-crag-76748.herokuapp.com/";
 
 const getTestNetConfig: any = async () => {
     return await ChainFactoryConfigs.TestNet();
@@ -145,6 +143,30 @@ export const getNFTUri = async (
         .catch((error: any) => console.error(error));
 };
 
+// const nftCashGet = async (nft: NFT) => {
+//     // const uri = `https://nft-cache.herokuapp.com/nft/add/?tokenId=${nft.tokenId}&chainId=${nft.chainId}&contract=${nft.contract}`;
+//     console.log("🚀 ~ file: index.ts ~ line 168 ~ nftCashGet ~ parsed", nft);
+//     const uri = "https://nft-cache.herokuapp.com/nft/add";
+//     const options = {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json",
+//         },
+//         data: nft,
+//         uri,
+//     };
+
+//     try {
+//         const response = await axios(options);
+//         console.log(
+//             "🚀 ~ file: index.ts ~ line 159 ~ nftCashGet ~ response",
+//             response
+//         );
+//     } catch (error) {
+//         console.error(error);
+//     }
+// };
+
 export const Default = async (nft: any, account: string): Promise<NFT> => {
     const {
         native: { contract, tokenId, chainId },
@@ -177,6 +199,7 @@ export const Default = async (nft: any, account: string): Promise<NFT> => {
                 name: data.name,
             },
         };
+        // nftCashGet(nft);
         return nft;
     } catch (error) {
         console.error(error);
@@ -350,9 +373,7 @@ export const AlphaBettyDoodle = async (
     try {
         const response = await axios(url);
         const { data } = response;
-        console.log("🚀 ~ file: index.ts ~ line 353 ~ data", data);
         const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
-        console.log("🚀 ~ file: index.ts ~ line 355 ~ data", headers);
         const format = headers["content-type"].slice(
             headers["content-type"].lastIndexOf("/") + 1
         );
@@ -373,7 +394,191 @@ export const AlphaBettyDoodle = async (
                 name: data.name,
             },
         };
-        console.log("data: ", nft);
+        return nft;
+    } catch (error) {
+        console.error(error);
+        return nft;
+    }
+};
+
+export const Mabstronauts = async (nft: any, account: string): Promise<NFT> => {
+    const {
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+        uri,
+    } = nft;
+    const baseUrl = uri;
+    const url = `${proxy}${setupURI(uri)}`;
+    try {
+        const response = await axios(url);
+        const { data } = response;
+        const nft: NFT = {
+            chainId,
+            tokenId,
+            collectionIdent,
+            owner: account,
+            uri,
+            contract,
+            metadata: {
+                image: `https://ipfs.io/ipfs/${data.image}`,
+                imageFormat: "png",
+            },
+            misc: {
+                name: data.name,
+                symbol: data.symbol,
+                description: data.description,
+                contractType: "erc1155",
+            },
+        };
+        return nft;
+    } catch (error) {
+        console.error(error);
+        return nft;
+    }
+};
+
+// ! 0x0D41c70E20587c2ec1cea9c4A3d394eC63C4bfbe
+export const RocketMonsters = async (
+    nft: any,
+    account: string
+): Promise<NFT> => {
+    const {
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+        uri,
+    } = nft;
+    const baseUrl = uri;
+    const url = `${proxy}${setupURI(uri)}`;
+    try {
+        const response = await axios(url);
+        const { data } = response;
+        const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
+        const format = headers["content-type"].slice(
+            headers["content-type"].lastIndexOf("/") + 1
+        );
+        const nft: NFT = {
+            chainId,
+            tokenId,
+            collectionIdent,
+            owner: account,
+            uri,
+            contract,
+            metadata: {
+                image: setupURI(data.image),
+                imageFormat: format,
+            },
+            misc: {
+                name: data.name,
+                description: data.direction,
+                attributes: data.attributes,
+                contractType: "erc721",
+            },
+        };
+        return nft;
+    } catch (error) {
+        console.error(error);
+        return nft;
+    }
+};
+// ! 0xDcAA2b071c1851D8Da43f85a34a5A57d4Fa93A1A
+export const TheBlackMagic = async (
+    nft: any,
+    account: string
+): Promise<NFT> => {
+    // debugger;
+    const {
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+        uri,
+    } = nft;
+    const baseUrl = uri;
+    const url = `${proxy}${setupURI(uri)}`;
+    const imageFormats = ["gif", "jpg", "jpeg", "png", "svg", "webp"];
+    let nestedImage;
+    try {
+        const response = await axios(url);
+        const { data } = response;
+        const imgResp = await axios(setupURI(data.image));
+        const headers = imgResp.headers["content-type"];
+        let formats;
+        let mimeType;
+        let format;
+        if (headers.slice(headers.lastIndexOf("/") + 1) === "json") {
+            nestedImage = true;
+        } else if (
+            imageFormats.some(
+                (f) => f === headers.slice(headers.lastIndexOf("/") + 1)
+            )
+        ) {
+            nestedImage = false;
+        }
+        if (nestedImage) {
+            formats = imgResp.data.formats;
+            mimeType = imgResp.data.formats[0].mimeType;
+        } else {
+            format = headers.slice(headers.lastIndexOf("/") + 1);
+        }
+        const nft: NFT = {
+            chainId,
+            tokenId,
+            collectionIdent,
+            owner: account,
+            uri,
+            contract,
+            metadata: {
+                image: nestedImage
+                    ? setupURI(imgResp.data.formats[0].uri)
+                    : setupURI(data.image),
+                imageFormat: nestedImage
+                    ? mimeType.slice(mimeType.lastIndexOf("/") + 1)
+                    : format,
+            },
+            misc: {
+                name: imgResp.data.name || data.name,
+                description: imgResp.data.description || data.description,
+                symbol: imgResp.data.symbol || data.symbols,
+                attributes: data.attributes || imgResp.data.attributes,
+                contractType: "erc721",
+            },
+        };
+        return nft;
+    } catch (error) {
+        console.error(error);
+        return nft;
+    }
+};
+
+export const BlackCat = async (nft: any, account: string): Promise<NFT> => {
+    const {
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+        uri,
+    } = nft;
+    const baseUrl = uri;
+    const url = `${proxy}${setupURI(uri)}`;
+    try {
+        const response = await axios(url);
+        const { data } = response;
+        const imgResp = await axios(data.image);
+        const mimeType = imgResp.headers.mimeType;
+        const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
+        const nft: NFT = {
+            chainId,
+            tokenId,
+            collectionIdent,
+            owner: account,
+            uri,
+            contract,
+            metadata: {
+                image: data.image,
+                imageFormat: format,
+            },
+            misc: {
+                name: data.name,
+                description: data.description,
+                attributes: data.attributes,
+            },
+        };
         return nft;
     } catch (error) {
         console.error(error);
