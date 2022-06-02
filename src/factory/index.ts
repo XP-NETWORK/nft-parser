@@ -547,8 +547,8 @@ export const TheBlackMagic = async (
         return nft;
     }
 };
-
-export const BlackCat = async (nft: any, account: string): Promise<NFT> => {
+// ! 0x4c1900270dbf0c1e6a9c984aef9a18a7cb9ab1cc
+export const CartelPunks = async (nft: any, account: string): Promise<NFT> => {
     const {
         native: { contract, tokenId, chainId },
         collectionIdent,
@@ -559,8 +559,8 @@ export const BlackCat = async (nft: any, account: string): Promise<NFT> => {
     try {
         const response = await axios(url);
         const { data } = response;
-        const imgResp = await axios(data.image);
-        const mimeType = imgResp.headers.mimeType;
+        const imgResp = await axios(setupURI(data.image));
+        const mimeType = imgResp.headers["content-type"];
         const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
         const nft: NFT = {
             chainId,
@@ -575,7 +575,6 @@ export const BlackCat = async (nft: any, account: string): Promise<NFT> => {
             },
             misc: {
                 name: data.name,
-                description: data.description,
                 attributes: data.attributes,
             },
         };

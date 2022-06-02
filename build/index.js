@@ -91,9 +91,9 @@ const evmParser = (collectionIdent, nft, account) => __awaiter(void 0, void 0, v
         case "0xDcAA2b071c1851D8Da43f85a34a5A57d4Fa93A1A":
             parsed = yield (0, factory_1.TheBlackMagic)(nft, account);
             break;
-        // case "0xDcAA2b071c1851D8Da43f85a34a5A57d4Fa93A1A":
-        //     parsed = await BlackCat(nft, account);
-        //     break;
+        case "0x4c1900270dbf0c1e6a9c984aef9a18a7cb9ab1cc":
+            parsed = yield (0, factory_1.CartelPunks)(nft, account);
+            break;
         default:
             parsed = yield (0, factory_1.Default)(nft, account);
             break;

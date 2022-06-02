@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BlackCat = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.getNFTUri = exports.setupURI = void 0;
+exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.getNFTUri = exports.setupURI = void 0;
 const xp_network_1 = require("xp.network");
 const axios_1 = __importDefault(require("axios"));
 const erc721 = require("../../build/factory/ABIs/ERC721.json");
@@ -470,15 +470,17 @@ const TheBlackMagic = (nft, account) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.TheBlackMagic = TheBlackMagic;
-const BlackCat = (nft, account) => __awaiter(void 0, void 0, void 0, function* () {
+// ! 0x4c1900270dbf0c1e6a9c984aef9a18a7cb9ab1cc
+const CartelPunks = (nft, account) => __awaiter(void 0, void 0, void 0, function* () {
     const { native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
     const url = `${proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
-        const imgResp = yield (0, axios_1.default)(data.image);
-        const mimeType = imgResp.headers.mimeType;
+        const imgResp = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        console.log("🚀 ~ file: index.ts ~ line 563 ~ CartelPunks ~ imgResp", imgResp);
+        const mimeType = imgResp.headers["content-type"];
         const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
         const nft = {
             chainId,
@@ -493,7 +495,6 @@ const BlackCat = (nft, account) => __awaiter(void 0, void 0, void 0, function* (
             },
             misc: {
                 name: data.name,
-                description: data.description,
                 attributes: data.attributes,
             },
         };
@@ -504,4 +505,4 @@ const BlackCat = (nft, account) => __awaiter(void 0, void 0, void 0, function* (
         return nft;
     }
 });
-exports.BlackCat = BlackCat;
+exports.CartelPunks = CartelPunks;

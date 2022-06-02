@@ -9,7 +9,7 @@ import {
     Mabstronauts,
     RocketMonsters,
     TheBlackMagic,
-    BlackCat,
+    CartelPunks,
 } from "./factory";
 import { tezosDefault, TributeTezoTrooperz } from "./factory/tezos";
 
@@ -106,9 +106,9 @@ const evmParser = async (
         case "0xDcAA2b071c1851D8Da43f85a34a5A57d4Fa93A1A":
             parsed = await TheBlackMagic(nft, account);
             break;
-        // case "0xDcAA2b071c1851D8Da43f85a34a5A57d4Fa93A1A":
-        //     parsed = await BlackCat(nft, account);
-        //     break;
+        case "0x4c1900270dbf0c1e6a9c984aef9a18a7cb9ab1cc":
+            parsed = await CartelPunks(nft, account);
+            break;
         default:
             parsed = await Default(nft, account);
             break;
