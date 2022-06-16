@@ -23,6 +23,7 @@ interface NFT {
 }
 
 export const tezosDefault = async (nft: any, account: string): Promise<NFT> => {
+    debugger;
     const {
         collectionIdent,
         uri,
@@ -44,7 +45,7 @@ export const tezosDefault = async (nft: any, account: string): Promise<NFT> => {
             },
         },
     } = nft;
-    const mimeType = formats[0].mimeType;
+    const mimeType = formats.length > 0 ? formats[0]?.mimeType : undefined;
     const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
     const parsed: NFT = {
         chainId,

@@ -1,6 +1,6 @@
 {
     "name": "nft-parser",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "description": "",
     "main": "/build/index.js",
     "dependencies": {

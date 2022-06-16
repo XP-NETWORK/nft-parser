@@ -12,8 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TributeTezoTrooperz = exports.tezosDefault = void 0;
 const _1 = require(".");
 const tezosDefault = (nft, account) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    debugger;
     const { collectionIdent, uri, native: { tokenId, chainId, contract, meta: { token: { metadata: { description, attributes, formats, image, name, symbol, }, }, }, }, } = nft;
-    const mimeType = formats[0].mimeType;
+    const mimeType = formats.length > 0 ? (_a = formats[0]) === null || _a === void 0 ? void 0 : _a.mimeType : undefined;
     const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
     const parsed = {
         chainId,

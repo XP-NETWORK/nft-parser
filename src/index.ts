@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
     getNFTUri,
     ART_NFT_MATIC,
@@ -10,16 +11,48 @@ import {
     RocketMonsters,
     TheBlackMagic,
     CartelPunks,
+    TreatNFT,
+    IdoDirt,
+    Awokensages,
+    Technomaniacs,
+    ArcadeEdition,
+    Founders_Cabinet,
+    TTAV,
+    BoredGUtterCats,
+    IDoDirtPolygon,
+    ArsenalGame,
+    Mate,
+    ABCBears,
+    TragicMonsters,
+    SuperFatAcademy,
 } from "./factory";
 import { tezosDefault, TributeTezoTrooperz } from "./factory/tezos";
 
-type NFT = {
-    contract: string;
-    tokenId: string;
+interface ParsedNFT {
     chainId: string;
-};
+    tokenId: string;
+    owner: string;
+    uri: string;
+    contract: string;
+    collectionIdent: string;
+    native: any;
+    metaData: {
+        image: string;
+        imageFormat: string;
+        animation_url?: string;
+        animation_url_format?: string;
+        name?: string;
+        symbol?: string;
+        attributes?: any;
+        description?: string;
+        contractType?: string;
+    };
+}
 
-export const nftGeneralParser = async (nft: any, account: string) => {
+export const nftGeneralParser = async (
+    nft: any,
+    account: string
+): Promise<ParsedNFT> => {
     const {
         native: { contract, tokenId, chainId },
         collectionIdent,
@@ -66,8 +99,10 @@ export const nftGeneralParser = async (nft: any, account: string) => {
         case "25":
             parsed = await evmParser(collectionIdent, nft, account);
             break;
-        case "18":
-            parsed = await tezosParser(nft, account);
+        // case "18":
+        //     parsed = await tezosParser(nft, account);
+        default:
+            return nft;
     }
     return parsed;
 };
@@ -109,10 +144,53 @@ const evmParser = async (
         case "0x4c1900270dbf0c1e6a9c984aef9a18a7cb9ab1cc":
             parsed = await CartelPunks(nft, account);
             break;
+        case "0x36f8f51f65fe200311f709b797baf4e193dd0b0d":
+            parsed = await TreatNFT(nft, account);
+            break;
+        case "0x2c83eaf6e460c673d92477a7c49eb4ecd04e1216":
+            parsed = await IdoDirt(nft, account);
+            break;
+        case "0x691bd0f2f5a145fcf297cf4be79095b66f002cbc":
+            parsed = await Awokensages(nft, account);
+            break;
+        case "0x7f3495cf2d05db6e9e52cdf989bced71e786725c":
+            parsed = await Technomaniacs(nft, account);
+            break;
+        case "0xe7f8ccda432239dcb418e94d625bc2fe6350f6bb":
+            parsed = await ArcadeEdition(nft, account);
+            break;
+        case "0x56d93767467c54bd86578666904087c4f16cdb7f":
+            parsed = await Founders_Cabinet(nft, account);
+            break;
+        case "0x2d317ed6c2e3eb5c54ca7518ef19deee96c15c85":
+            parsed = await TTAV(nft, account);
+            break;
+        case "0x7a7ca3b27760b52428d7a9d0a9f369ff31a2de94":
+            parsed = await BoredGUtterCats(nft, account);
+            break;
+        case "0x2feee2cc7fb32bd48ab22080e2c680f5390ef426":
+            parsed = await IDoDirtPolygon(nft, account);
+            break;
+        case "0x2953399124f0cbb46d2cbacd8a89cf0599974963":
+            parsed = await ArsenalGame(nft, account);
+            break;
+        case "0xc69ecd37122a9b5fd7e62bc229d478bb83063c9d":
+            parsed = await Mate(nft, account);
+            break;
+        case "0x8eaeaa3a67abfc7c141775234fc30c707e26cf49":
+            parsed = await ABCBears(nft, account);
+            break;
+        case "0x51ecb52ebb85384679b108a9e6a017ae17754eef":
+            parsed = await TragicMonsters(nft, account);
+            break;
+        case "0xbede8ad4878e5ce441accce6a828ea7bc5be1ed0":
+            parsed = await SuperFatAcademy(nft, account);
+            break;
         default:
             parsed = await Default(nft, account);
             break;
     }
+
     return parsed;
 };
 

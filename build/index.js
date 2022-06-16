@@ -55,8 +55,8 @@ const nftGeneralParser = (nft, account) => __awaiter(void 0, void 0, void 0, fun
         case "25":
             parsed = yield evmParser(collectionIdent, nft, account);
             break;
-        case "18":
-            parsed = yield tezosParser(nft, account);
+        // case "18":
+        //     parsed = await tezosParser(nft, account);
     }
     return parsed;
 });
@@ -93,6 +93,48 @@ const evmParser = (collectionIdent, nft, account) => __awaiter(void 0, void 0, v
             break;
         case "0x4c1900270dbf0c1e6a9c984aef9a18a7cb9ab1cc":
             parsed = yield (0, factory_1.CartelPunks)(nft, account);
+            break;
+        case "0x36f8f51f65fe200311f709b797baf4e193dd0b0d":
+            parsed = yield (0, factory_1.TreatNFT)(nft, account);
+            break;
+        case "0x2c83eaf6e460c673d92477a7c49eb4ecd04e1216":
+            parsed = yield (0, factory_1.IdoDirt)(nft, account);
+            break;
+        case "0x691bd0f2f5a145fcf297cf4be79095b66f002cbc":
+            parsed = yield (0, factory_1.Awokensages)(nft, account);
+            break;
+        case "0x7f3495cf2d05db6e9e52cdf989bced71e786725c":
+            parsed = yield (0, factory_1.Technomaniacs)(nft, account);
+            break;
+        case "0xe7f8ccda432239dcb418e94d625bc2fe6350f6bb":
+            parsed = yield (0, factory_1.ArcadeEdition)(nft, account);
+            break;
+        case "0x56d93767467c54bd86578666904087c4f16cdb7f":
+            parsed = yield (0, factory_1.Founders_Cabinet)(nft, account);
+            break;
+        case "0x2d317ed6c2e3eb5c54ca7518ef19deee96c15c85":
+            parsed = yield (0, factory_1.TTAV)(nft, account);
+            break;
+        case "0x7a7ca3b27760b52428d7a9d0a9f369ff31a2de94":
+            parsed = yield (0, factory_1.BoredGUtterCats)(nft, account);
+            break;
+        case "0x2feee2cc7fb32bd48ab22080e2c680f5390ef426":
+            parsed = yield (0, factory_1.IDoDirtPolygon)(nft, account);
+            break;
+        case "0x2953399124f0cbb46d2cbacd8a89cf0599974963":
+            parsed = yield (0, factory_1.ArsenalGame)(nft, account);
+            break;
+        case "0xc69ecd37122a9b5fd7e62bc229d478bb83063c9d":
+            parsed = yield (0, factory_1.Mate)(nft, account);
+            break;
+        case "0x8eaeaa3a67abfc7c141775234fc30c707e26cf49":
+            parsed = yield (0, factory_1.ABCBears)(nft, account);
+            break;
+        case "0x51ecb52ebb85384679b108a9e6a017ae17754eef":
+            parsed = yield (0, factory_1.TragicMonsters)(nft, account);
+            break;
+        case "0xbede8ad4878e5ce441accce6a828ea7bc5be1ed0":
+            parsed = yield (0, factory_1.SuperFatAcademy)(nft, account);
             break;
         default:
             parsed = yield (0, factory_1.Default)(nft, account);
