@@ -24,6 +24,7 @@ interface NFT {
     collectionIdent: string;
     native: any;
     metaData: {
+        whitelisted: boolean;
         image: string;
         imageFormat: string;
         animation_url?: string;
@@ -143,7 +144,11 @@ export const getNFTUri = async (
         .catch((error: any) => console.error(error));
 };
 
-export const Default = async (nft: any, account: string): Promise<NFT> => {
+export const Default = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
     const {
         native,
         native: { contract, tokenId, chainId },
@@ -155,7 +160,7 @@ export const Default = async (nft: any, account: string): Promise<NFT> => {
     try {
         const response = await axios(url);
         const { data } = response;
-        const { headers } = await axios(`${proxy}${data.image}`);
+        const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
         const format = headers["content-type"].slice(
             headers["content-type"].lastIndexOf("/") + 1
         );
@@ -168,6 +173,7 @@ export const Default = async (nft: any, account: string): Promise<NFT> => {
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
@@ -186,7 +192,8 @@ export const Default = async (nft: any, account: string): Promise<NFT> => {
 // ! 0x4508af04de4073b10a53ac416eb311f4a2ab9569
 export const ART_NFT_MATIC = async (
     nft: any,
-    account: string
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
     const {
         native,
@@ -212,6 +219,7 @@ export const ART_NFT_MATIC = async (
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
                 image: data.image,
                 imageFormat: format,
                 attributes: data.attributes,
@@ -225,43 +233,10 @@ export const ART_NFT_MATIC = async (
     }
 };
 // ! 0xa8a079ea48dc846899bdb542f3728dbc6758fdfa
-export const EtherHead = async (nft: any, account: string): Promise<NFT> => {
-    const {
-        native,
-        native: { contract, tokenId, chainId },
-        collectionIdent,
-        uri,
-    } = nft;
-    const baseUrl = uri;
-    const url = `${proxy}${setupURI(uri)}`;
-    try {
-        const response = await axios(url);
-        const { data } = response;
-        const nft: NFT = {
-            native,
-            chainId,
-            tokenId,
-            owner: account,
-            uri,
-            contract,
-            collectionIdent,
-            metaData: {
-                image: data.image,
-                imageFormat: "png",
-                description: data.description,
-                name: data.name,
-            },
-        };
-        return nft;
-    } catch (error) {
-        console.error(error);
-        return nft;
-    }
-};
-// ! 0x6e1ecc59f4005d0f2707ab7a0a8cecbaba41c11e
-export const AngelOfAether = async (
+export const EtherHead = async (
     nft: any,
-    account: string
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
     const {
         native,
@@ -283,6 +258,46 @@ export const AngelOfAether = async (
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
+                image: data.image,
+                imageFormat: "png",
+                description: data.description,
+                name: data.name,
+            },
+        };
+        return nft;
+    } catch (error) {
+        console.error(error);
+        return nft;
+    }
+};
+// ! 0x6e1ecc59f4005d0f2707ab7a0a8cecbaba41c11e
+export const AngelOfAether = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
+    const {
+        native,
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+        uri,
+    } = nft;
+    const baseUrl = uri;
+    const url = `${proxy}${setupURI(uri)}`;
+    try {
+        const response = await axios(url);
+        const { data } = response;
+        const nft: NFT = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
                 image: data.image,
                 imageFormat: "jpg",
                 description: data.description,
@@ -296,7 +311,11 @@ export const AngelOfAether = async (
     }
 };
 // ! 0xe5b3903ffb3a00e91c75e25a4bd6616d3171e45e
-export const Legend = async (nft: any, account: string): Promise<NFT> => {
+export const Legend = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
     const {
         native,
         native: { contract, tokenId, chainId },
@@ -321,6 +340,7 @@ export const Legend = async (nft: any, account: string): Promise<NFT> => {
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
@@ -337,7 +357,8 @@ export const Legend = async (nft: any, account: string): Promise<NFT> => {
 // ! AlphaBettyDoodle
 export const AlphaBettyDoodle = async (
     nft: any,
-    account: string
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
     const {
         native,
@@ -363,6 +384,7 @@ export const AlphaBettyDoodle = async (
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
@@ -377,7 +399,11 @@ export const AlphaBettyDoodle = async (
     }
 };
 
-export const Mabstronauts = async (nft: any, account: string): Promise<NFT> => {
+export const Mabstronauts = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
     const {
         native,
         native: { contract, tokenId, chainId },
@@ -398,6 +424,7 @@ export const Mabstronauts = async (nft: any, account: string): Promise<NFT> => {
             uri,
             contract,
             metaData: {
+                whitelisted,
                 image: `https://ipfs.io/ipfs/${data.image}`,
                 imageFormat: "png",
                 name: data.name,
@@ -416,7 +443,8 @@ export const Mabstronauts = async (nft: any, account: string): Promise<NFT> => {
 // ! 0x0D41c70E20587c2ec1cea9c4A3d394eC63C4bfbe
 export const RocketMonsters = async (
     nft: any,
-    account: string
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
     const {
         native,
@@ -442,6 +470,7 @@ export const RocketMonsters = async (
             uri,
             contract,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
@@ -459,7 +488,8 @@ export const RocketMonsters = async (
 // ! 0xDcAA2b071c1851D8Da43f85a34a5A57d4Fa93A1A
 export const TheBlackMagic = async (
     nft: any,
-    account: string
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
     // debugger;
     const {
@@ -504,6 +534,7 @@ export const TheBlackMagic = async (
             uri,
             contract,
             metaData: {
+                whitelisted,
                 image: nestedImage
                     ? setupURI(imgResp.data.formats[0].uri)
                     : setupURI(data.image),
@@ -524,11 +555,16 @@ export const TheBlackMagic = async (
     }
 };
 // ! 0x4c1900270dbf0c1e6a9c984aef9a18a7cb9ab1cc
-export const CartelPunks = async (nft: any, account: string): Promise<NFT> => {
+export const CartelPunks = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
     const {
         native,
         native: { contract, tokenId, chainId },
         collectionIdent,
+
         uri,
     } = nft;
     const baseUrl = uri;
@@ -548,6 +584,7 @@ export const CartelPunks = async (nft: any, account: string): Promise<NFT> => {
             uri,
             contract,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
@@ -561,7 +598,11 @@ export const CartelPunks = async (nft: any, account: string): Promise<NFT> => {
     }
 };
 // ! 0x36f8f51f65fe200311f709b797baf4e193dd0b0d
-export const TreatNFT = async (nft: any, account: string): Promise<NFT> => {
+export const TreatNFT = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
     const {
         native,
         native: { contract, tokenId, chainId },
@@ -585,6 +626,7 @@ export const TreatNFT = async (nft: any, account: string): Promise<NFT> => {
             uri: newUrl,
             contract,
             metaData: {
+                whitelisted,
                 image: data.image,
                 imageFormat: format,
                 name: data.name,
@@ -598,7 +640,11 @@ export const TreatNFT = async (nft: any, account: string): Promise<NFT> => {
     }
 };
 // ! 0x2c83eaf6e460c673d92477a7c49eb4ecd04e1216
-export const IdoDirt = async (nft: any, account: string): Promise<NFT> => {
+export const IdoDirt = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
     const {
         native,
         native: { contract, tokenId, chainId },
@@ -622,6 +668,7 @@ export const IdoDirt = async (nft: any, account: string): Promise<NFT> => {
             uri: newUrl,
             contract,
             metaData: {
+                whitelisted,
                 image: data.image,
                 imageFormat: format,
                 name: data.name,
@@ -635,7 +682,11 @@ export const IdoDirt = async (nft: any, account: string): Promise<NFT> => {
     }
 };
 // ! 0x691bd0f2f5a145fcf297cf4be79095b66f002cbc
-export const Awokensages = async (nft: any, account: string): Promise<NFT> => {
+export const Awokensages = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
     const {
         native,
         native: { contract, tokenId, chainId },
@@ -659,6 +710,7 @@ export const Awokensages = async (nft: any, account: string): Promise<NFT> => {
             uri: newUri,
             contract,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
@@ -675,7 +727,8 @@ export const Awokensages = async (nft: any, account: string): Promise<NFT> => {
 // ! 0x7f3495cf2d05db6e9e52cdf989bced71e786725c
 export const Technomaniacs = async (
     nft: any,
-    account: string
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
     const {
         native,
@@ -700,6 +753,7 @@ export const Technomaniacs = async (
             uri: newUri,
             contract,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
@@ -716,7 +770,8 @@ export const Technomaniacs = async (
 // ! 0xe7f8ccda432239dcb418e94d625bc2fe6350f6bb
 export const ArcadeEdition = async (
     nft: any,
-    account: string
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
     const {
         native,
@@ -739,13 +794,13 @@ export const ArcadeEdition = async (
             uri: newUri,
             contract,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
                 description: data.description,
             },
         };
-        console.log("🚀 ~ file: index.ts ~ line 778 ~ data", nft);
         return nft;
     } catch (error) {
         console.error(error);
@@ -755,7 +810,8 @@ export const ArcadeEdition = async (
 // ! 0x56d93767467c54bd86578666904087c4f16cdb7f
 export const Founders_Cabinet = async (
     nft: any,
-    account: string
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
     const {
         native,
@@ -779,6 +835,7 @@ export const Founders_Cabinet = async (
             uri: newUri,
             contract,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
@@ -792,7 +849,11 @@ export const Founders_Cabinet = async (
     }
 };
 // ! 0x2d317ed6c2e3eb5c54ca7518ef19deee96c15c85
-export const TTAV = async (nft: any, account: string): Promise<NFT> => {
+export const TTAV = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
     const {
         native,
         native: { contract, tokenId, chainId },
@@ -816,6 +877,7 @@ export const TTAV = async (nft: any, account: string): Promise<NFT> => {
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
@@ -832,7 +894,8 @@ export const TTAV = async (nft: any, account: string): Promise<NFT> => {
 // ! 0x7a7ca3b27760b52428d7a9d0a9f369ff31a2de94
 export const BoredGUtterCats = async (
     nft: any,
-    account: string
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
     const {
         native,
@@ -856,6 +919,7 @@ export const BoredGUtterCats = async (
             uri: newUri,
             contract,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
@@ -871,7 +935,8 @@ export const BoredGUtterCats = async (
 // ! 0x2FeEE2Cc7fB32bD48AB22080e2C680f5390Ef426
 export const IDoDirtPolygon = async (
     nft: any,
-    account: string
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
     const {
         native,
@@ -895,6 +960,7 @@ export const IDoDirtPolygon = async (
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
@@ -910,7 +976,11 @@ export const IDoDirtPolygon = async (
     }
 };
 // ! 0x2953399124f0cbb46d2cbacd8a89cf0599974963
-export const ArsenalGame = async (nft: any, account: string): Promise<NFT> => {
+export const ArsenalGame = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
     const {
         native,
         native: { contract, tokenId, chainId },
@@ -940,6 +1010,7 @@ export const ArsenalGame = async (nft: any, account: string): Promise<NFT> => {
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 animation_url: data.animation_url,
@@ -955,7 +1026,11 @@ export const ArsenalGame = async (nft: any, account: string): Promise<NFT> => {
     }
 };
 // ! 0xc69ecd37122a9b5fd7e62bc229d478bb83063c9d
-export const Mate = async (nft: any, account: string): Promise<NFT> => {
+export const Mate = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
     const {
         native,
         native: { contract, tokenId, chainId },
@@ -977,6 +1052,7 @@ export const Mate = async (nft: any, account: string): Promise<NFT> => {
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
                 image: setupURI(data.animation_url),
                 imageFormat: format,
                 attributes: data.attributes,
@@ -993,7 +1069,11 @@ export const Mate = async (nft: any, account: string): Promise<NFT> => {
 };
 // ! 0x8eaeaa3a67abfc7c141775234fc30c707e26cf49
 // ! ABCBears
-export const ABCBears = async (nft: any, account: string): Promise<NFT> => {
+export const ABCBears = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
     const {
         native,
         native: { contract, tokenId, chainId },
@@ -1023,6 +1103,7 @@ export const ABCBears = async (nft: any, account: string): Promise<NFT> => {
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 animation_url: data.animation_url,
@@ -1041,7 +1122,8 @@ export const ABCBears = async (nft: any, account: string): Promise<NFT> => {
 // ! Tragic Monsters
 export const TragicMonsters = async (
     nft: any,
-    account: string
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
     const {
         native,
@@ -1072,6 +1154,7 @@ export const TragicMonsters = async (
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 description: data.description,
@@ -1088,7 +1171,8 @@ export const TragicMonsters = async (
 // ! Super Fat Academy NFT
 export const SuperFatAcademy = async (
     nft: any,
-    account: string
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
     const {
         native,
@@ -1119,6 +1203,7 @@ export const SuperFatAcademy = async (
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 description: data.description,
@@ -1136,7 +1221,8 @@ export const SuperFatAcademy = async (
 // ! Forgotten Runes Comic
 export const ForgottenRunesComic = async (
     nft: any,
-    account: string
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
     const {
         native,
@@ -1163,6 +1249,7 @@ export const ForgottenRunesComic = async (
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
                 image: "",
                 imageFormat: "",
                 animation_url: setupURI(data.image),
@@ -1179,8 +1266,12 @@ export const ForgottenRunesComic = async (
     }
 };
 // ! 0xd4c77e46b0266a7aca11083bcc86342f47bbdd04
-// ! The Cheeks
-export const TheCheeks = async (nft: any, account: string): Promise<NFT> => {
+// ! LilDickie
+export const LilDickie = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
     const {
         native,
         native: { contract, tokenId, chainId },
@@ -1205,6 +1296,52 @@ export const TheCheeks = async (nft: any, account: string): Promise<NFT> => {
             contract,
             collectionIdent,
             metaData: {
+                whitelisted,
+                image: setupURI(data.image),
+                imageFormat: format,
+                attributes: data.attributes,
+                description: data.description,
+                name: data.name,
+            },
+        };
+        return nft;
+    } catch (error) {
+        console.error(error);
+        return nft;
+    }
+};
+// ! 0x9304f22a5ab577119210d730e41755a6732e19f7
+// ! TheCheeks
+export const TheCheeks = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
+    const {
+        native,
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+        uri,
+    } = nft;
+    const baseUrl = uri;
+    const url = `${proxy}${setupURI(uri)}`;
+    try {
+        const response = await axios(url);
+        const { data } = response;
+        const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
+        const format = headers["content-type"].slice(
+            headers["content-type"].lastIndexOf("/") + 1
+        );
+        const nft: NFT = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
