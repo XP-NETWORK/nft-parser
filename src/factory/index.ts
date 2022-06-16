@@ -334,6 +334,7 @@ export const Legend = async (nft: any, account: string): Promise<NFT> => {
     }
 };
 // ! 0xee6d7e31ea2095df9b2f89ec15111d3de5cd39af
+// ! AlphaBettyDoodle
 export const AlphaBettyDoodle = async (
     nft: any,
     account: string
@@ -1148,9 +1149,50 @@ export const ForgottenRunesComic = async (
     try {
         const response = await axios(url);
         const { data } = response;
-        console.log("🚀 ~ file: index.ts ~ line 1152 ~ data", data);
-        const { headers } = await axios(`${proxy}${data.image}`);
-        console.log("🚀 ~ file: index.ts ~ line 1154 ~ data", headers);
+        const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
+        const video = headers["content-type"].includes("video");
+        const format = headers["content-type"].slice(
+            headers["content-type"].lastIndexOf("/") + 1
+        );
+        const nft: NFT = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                image: "",
+                imageFormat: "",
+                animation_url: setupURI(data.image),
+                animation_url_format: format,
+                attributes: data.attributes,
+                description: data.description,
+                name: data.name,
+            },
+        };
+        return nft;
+    } catch (error) {
+        console.error(error);
+        return nft;
+    }
+};
+// ! 0xd4c77e46b0266a7aca11083bcc86342f47bbdd04
+// ! The Cheeks
+export const TheCheeks = async (nft: any, account: string): Promise<NFT> => {
+    const {
+        native,
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+        uri,
+    } = nft;
+    const baseUrl = uri;
+    const url = `${proxy}${setupURI(uri)}`;
+    try {
+        const response = await axios(url);
+        const { data } = response;
+        const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
         const format = headers["content-type"].slice(
             headers["content-type"].lastIndexOf("/") + 1
         );
