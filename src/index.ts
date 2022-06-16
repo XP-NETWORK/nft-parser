@@ -25,6 +25,7 @@ import {
     ABCBears,
     TragicMonsters,
     SuperFatAcademy,
+    ForgottenRunesComic,
 } from "./factory";
 import { tezosDefault, TributeTezoTrooperz } from "./factory/tezos";
 
@@ -185,6 +186,9 @@ const evmParser = async (
             break;
         case "0xbede8ad4878e5ce441accce6a828ea7bc5be1ed0":
             parsed = await SuperFatAcademy(nft, account);
+            break;
+        case "0xb94c3fd0016888bab09dbc229f9397294e828a54":
+            parsed = await ForgottenRunesComic(nft, account);
             break;
         default:
             parsed = await Default(nft, account);

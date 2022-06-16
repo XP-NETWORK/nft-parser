@@ -175,7 +175,6 @@ export const Default = async (nft: any, account: string): Promise<NFT> => {
                 name: data.name,
             },
         };
-        console.log("🚀 ~ file: index.ts ~ line 179 ~ Default ~ data", nft);
         return nft;
     } catch (error) {
         console.error(error);
@@ -1132,8 +1131,8 @@ export const SuperFatAcademy = async (
     }
 };
 
-//! 0xb94c3fd0016888bab09dbc229f9397294e828a54
-
+// ! 0xb94c3fd0016888bab09dbc229f9397294e828a54
+// ! Forgotten Runes Comic
 export const ForgottenRunesComic = async (
     nft: any,
     account: string
@@ -1149,7 +1148,9 @@ export const ForgottenRunesComic = async (
     try {
         const response = await axios(url);
         const { data } = response;
+        console.log("🚀 ~ file: index.ts ~ line 1152 ~ data", data);
         const { headers } = await axios(`${proxy}${data.image}`);
+        console.log("🚀 ~ file: index.ts ~ line 1154 ~ data", headers);
         const format = headers["content-type"].slice(
             headers["content-type"].lastIndexOf("/") + 1
         );
@@ -1169,7 +1170,6 @@ export const ForgottenRunesComic = async (
                 name: data.name,
             },
         };
-        console.log("🚀 ~ file: index.ts ~ line 179 ~ Default ~ data", nft);
         return nft;
     } catch (error) {
         console.error(error);
