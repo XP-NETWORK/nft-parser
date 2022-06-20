@@ -28,7 +28,9 @@ import {
     ForgottenRunesComic,
     TheCheeks,
     LilDickie,
+    InterestingCPeople,
 } from "./factory";
+import { algorandParser } from "./factory/algorand";
 import { tezosDefault, TributeTezoTrooperz } from "./factory/tezos";
 
 interface ParsedNFT {
@@ -36,7 +38,7 @@ interface ParsedNFT {
     tokenId: string;
     owner: string;
     uri: string;
-    contract: string;
+    contract?: string;
     collectionIdent: string;
     native: any;
     metaData: {
@@ -54,11 +56,11 @@ interface ParsedNFT {
 
 export const nftGeneralParser = async (
     nft: any,
-    account: string,
+    account: any,
     whitelisted: boolean
 ): Promise<ParsedNFT> => {
     const {
-        native: { contract, tokenId, chainId },
+        native: { chainId },
         collectionIdent,
         uri,
     } = nft;
@@ -168,6 +170,14 @@ export const nftGeneralParser = async (
                 whitelisted
             );
             break;
+        case "15":
+            parsed = await algorandParser(
+                collectionIdent,
+                nft,
+                account,
+                whitelisted
+            );
+            break;
         // case "18":
         //     parsed = await tezosParser(nft, account);
         default:
@@ -265,28 +275,13 @@ const evmParser = async (
         case "0x9304f22a5ab577119210d730e41755a6732e19f7":
             parsed = await TheCheeks(nft, account, whitelisted);
             break;
+        case "0x028faf7eab0d8abb4a2d784206bfa98979041ffc":
+            parsed = await InterestingCPeople(nft, account, whitelisted);
+            break;
         default:
             parsed = await Default(nft, account, whitelisted);
             break;
     }
 
-    return parsed;
-};
-
-const tezosParser = async (nft: any, account: string) => {
-    const {
-        native: { contract, tokenId, chainId },
-        collectionIdent,
-        uri,
-    } = nft;
-    let parsed;
-    switch (collectionIdent) {
-        case "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA":
-            parsed = await TributeTezoTrooperz(nft, account);
-            break;
-        default:
-            // parsed = await tezosDefault(nft, account);
-            break;
-    }
     return parsed;
 };

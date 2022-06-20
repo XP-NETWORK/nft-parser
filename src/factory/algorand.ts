@@ -1,0 +1,171 @@
+import { Provider } from "@ethersproject/abstract-provider";
+import { stringify } from "querystring";
+import {
+    ChainFactoryConfigs,
+    ChainFactory,
+    Chain,
+    AppConfigs,
+    ChainParams,
+} from "xp.network";
+import BigNumber from "bignumber.js";
+import { Interface } from "@ethersproject/abi";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { nftGeneralParser } from "..";
+import { setupURI } from ".";
+
+interface NFT {
+    chainId: string;
+    tokenId: string;
+    owner: string;
+    uri: string;
+    contract?: string;
+    collectionIdent: string;
+    native: any;
+    metaData: {
+        whitelisted: boolean;
+        image: string;
+        imageFormat: string;
+        animation_url?: string;
+        animation_url_format?: string;
+        name?: string;
+        symbol?: string;
+        attributes?: any;
+        description?: string;
+        contractType?: string;
+    };
+}
+
+const erc721 = require("../../build/factory/ABIs/ERC721.json");
+const Contract = require("web3-eth-contract");
+const proxy = "https://sheltered-crag-76748.herokuapp.com/";
+
+export const algorandParser = async (
+    collectionIdent: string,
+    nft: any,
+    account: string,
+    whitelisted: boolean
+) => {
+    switch (true) {
+        case collectionIdent.includes("D00dles"):
+            collectionIdent = "D00dles";
+            break;
+        case collectionIdent.includes("Donkey"):
+            collectionIdent = "Donkey";
+            break;
+        case collectionIdent.includes("Algo Rocket"):
+            collectionIdent = "Algo Rocket";
+            break;
+        case collectionIdent.includes("ALGO WEIRD AXEL"):
+            collectionIdent = "ALGO WEIRD AXEL";
+            break;
+        default:
+            break;
+    }
+    let parsed;
+    switch (collectionIdent) {
+        case "D00dles":
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "Donkey":
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "Algo Rocket":
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "ALGO WEIRD AXEL":
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        default:
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+    }
+    return parsed;
+};
+// ! COLLECTIONS
+// ! Default
+export const Default = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
+    const {
+        native,
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+        uri,
+    } = nft;
+    const baseUrl = uri;
+    const url = `${proxy}${setupURI(uri)}`;
+    try {
+        const response = await axios(url);
+        const { data } = response;
+        const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
+        const format = headers["content-type"].slice(
+            headers["content-type"].lastIndexOf("/") + 1
+        );
+        const nft: NFT = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image: setupURI(data.image),
+                imageFormat: format,
+                attributes: data.attributes,
+                description: data.description,
+                name: data.name,
+            },
+        };
+        return nft;
+    } catch (error) {
+        console.error(error);
+        return nft;
+    }
+};
+// ! "D00dles"
+export const LikeD00dles = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
+    const {
+        native,
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+        uri,
+    } = nft;
+    const baseUrl = uri;
+    const url = `${proxy}${setupURI(uri)}`;
+    try {
+        const response = await axios(url);
+        const { data, headers } = response;
+        const format = headers["content-type"].slice(
+            headers["content-type"].lastIndexOf("/") + 1
+        );
+        const nft: NFT = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image: setupURI(url),
+                imageFormat: format,
+                attributes: data.attributes,
+                description: data.description,
+                name: data.name,
+            },
+        };
+        return nft;
+    } catch (error) {
+        console.error(error);
+        return nft;
+    }
+};
