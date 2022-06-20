@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LikeD00dles = exports.Default = exports.algorandParser = void 0;
+exports.WarriorCroc = exports.LikeD00dles = exports.Default = exports.algorandParser = void 0;
 const axios_1 = __importDefault(require("axios"));
 const _1 = require(".");
 const erc721 = require("../../build/factory/ABIs/ERC721.json");
@@ -32,6 +32,9 @@ const algorandParser = (collectionIdent, nft, account, whitelisted) => __awaiter
         case collectionIdent.includes("ALGO WEIRD AXEL"):
             collectionIdent = "ALGO WEIRD AXEL";
             break;
+        case collectionIdent.includes("Warrior Croc"):
+            collectionIdent = "Warrior Croc";
+            break;
         default:
             break;
     }
@@ -48,6 +51,9 @@ const algorandParser = (collectionIdent, nft, account, whitelisted) => __awaiter
             break;
         case "ALGO WEIRD AXEL":
             parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
+            break;
+        case "Warrior Croc":
+            parsed = yield (0, exports.WarriorCroc)(nft, account, whitelisted);
             break;
         default:
             parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
@@ -126,3 +132,36 @@ const LikeD00dles = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
     }
 });
 exports.LikeD00dles = LikeD00dles;
+// ! Warrior Croc
+const WarriorCroc = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    const url = `${proxy}${(0, _1.setupURI)(uri)}`;
+    try {
+        const response = yield (0, axios_1.default)(url);
+        const { data } = response;
+        const format = data["image_mime_type"].slice(data["image_mime_type"].lastIndexOf("/") + 1);
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image: (0, _1.setupURI)(data.image),
+                imageFormat: format,
+                attributes: data.attributes,
+                description: data.description,
+                name: data.name,
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+exports.WarriorCroc = WarriorCroc;

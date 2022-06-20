@@ -12,8 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.getNFTUri = exports.setupURI = exports.proxy = void 0;
-const xp_network_1 = require("xp.network");
+exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
 const axios_1 = __importDefault(require("axios"));
 const erc721 = require("../../build/factory/ABIs/ERC721.json");
 const Contract = require("web3-eth-contract");
@@ -42,80 +41,6 @@ const setupURI = (uri) => {
     }
 };
 exports.setupURI = setupURI;
-const getTestNetConfig = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield xp_network_1.ChainFactoryConfigs.TestNet();
-});
-const getMainNetConfig = () => __awaiter(void 0, void 0, void 0, function* () {
-    return yield xp_network_1.ChainFactoryConfigs.MainNet();
-});
-const getFactory = (mainNet) => {
-    return mainNet ? xp_network_1.AppConfigs.MainNet() : xp_network_1.AppConfigs.TestNet();
-};
-const getChainProvider = (chainId) => __awaiter(void 0, void 0, void 0, function* () {
-    const mainNetConfig = yield getMainNetConfig();
-    const testNetConfig = yield getTestNetConfig();
-    let provider;
-    switch (chainId) {
-        case "4":
-            provider = mainNetConfig.bscParams.provider; // bscParams MainNet Provider
-            return provider;
-        case "6":
-            provider = mainNetConfig.avalancheParams.provider; // avalancheParams MainNet Provider
-            return provider;
-        case "7":
-            provider = mainNetConfig.polygonParams.provider; // polygonParams MainNet Provider
-            return provider;
-        case "8":
-            provider = mainNetConfig.fantomParams.provider; // fantomParams MainNet Provider
-            return provider;
-        case "12":
-            provider = mainNetConfig.harmonyParams.provider; // harmonyParams MainNet Provider
-            return provider;
-        case "14":
-            provider = mainNetConfig.xDaiParams.provider; // xDaiParams MainNet Provider
-            return provider;
-        case "16":
-            provider = mainNetConfig.fuseParams.provider; // fuseParams mainNet Provider
-            return provider;
-        case "19":
-            provider = mainNetConfig.velasParams.provider; // velasParams mainnet Provider
-            return provider;
-        case "20":
-            provider = mainNetConfig.iotexParams.provider; // iotexParams mainNet Provider
-            return provider;
-        case "21":
-            provider = mainNetConfig.auroraParams.provider; // auroraParams mainnet Provider
-            return provider;
-        case "23":
-            provider = mainNetConfig.gateChainParams.provider; // gateChainParams mainnet Provider
-            return provider;
-        case "5":
-            provider = mainNetConfig.ropstenParams.provider; // ropstenParams mainnet Provider
-            return provider;
-        case "25":
-            provider = mainNetConfig.vechainParams.provider; // vechainParams mainnet Provider
-            return provider;
-        default:
-            break;
-    }
-});
-const getSmartContract = (chainId, contractAddress) => __awaiter(void 0, void 0, void 0, function* () {
-    const provider = yield getChainProvider(chainId);
-    Contract.setProvider(provider);
-    const contract = new Contract(erc721.abi, contractAddress);
-    return contract;
-});
-const getNFTUri = (chainId, contractAddress, tokenId) => __awaiter(void 0, void 0, void 0, function* () {
-    const contract = yield getSmartContract(chainId, contractAddress);
-    let uri;
-    const id = BigInt(tokenId);
-    contract.methods
-        .tokenURI(id)
-        .call()
-        .then((res) => { })
-        .catch((error) => console.error(error));
-});
-exports.getNFTUri = getNFTUri;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
