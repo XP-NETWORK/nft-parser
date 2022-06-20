@@ -27,7 +27,9 @@ import {
   ForgottenRunesComic,
   TheCheeks,
   LilDickie,
+  Nagato,
 } from "./factory";
+
 import { algorandParser } from "./factory/algorand";
 
 import * as elrd from "./factory/elrond";
@@ -209,6 +211,9 @@ const evmParser = async (
     case "0x9304f22a5ab577119210d730e41755a6732e19f7":
       parsed = await TheCheeks(nft, account, whitelisted);
       break;
+    case "0x817c63be246dcfb5f218091baa581949b6796bdb":
+      parsed = await Nagato(nft, account, whitelisted);
+      break;
     default:
       parsed = await Default(nft, account, whitelisted);
       break;
@@ -248,6 +253,11 @@ const elrondParser = async (
       break;
     }
     case "DRIFTERS-efd96c": {
+      parsed = await elrd.DRIFTERS(nft, account, whitelisted);
+      break;
+    }
+
+    case "NIFTYREX-d8c812": {
       parsed = await elrd.DRIFTERS(nft, account, whitelisted);
       break;
     }

@@ -164,6 +164,8 @@ export const INNOVATOR = async (
   } = nft;
 
   try {
+    const { data } = await axios(uri);
+
     const nft: NFT = {
       native,
       chainId,
@@ -174,8 +176,9 @@ export const INNOVATOR = async (
       collectionIdent,
       metaData: {
         whitelisted,
-        image: uri.replace(".json", ".png"),
+        image: data.image,
         imageFormat: "png",
+        name: data.name,
       },
     };
 
