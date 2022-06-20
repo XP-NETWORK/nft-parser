@@ -1,39 +1,5 @@
 import axios from "axios";
-<<<<<<< HEAD
 import * as evm from "./factory";
-=======
-import {
-  ART_NFT_MATIC,
-  EtherHead,
-  AngelOfAether,
-  Default,
-  Legend,
-  AlphaBettyDoodle,
-  Mabstronauts,
-  RocketMonsters,
-  TheBlackMagic,
-  CartelPunks,
-  TreatNFT,
-  IdoDirt,
-  Awokensages,
-  Technomaniacs,
-  ArcadeEdition,
-  Founders_Cabinet,
-  TTAV,
-  BoredGUtterCats,
-  IDoDirtPolygon,
-  ArsenalGame,
-  Mate,
-  ABCBears,
-  TragicMonsters,
-  SuperFatAcademy,
-  ForgottenRunesComic,
-  TheCheeks,
-  LilDickie,
-  Nagato,
-} from "./factory";
-
->>>>>>> origin/main
 import { algorandParser } from "./factory/algorand";
 import * as elrd from "./factory/elrond";
 
@@ -332,15 +298,15 @@ const elrondParser = async (
             break;
         }
 
-    case "NIFTYREX-d8c812": {
-      parsed = await elrd.DRIFTERS(nft, account, whitelisted);
-      break;
-    }
+        case "NIFTYREX-d8c812": {
+            parsed = await elrd.DRIFTERS(nft, account, whitelisted);
+            break;
+        }
 
-    case "INNOVATOR-fca3a7": {
-      parsed = await elrd.INNOVATOR(nft, account, whitelisted);
-      break;
-    }
+        case "INNOVATOR-fca3a7": {
+            parsed = await elrd.INNOVATOR(nft, account, whitelisted);
+            break;
+        }
 
         default:
             parsed = await elrd.DEFAULT(nft, account, whitelisted);
