@@ -12,6 +12,7 @@ import { Interface } from "@ethersproject/abi";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { nftGeneralParser } from "..";
 import { setupURI } from ".";
+import { Console } from "console";
 
 interface NFT {
     chainId: string;
@@ -35,14 +36,12 @@ interface NFT {
     };
 }
 
-const erc721 = require("../../build/factory/ABIs/ERC721.json");
-const Contract = require("web3-eth-contract");
 const proxy = "https://sheltered-crag-76748.herokuapp.com/";
 
 export const algorandParser = async (
     collectionIdent: string,
     nft: any,
-    account: string,
+    account: any,
     whitelisted: boolean
 ) => {
     switch (true) {
@@ -61,7 +60,24 @@ export const algorandParser = async (
         case collectionIdent.includes("Warrior Croc"):
             collectionIdent = "Warrior Croc";
             break;
-
+        case collectionIdent.includes("Al Goanna"):
+            collectionIdent = "Al Goanna";
+            break;
+        case collectionIdent.includes("BrontosEYE"):
+            collectionIdent = "BrontosEYE";
+            break;
+        case collectionIdent.includes("Shep"):
+            collectionIdent = "Shep";
+            break;
+        case collectionIdent.includes("RaptorEYE"):
+            collectionIdent = "RaptorEYE";
+            break;
+        case collectionIdent.includes("The Psychedelic Forest"):
+            collectionIdent = "The Psychedelic Forest";
+            break;
+        case collectionIdent.includes("Dead Putin Society"):
+            collectionIdent = "Dead Putin Society";
+            break;
         default:
             break;
     }
@@ -82,8 +98,35 @@ export const algorandParser = async (
         case "Warrior Croc":
             parsed = await WarriorCroc(nft, account, whitelisted);
             break;
-        default:
+        case "Al Goanna":
             parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "BrontosEYE":
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "Number 512":
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "Shep":
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "The Psychedelic Forest":
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "RaptorEYE":
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "Dead Putin Society":
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "LION'S BEAUTY":
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "Floating ghost":
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        default:
+            parsed = await Default(nft, account, whitelisted);
             break;
     }
     return parsed;
@@ -145,8 +188,8 @@ export const LikeD00dles = async (
         collectionIdent,
         uri,
     } = nft;
-    const baseUrl = uri;
     const url = `${proxy}${setupURI(uri)}`;
+    console.log("🚀 ~ file: algorand.ts ~ line 149 ~ url", url);
     try {
         const response = await axios(url);
         const { data, headers } = response;
@@ -188,10 +231,12 @@ export const WarriorCroc = async (
         collectionIdent,
         uri,
     } = nft;
+    // debugger;
     const url = `${proxy}${setupURI(uri)}`;
     try {
         const response = await axios(url);
         const { data } = response;
+        console.log("🚀 ~ file: algorand.ts ~ line 195 ~ data", data);
         const format = data["image_mime_type"].slice(
             data["image_mime_type"].lastIndexOf("/") + 1
         );

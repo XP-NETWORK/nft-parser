@@ -10,7 +10,7 @@ import {
 import BigNumber from "bignumber.js";
 import { Interface } from "@ethersproject/abi";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { nftGeneralParser, ParsedNFT } from "..";
+import { nftGeneralParser } from "..";
 import { setupURI, proxy } from ".";
 import { url } from "inspector";
 
