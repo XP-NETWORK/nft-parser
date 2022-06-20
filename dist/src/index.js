@@ -33,6 +33,7 @@ const evm = __importStar(require("./factory"));
 const algorand_1 = require("./factory/algorand");
 const elrd = __importStar(require("./factory/elrond"));
 const tezos = __importStar(require("./factory/tezos"));
+const tron_1 = require("./factory/tron");
 const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     let parsed;
@@ -81,6 +82,9 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
             break;
         case "15":
             parsed = yield (0, algorand_1.algorandParser)(collectionIdent, nft, account, whitelisted);
+            break;
+        case "9":
+            parsed = yield (0, tron_1.tronParser)(collectionIdent, nft, account, whitelisted);
             break;
         // case "18":
         //     parsed = await tezosParser(nft, account);
