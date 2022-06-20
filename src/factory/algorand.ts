@@ -78,6 +78,12 @@ export const algorandParser = async (
         case collectionIdent.includes("Dead Putin Society"):
             collectionIdent = "Dead Putin Society";
             break;
+        case collectionIdent.includes("AlgoSeas Pirate"):
+            collectionIdent = "AlgoSeas Pirate";
+            break;
+        case collectionIdent.includes("Alchemon"):
+            collectionIdent = "Alchemon";
+            break;
         default:
             break;
     }
@@ -124,6 +130,12 @@ export const algorandParser = async (
             break;
         case "Floating ghost":
             parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "AlgoSeas Pirate":
+            parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "Alchemon":
+            parsed = await Alchemon(nft, account, whitelisted);
             break;
         default:
             parsed = await Default(nft, account, whitelisted);
@@ -189,7 +201,6 @@ export const LikeD00dles = async (
         uri,
     } = nft;
     const url = `${proxy}${setupURI(uri)}`;
-    console.log("🚀 ~ file: algorand.ts ~ line 149 ~ url", url);
     try {
         const response = await axios(url);
         const { data, headers } = response;
@@ -236,7 +247,6 @@ export const WarriorCroc = async (
     try {
         const response = await axios(url);
         const { data } = response;
-        console.log("🚀 ~ file: algorand.ts ~ line 195 ~ data", data);
         const format = data["image_mime_type"].slice(
             data["image_mime_type"].lastIndexOf("/") + 1
         );
@@ -252,6 +262,51 @@ export const WarriorCroc = async (
                 whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
+                attributes: data.attributes,
+                description: data.description,
+                name: data.name,
+            },
+        };
+        return nft;
+    } catch (error) {
+        console.error(error);
+        return nft;
+    }
+};
+// ! Alchemon
+export const Alchemon = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
+    const {
+        native,
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+        uri,
+    } = nft;
+    const baseUrl = uri;
+    const url = `${proxy}${setupURI(uri)}`;
+    try {
+        const response = await axios(url);
+        const { data, headers } = response;
+        const format = headers["content-type"].slice(
+            headers["content-type"].lastIndexOf("/") + 1
+        );
+        const nft: NFT = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image: "",
+                imageFormat: "",
+                animation_url: setupURI(uri),
+                animation_url_format: format,
                 attributes: data.attributes,
                 description: data.description,
                 name: data.name,
