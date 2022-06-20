@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -12,6 +35,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.nftGeneralParser = void 0;
 const factory_1 = require("./factory");
 const algorand_1 = require("./factory/algorand");
+const elrd = __importStar(require("./factory/elrond"));
 const tezos_1 = require("./factory/tezos");
 const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
@@ -176,8 +200,20 @@ const tezosParser = (nft, account) => __awaiter(void 0, void 0, void 0, function
 const elrondParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
     switch (collectionIdent) {
+        case "AERMES-ac9886": {
+            parsed = yield elrd.AERMES(nft, account, whitelisted);
+            break;
+        }
+        case "DRIFTERS-efd96c": {
+            parsed = yield elrd.DRIFTERS(nft, account, whitelisted);
+            break;
+        }
+        case "INNOVATOR-fca3a7": {
+            parsed = yield elrd.INNOVATOR(nft, account, whitelisted);
+            break;
+        }
         default:
-            parsed = yield (0, factory_1.Default)(nft, account, whitelisted);
+            parsed = yield elrd.DEFAULT(nft, account, whitelisted);
             break;
     }
     return parsed;
