@@ -1,5 +1,5 @@
 import BigNumber from "bignumber.js";
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { nftGeneralParser } from "..";
 import { setupURI, proxy } from ".";
 import { url } from "inspector";

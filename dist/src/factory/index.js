@@ -1049,14 +1049,14 @@ const Nagato = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
         const response = (yield pool.addRequest(url));
         //const data = res.data || res
         /*const response = await axios(url).catch(async (error: any) => {
-          //if (error?.request?.status === 429) {
-          const res = (await pool.addRequest(
-            error?.request?.responseURL
-          )) as AxiosResponse<any, any>;
-          return { data: res.data || res };
-          // }
-          //return {};
-        });*/
+      //if (error?.request?.status === 429) {
+      const res = (await pool.addRequest(
+        error?.request?.responseURL
+      )) as AxiosResponse<any, any>;
+      return { data: res.data || res };
+      // }
+      //return {};
+    });*/
         const { data } = response;
         const nft = {
             native,
