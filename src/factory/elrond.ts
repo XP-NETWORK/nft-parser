@@ -10,15 +10,16 @@ import {
 import BigNumber from "bignumber.js";
 import { Interface } from "@ethersproject/abi";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { nftGeneralParser } from "..";
+import { nftGeneralParser, ParsedNFT } from "..";
 import { setupURI, proxy } from ".";
+import { url } from "inspector";
 
 interface NFT {
   chainId: string;
   tokenId: string;
   owner: string;
   uri: string;
-  contract?: string;
+  contract: string;
   collectionIdent: string;
   native: any;
   metaData: {
@@ -35,6 +36,86 @@ interface NFT {
   };
 }
 
+export const DEFAULT = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const headers = await (await axios(uri)).headers;
+
+    const format = headers["content-type"].slice(
+      headers["content-type"].lastIndexOf("/") + 1
+    );
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: format === "mp4" ? "" : uri,
+        imageFormat: format,
+        animation_url: format === "png" ? "" : uri,
+        //animation_url_format: "mp4",
+      },
+    };
+
+    return nft;
+  } catch (error) {
+    console.error(error);
+    return nft;
+  }
+};
+
+export const AERMES = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: "",
+        imageFormat: "",
+        animation_url: uri,
+        animation_url_format: "mp4",
+      },
+    };
+
+    return nft;
+  } catch (error) {
+    console.error(error);
+    return nft;
+  }
+};
+
 export const DRIFTERS = async (
   nft: any,
   account: string,
@@ -46,15 +127,8 @@ export const DRIFTERS = async (
     collectionIdent,
     uri,
   } = nft;
-  const baseUrl = uri;
-  const url = `${proxy}${setupURI(uri)}`;
+
   try {
-    const response = await axios(url);
-    const { data } = response;
-    const { headers } = await axios(`${proxy}${data.image}`);
-    const format = headers["content-type"].slice(
-      headers["content-type"].lastIndexOf("/") + 1
-    );
     const nft: NFT = {
       native,
       chainId,
@@ -65,12 +139,46 @@ export const DRIFTERS = async (
       collectionIdent,
       metaData: {
         whitelisted,
-        image: data.image,
-        imageFormat: format,
-        attributes: data.attributes,
-        name: data.name,
+        image: uri.replace(".json", ".png"),
+        imageFormat: "png",
       },
     };
+
+    return nft;
+  } catch (error) {
+    console.error(error);
+    return nft;
+  }
+};
+
+export const INNOVATOR = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: uri.replace(".json", ".png"),
+        imageFormat: "png",
+      },
+    };
+
     return nft;
   } catch (error) {
     console.error(error);
