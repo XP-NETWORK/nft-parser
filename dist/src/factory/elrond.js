@@ -98,6 +98,7 @@ exports.DRIFTERS = DRIFTERS;
 const INNOVATOR = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
+        const { data } = yield (0, axios_1.default)(uri);
         const nft = {
             native,
             chainId,
@@ -108,8 +109,9 @@ const INNOVATOR = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: uri.replace(".json", ".png"),
+                image: data.image,
                 imageFormat: "png",
+                name: data.name,
             },
         };
         return nft;

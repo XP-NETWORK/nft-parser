@@ -12,8 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
+exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
 const axios_1 = __importDefault(require("axios"));
+const requestPool_1 = __importDefault(require("../../tools/requestPool"));
+const pool = (0, requestPool_1.default)(3000);
 const Contract = require("web3-eth-contract");
 exports.proxy = "https://sheltered-crag-76748.herokuapp.com/";
 const setupURI = (uri) => {
@@ -1040,3 +1042,46 @@ const InterestingCPeople = (nft, account, whitelisted) => __awaiter(void 0, void
     }
 });
 exports.InterestingCPeople = InterestingCPeople;
+const Nagato = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    try {
+        const response = (yield pool.addRequest(url));
+        //const data = res.data || res
+        /*const response = await axios(url).catch(async (error: any) => {
+          //if (error?.request?.status === 429) {
+          const res = (await pool.addRequest(
+            error?.request?.responseURL
+          )) as AxiosResponse<any, any>;
+          return { data: res.data || res };
+          // }
+          //return {};
+        });*/
+        const { data } = response;
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image: data
+                    ? (0, exports.setupURI)(data.image)
+                    : `https://ipfs-nft-storage.com/ipfs/velasnagato/${tokenId}.png`,
+                imageFormat: "png",
+                attributes: data && data.attributes,
+                description: data && data.description,
+                name: data ? data.name : `Nagato #${tokenId}`,
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+exports.Nagato = Nagato;

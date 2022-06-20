@@ -32,7 +32,7 @@ exports.nftGeneralParser = void 0;
 const evm = __importStar(require("./factory"));
 const algorand_1 = require("./factory/algorand");
 const elrd = __importStar(require("./factory/elrond"));
-const tezos_1 = require("./factory/tezos");
+const tezos = __importStar(require("./factory/tezos"));
 const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     let parsed;
@@ -185,7 +185,7 @@ const tezosParser = (nft, account) => __awaiter(void 0, void 0, void 0, function
     let parsed;
     switch (collectionIdent) {
         case "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA":
-            parsed = yield (0, tezos_1.TributeTezoTrooperz)(nft, account);
+            parsed = yield tezos.TributeTezoTrooperz(nft, account);
             break;
         default:
             // parsed = await tezosDefault(nft, account);
@@ -201,6 +201,10 @@ const elrondParser = (collectionIdent, nft, account, whitelisted) => __awaiter(v
             break;
         }
         case "DRIFTERS-efd96c": {
+            parsed = yield elrd.DRIFTERS(nft, account, whitelisted);
+            break;
+        }
+        case "NIFTYREX-d8c812": {
             parsed = yield elrd.DRIFTERS(nft, account, whitelisted);
             break;
         }
