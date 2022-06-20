@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WarriorCroc = exports.LikeD00dles = exports.Default = exports.algorandParser = void 0;
+exports.Alchemon = exports.WarriorCroc = exports.LikeD00dles = exports.Default = exports.algorandParser = void 0;
 const axios_1 = __importDefault(require("axios"));
 const _1 = require(".");
 const proxy = "https://sheltered-crag-76748.herokuapp.com/";
@@ -50,6 +50,12 @@ const algorandParser = (collectionIdent, nft, account, whitelisted) => __awaiter
             break;
         case collectionIdent.includes("Dead Putin Society"):
             collectionIdent = "Dead Putin Society";
+            break;
+        case collectionIdent.includes("AlgoSeas Pirate"):
+            collectionIdent = "AlgoSeas Pirate";
+            break;
+        case collectionIdent.includes("Alchemon"):
+            collectionIdent = "Alchemon";
             break;
         default:
             break;
@@ -98,6 +104,12 @@ const algorandParser = (collectionIdent, nft, account, whitelisted) => __awaiter
         case "Floating ghost":
             parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
+        case "AlgoSeas Pirate":
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
+            break;
+        case "Alchemon":
+            parsed = yield (0, exports.Alchemon)(nft, account, whitelisted);
+            break;
         default:
             parsed = yield (0, exports.Default)(nft, account, whitelisted);
             break;
@@ -145,7 +157,6 @@ exports.Default = Default;
 const LikeD00dles = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const url = `${proxy}${(0, _1.setupURI)(uri)}`;
-    console.log("🚀 ~ file: algorand.ts ~ line 149 ~ url", url);
     try {
         const response = yield (0, axios_1.default)(url);
         const { data, headers } = response;
@@ -183,7 +194,6 @@ const WarriorCroc = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
-        console.log("🚀 ~ file: algorand.ts ~ line 195 ~ data", data);
         const format = data["image_mime_type"].slice(data["image_mime_type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -210,3 +220,39 @@ const WarriorCroc = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
     }
 });
 exports.WarriorCroc = WarriorCroc;
+// ! Alchemon
+const Alchemon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    const baseUrl = uri;
+    const url = `${proxy}${(0, _1.setupURI)(uri)}`;
+    try {
+        const response = yield (0, axios_1.default)(url);
+        const { data, headers } = response;
+        const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image: "",
+                imageFormat: "",
+                animation_url: (0, _1.setupURI)(uri),
+                animation_url_format: format,
+                attributes: data.attributes,
+                description: data.description,
+                name: data.name,
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+exports.Alchemon = Alchemon;
