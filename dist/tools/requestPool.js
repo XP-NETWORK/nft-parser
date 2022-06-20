@@ -40,7 +40,8 @@ class RequestPool {
         ];
         req.resolve(res);
     }
-    execute(url) {
+    execute(url, tm) {
+        const timeout = tm || this.timeout;
         setTimeout(() => __awaiter(this, void 0, void 0, function* () {
             const req = this.requests.find((req) => req.url === url);
             if (!req)
@@ -52,11 +53,11 @@ class RequestPool {
             catch (e) {
                 if (req.tryNumber < 3) {
                     req.tryNumber++;
-                    return this.execute(req.url);
+                    return this.execute(req.url, req.tryNumber * this.timeout * 1.4);
                 }
                 this.release(req, {});
             }
-        }), this.timeout);
+        }), timeout);
     }
 }
 exports.default = (initialTimout) => new RequestPool(initialTimout);
