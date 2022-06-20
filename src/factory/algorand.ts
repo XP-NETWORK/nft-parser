@@ -58,6 +58,10 @@ export const algorandParser = async (
         case collectionIdent.includes("ALGO WEIRD AXEL"):
             collectionIdent = "ALGO WEIRD AXEL";
             break;
+        case collectionIdent.includes("Warrior Croc"):
+            collectionIdent = "Warrior Croc";
+            break;
+
         default:
             break;
     }
@@ -74,6 +78,9 @@ export const algorandParser = async (
             break;
         case "ALGO WEIRD AXEL":
             parsed = await LikeD00dles(nft, account, whitelisted);
+            break;
+        case "Warrior Croc":
+            parsed = await WarriorCroc(nft, account, whitelisted);
             break;
         default:
             parsed = await LikeD00dles(nft, account, whitelisted);
@@ -157,6 +164,48 @@ export const LikeD00dles = async (
             metaData: {
                 whitelisted,
                 image: setupURI(url),
+                imageFormat: format,
+                attributes: data.attributes,
+                description: data.description,
+                name: data.name,
+            },
+        };
+        return nft;
+    } catch (error) {
+        console.error(error);
+        return nft;
+    }
+};
+// ! Warrior Croc
+export const WarriorCroc = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
+    const {
+        native,
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+        uri,
+    } = nft;
+    const url = `${proxy}${setupURI(uri)}`;
+    try {
+        const response = await axios(url);
+        const { data } = response;
+        const format = data["image_mime_type"].slice(
+            data["image_mime_type"].lastIndexOf("/") + 1
+        );
+        const nft: NFT = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
                 description: data.description,
