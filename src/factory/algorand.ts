@@ -1,18 +1,6 @@
-import { Provider } from "@ethersproject/abstract-provider";
-import { stringify } from "querystring";
-import {
-    ChainFactoryConfigs,
-    ChainFactory,
-    Chain,
-    AppConfigs,
-    ChainParams,
-} from "xp.network";
-import BigNumber from "bignumber.js";
-import { Interface } from "@ethersproject/abi";
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios from "axios";
 import { nftGeneralParser } from "..";
 import { setupURI } from ".";
-import { Console } from "console";
 
 interface NFT {
     chainId: string;

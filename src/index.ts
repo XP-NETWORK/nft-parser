@@ -2,8 +2,7 @@ import axios from "axios";
 import * as evm from "./factory";
 import { algorandParser } from "./factory/algorand";
 import * as elrd from "./factory/elrond";
-
-import { tezosDefault, TributeTezoTrooperz } from "./factory/tezos";
+import * as tezos from "./factory/tezos";
 
 interface ParsedNFT {
     chainId: string;
@@ -272,7 +271,7 @@ const tezosParser = async (nft: any, account: string) => {
     let parsed;
     switch (collectionIdent) {
         case "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA":
-            parsed = await TributeTezoTrooperz(nft, account);
+            parsed = await tezos.TributeTezoTrooperz(nft, account);
             break;
         default:
             // parsed = await tezosDefault(nft, account);
