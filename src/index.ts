@@ -29,6 +29,9 @@ import {
   TheCheeks,
   LilDickie,
 } from "./factory";
+
+import * as elrd from "./factory/elrond";
+
 import { tezosDefault, TributeTezoTrooperz } from "./factory/tezos";
 
 interface ParsedNFT {
