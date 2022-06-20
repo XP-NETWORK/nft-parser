@@ -12,12 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.INNOVATOR = exports.DRIFTERS = exports.AERMES = exports.DEFAULT = void 0;
+exports.DRIFTERS = void 0;
 const axios_1 = __importDefault(require("axios"));
-const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+const _1 = require(".");
+const DRIFTERS = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    const baseUrl = uri;
+    const url = `${_1.proxy}${(0, _1.setupURI)(uri)}`;
     try {
-        const headers = yield (yield (0, axios_1.default)(uri)).headers;
+        const response = yield (0, axios_1.default)(url);
+        const { data } = response;
+        const { headers } = yield (0, axios_1.default)(`${_1.proxy}${data.image}`);
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -29,62 +34,10 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: format === "mp4" ? "" : uri,
+                image: data.image,
                 imageFormat: format,
-                animation_url: format === "png" ? "" : uri,
-                //animation_url_format: "mp4",
-            },
-        };
-        return nft;
-    }
-    catch (error) {
-        console.error(error);
-        return nft;
-    }
-});
-exports.DEFAULT = DEFAULT;
-const AERMES = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    try {
-        const nft = {
-            native,
-            chainId,
-            tokenId,
-            owner: account,
-            uri,
-            contract,
-            collectionIdent,
-            metaData: {
-                whitelisted,
-                image: "",
-                imageFormat: "",
-                animation_url: uri,
-                animation_url_format: "mp4",
-            },
-        };
-        return nft;
-    }
-    catch (error) {
-        console.error(error);
-        return nft;
-    }
-});
-exports.AERMES = AERMES;
-const DRIFTERS = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    try {
-        const nft = {
-            native,
-            chainId,
-            tokenId,
-            owner: account,
-            uri,
-            contract,
-            collectionIdent,
-            metaData: {
-                whitelisted,
-                image: uri.replace(".json", ".png"),
-                imageFormat: "png",
+                attributes: data.attributes,
+                name: data.name,
             },
         };
         return nft;
@@ -95,28 +48,3 @@ const DRIFTERS = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.DRIFTERS = DRIFTERS;
-const INNOVATOR = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    try {
-        const nft = {
-            native,
-            chainId,
-            tokenId,
-            owner: account,
-            uri,
-            contract,
-            collectionIdent,
-            metaData: {
-                whitelisted,
-                image: uri.replace(".json", ".png"),
-                imageFormat: "png",
-            },
-        };
-        return nft;
-    }
-    catch (error) {
-        console.error(error);
-        return nft;
-    }
-});
-exports.INNOVATOR = INNOVATOR;
