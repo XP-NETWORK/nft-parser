@@ -3,6 +3,7 @@ import * as evm from "./factory";
 import { algorandParser } from "./factory/algorand";
 import * as elrd from "./factory/elrond";
 import * as tezos from "./factory/tezos";
+import { tronParser } from "./factory/tron";
 
 interface ParsedNFT {
     chainId: string;
@@ -151,6 +152,14 @@ export const nftGeneralParser = async (
             break;
         case "15":
             parsed = await algorandParser(
+                collectionIdent,
+                nft,
+                account,
+                whitelisted
+            );
+            break;
+        case "9":
+            parsed = await tronParser(
                 collectionIdent,
                 nft,
                 account,

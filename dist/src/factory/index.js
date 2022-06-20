@@ -16,7 +16,6 @@ exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDic
 const axios_1 = __importDefault(require("axios"));
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
 const pool = (0, requestPool_1.default)(3000);
-const Contract = require("web3-eth-contract");
 exports.proxy = "https://sheltered-crag-76748.herokuapp.com/";
 const setupURI = (uri) => {
     if (uri) {

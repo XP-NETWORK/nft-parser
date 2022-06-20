@@ -7,7 +7,6 @@ import requestPool from "../../tools/requestPool";
 
 const pool = requestPool(3000);
 
-const Contract = require("web3-eth-contract");
 export const proxy = "https://sheltered-crag-76748.herokuapp.com/";
 interface NFT {
     chainId: string;
