@@ -12,7 +12,6 @@ import { Interface } from "@ethersproject/abi";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { nftGeneralParser } from "..";
 
-const erc721 = require("../../build/factory/ABIs/ERC721.json");
 const Contract = require("web3-eth-contract");
 export const proxy = "https://sheltered-crag-76748.herokuapp.com/";
 interface NFT {
