@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.nftGeneralParser = void 0;
 const factory_1 = require("./factory");
+const algorand_1 = require("./factory/algorand");
 const tezos_1 = require("./factory/tezos");
 const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
@@ -57,6 +58,9 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
             break;
         case "2":
             parsed = yield elrondParser(collectionIdent, nft, account, whitelisted);
+            break;
+        case "15":
+            parsed = yield (0, algorand_1.algorandParser)(collectionIdent, nft, account, whitelisted);
             break;
         // case "18":
         //     parsed = await tezosParser(nft, account);

@@ -28,6 +28,7 @@ import {
     TheCheeks,
     LilDickie,
 } from "./factory";
+import { algorandParser } from "./factory/algorand";
 
 import * as elrd from "./factory/elrond";
 
@@ -38,7 +39,7 @@ interface ParsedNFT {
     tokenId: string;
     owner: string;
     uri: string;
-    contract: string;
+    contract?: string;
     collectionIdent: string;
     native: any;
     metaData: {
@@ -172,6 +173,14 @@ export const nftGeneralParser = async (
             break;
         case "2":
             parsed = await elrondParser(
+                collectionIdent,
+                nft,
+                account,
+                whitelisted
+            );
+            break;
+        case "15":
+            parsed = await algorandParser(
                 collectionIdent,
                 nft,
                 account,

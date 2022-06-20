@@ -15,8 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WarriorCroc = exports.LikeD00dles = exports.Default = exports.algorandParser = void 0;
 const axios_1 = __importDefault(require("axios"));
 const _1 = require(".");
-const erc721 = require("../../build/factory/ABIs/ERC721.json");
-const Contract = require("web3-eth-contract");
 const proxy = "https://sheltered-crag-76748.herokuapp.com/";
 const algorandParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     switch (true) {
@@ -34,6 +32,24 @@ const algorandParser = (collectionIdent, nft, account, whitelisted) => __awaiter
             break;
         case collectionIdent.includes("Warrior Croc"):
             collectionIdent = "Warrior Croc";
+            break;
+        case collectionIdent.includes("Al Goanna"):
+            collectionIdent = "Al Goanna";
+            break;
+        case collectionIdent.includes("BrontosEYE"):
+            collectionIdent = "BrontosEYE";
+            break;
+        case collectionIdent.includes("Shep"):
+            collectionIdent = "Shep";
+            break;
+        case collectionIdent.includes("RaptorEYE"):
+            collectionIdent = "RaptorEYE";
+            break;
+        case collectionIdent.includes("The Psychedelic Forest"):
+            collectionIdent = "The Psychedelic Forest";
+            break;
+        case collectionIdent.includes("Dead Putin Society"):
+            collectionIdent = "Dead Putin Society";
             break;
         default:
             break;
@@ -55,8 +71,35 @@ const algorandParser = (collectionIdent, nft, account, whitelisted) => __awaiter
         case "Warrior Croc":
             parsed = yield (0, exports.WarriorCroc)(nft, account, whitelisted);
             break;
-        default:
+        case "Al Goanna":
             parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
+            break;
+        case "BrontosEYE":
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
+            break;
+        case "Number 512":
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
+            break;
+        case "Shep":
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
+            break;
+        case "The Psychedelic Forest":
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
+            break;
+        case "RaptorEYE":
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
+            break;
+        case "Dead Putin Society":
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
+            break;
+        case "LION'S BEAUTY":
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
+            break;
+        case "Floating ghost":
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
+            break;
+        default:
+            parsed = yield (0, exports.Default)(nft, account, whitelisted);
             break;
     }
     return parsed;
@@ -101,8 +144,8 @@ exports.Default = Default;
 // ! "D00dles"
 const LikeD00dles = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const baseUrl = uri;
     const url = `${proxy}${(0, _1.setupURI)(uri)}`;
+    console.log("🚀 ~ file: algorand.ts ~ line 149 ~ url", url);
     try {
         const response = yield (0, axios_1.default)(url);
         const { data, headers } = response;
@@ -135,10 +178,12 @@ exports.LikeD00dles = LikeD00dles;
 // ! Warrior Croc
 const WarriorCroc = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    // debugger;
     const url = `${proxy}${(0, _1.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
+        console.log("🚀 ~ file: algorand.ts ~ line 195 ~ data", data);
         const format = data["image_mime_type"].slice(data["image_mime_type"].lastIndexOf("/") + 1);
         const nft = {
             native,
