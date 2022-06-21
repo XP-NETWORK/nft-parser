@@ -166,8 +166,14 @@ export const nftGeneralParser = async (
                 whitelisted
             );
             break;
-        // case "18":
-        //     parsed = await tezosParser(nft, account);
+        case "18":
+            parsed = await tezos.tezosParser(
+                collectionIdent,
+                nft,
+                account,
+                whitelisted
+            );
+            break;
         default:
             return nft;
     }
@@ -268,24 +274,6 @@ const evmParser = async (
             break;
     }
 
-    return parsed;
-};
-
-const tezosParser = async (nft: any, account: string) => {
-    const {
-        native: { contract, tokenId, chainId },
-        collectionIdent,
-        uri,
-    } = nft;
-    let parsed;
-    switch (collectionIdent) {
-        case "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA":
-            parsed = await tezos.TributeTezoTrooperz(nft, account);
-            break;
-        default:
-            // parsed = await tezosDefault(nft, account);
-            break;
-    }
     return parsed;
 };
 

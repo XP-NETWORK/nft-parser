@@ -86,8 +86,9 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
         case "9":
             parsed = yield (0, tron_1.tronParser)(collectionIdent, nft, account, whitelisted);
             break;
-        // case "18":
-        //     parsed = await tezosParser(nft, account);
+        case "18":
+            parsed = yield tezos.tezosParser(collectionIdent, nft, account, whitelisted);
+            break;
         default:
             return nft;
     }
@@ -180,19 +181,6 @@ const evmParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void
             break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
-            break;
-    }
-    return parsed;
-});
-const tezosParser = (nft, account) => __awaiter(void 0, void 0, void 0, function* () {
-    const { native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    let parsed;
-    switch (collectionIdent) {
-        case "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA":
-            parsed = yield tezos.TributeTezoTrooperz(nft, account);
-            break;
-        default:
-            // parsed = await tezosDefault(nft, account);
             break;
     }
     return parsed;
