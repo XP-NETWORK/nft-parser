@@ -12,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.INNOVATOR = exports.DRIFTERS = exports.AERMES = exports.DEFAULT = void 0;
+exports.MEDUSA = exports.INNOVATOR = exports.DRIFTERS = exports.AERMES = exports.DEFAULT = void 0;
 const axios_1 = __importDefault(require("axios"));
+const _1 = require(".");
 const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
@@ -122,3 +123,32 @@ const INNOVATOR = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
     }
 });
 exports.INNOVATOR = INNOVATOR;
+const MEDUSA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    try {
+        const { data } = yield (0, axios_1.default)(uri);
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image: (0, _1.setupURI)(data.image),
+                imageFormat: "png",
+                name: data.name,
+                attributes: data.attributes,
+                description: data.description,
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+exports.MEDUSA = MEDUSA;

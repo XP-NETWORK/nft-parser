@@ -183,6 +183,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void
         case "0x9304f22a5ab577119210d730e41755a6732e19f7":
             parsed = yield evm.TheCheeks(nft, account, whitelisted);
             break;
+        case "0x817c63be246dcfb5f218091baa581949b6796bdb":
+            parsed = yield evm.Nagato(nft, account, whitelisted);
+            break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
             break;
@@ -206,6 +209,10 @@ const elrondParser = (collectionIdent, nft, account, whitelisted) => __awaiter(v
         }
         case "INNOVATOR-fca3a7": {
             parsed = yield elrd.INNOVATOR(nft, account, whitelisted);
+            break;
+        }
+        case "CGPASS-73ac68": {
+            parsed = yield elrd.MEDUSA(nft, account, whitelisted);
             break;
         }
         default:
