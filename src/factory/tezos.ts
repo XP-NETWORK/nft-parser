@@ -60,19 +60,21 @@ export const Default = async (
             meta: {
                 token: {
                     metadata: {
+                        displayUri,
+                        image,
+                        animation_url,
                         description,
                         attributes,
-                        formats,
-                        image,
                         name,
                         symbol,
+                        formats,
                     },
                 },
             },
         },
     } = nft;
-    const mimeType = formats.length > 0 ? formats[0]?.mimeType : undefined;
-    const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
+    const mimeType = Array.isArray(formats) ? formats[0].mimeType : formats;
+    const format = mimeType?.slice(mimeType.lastIndexOf("/") + 1);
     const parsed: NFT = {
         native,
         chainId,
@@ -83,8 +85,10 @@ export const Default = async (
         collectionIdent,
         metaData: {
             whitelisted,
-            image: setupURI(image),
+            image: setupURI(displayUri || image),
             imageFormat: format,
+            animation_url,
+            animation_url_format: "mp4",
             attributes,
             symbol,
             description,
