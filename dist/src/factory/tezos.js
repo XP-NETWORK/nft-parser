@@ -26,10 +26,9 @@ const tezosParser = (collectionIdent, nft, account, whitelisted) => __awaiter(vo
 });
 exports.tezosParser = tezosParser;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { description, attributes, formats, image, name, symbol, }, }, }, }, } = nft;
-    const mimeType = formats.length > 0 ? (_a = formats[0]) === null || _a === void 0 ? void 0 : _a.mimeType : undefined;
-    const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
+    const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { displayUri, image, animation_url, description, attributes, name, symbol, formats, }, }, }, }, } = nft;
+    const mimeType = Array.isArray(formats) ? formats[0].mimeType : formats;
+    const format = mimeType === null || mimeType === void 0 ? void 0 : mimeType.slice(mimeType.lastIndexOf("/") + 1);
     const parsed = {
         native,
         chainId,
@@ -40,8 +39,10 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         collectionIdent,
         metaData: {
             whitelisted,
-            image: (0, _1.setupURI)(image),
+            image: (0, _1.setupURI)(displayUri || image),
             imageFormat: format,
+            animation_url,
+            animation_url_format: "mp4",
             attributes,
             symbol,
             description,
