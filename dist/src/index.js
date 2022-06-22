@@ -186,6 +186,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void
         case "0x817c63be246dcfb5f218091baa581949b6796bdb":
             parsed = yield evm.Nagato(nft, account, whitelisted);
             break;
+        case "0x495f947276749ce646f68ac8c248420045cb7b5e":
+            parsed = yield evm.OpenSEA(nft, account, whitelisted);
+            break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
             break;

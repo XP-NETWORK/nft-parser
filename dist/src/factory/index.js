@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
+exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
 const axios_1 = __importDefault(require("axios"));
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
 const pool = (0, requestPool_1.default)(3000);
@@ -43,8 +43,10 @@ const setupURI = (uri) => {
 exports.setupURI = setupURI;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const baseUrl = (0, exports.setupURI)(uri);
+    if (!baseUrl)
+        return nft;
+    const url = `${exports.proxy}${(0, exports.setupURI)(baseUrl)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
@@ -1046,16 +1048,6 @@ const Nagato = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
     const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = (yield pool.addRequest(url));
-        //const data = res.data || res
-        /*const response = await axios(url).catch(async (error: any) => {
-      //if (error?.request?.status === 429) {
-      const res = (await pool.addRequest(
-        error?.request?.responseURL
-      )) as AxiosResponse<any, any>;
-      return { data: res.data || res };
-      // }
-      //return {};
-    });*/
         const { data } = response;
         const nft = {
             native,
@@ -1084,3 +1076,34 @@ const Nagato = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.Nagato = Nagato;
+const OpenSEA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    try {
+        const response = yield (0, axios_1.default)(`${exports.proxy}${uri.replace("0x{id}", tokenId)}`);
+        const { data } = response;
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image: data.image,
+                imageFormat: "png",
+                attributes: data && data.attributes,
+                description: data && data.description,
+                animation_url: data.animation_url,
+                name: data.name,
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+exports.OpenSEA = OpenSEA;
