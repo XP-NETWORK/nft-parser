@@ -63,13 +63,14 @@ export const DEFAULT = async (
           ? ""
           : "",
         imageFormat: "png",
-        animation_url: format.includes("json")
+        animation_url: format.includes("png")
+          ? ""
+          : format.includes("json")
           ? uri.replace(".json", ".mp4")
           : format.includes("mp4")
           ? uri
-          : format.includes("png")
-          ? ""
           : "",
+
         animation_url_format: "mp4",
       },
     };
