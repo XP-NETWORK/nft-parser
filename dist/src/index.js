@@ -49,7 +49,7 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
             parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
             break;
         case "7":
-            parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
+            parsed = yield evmParser(collectionIdent, nft, account, whitelisted, chainId);
             break;
         case "8":
             parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
@@ -99,7 +99,7 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
     return parsed;
 });
 exports.nftGeneralParser = nftGeneralParser;
-const evmParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
     switch (collectionIdent) {
         case "0x0271c6853d4b2bdccd53aaf9edb66993e14d4cba":
@@ -160,7 +160,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void
             parsed = yield evm.IDoDirtPolygon(nft, account, whitelisted);
             break;
         case "0x2953399124f0cbb46d2cbacd8a89cf0599974963":
-            parsed = yield evm.ArsenalGame(nft, account, whitelisted);
+            parsed = chainId
+                ? yield evm.OPENSTORE(nft, account, whitelisted)
+                : yield evm.ArsenalGame(nft, account, whitelisted);
             break;
         case "0xc69ecd37122a9b5fd7e62bc229d478bb83063c9d":
             parsed = yield evm.Mate(nft, account, whitelisted);
@@ -216,6 +218,14 @@ const elrondParser = (collectionIdent, nft, account, whitelisted) => __awaiter(v
         }
         case "CGPASS-73ac68": {
             parsed = yield elrd.MEDUSA(nft, account, whitelisted);
+            break;
+        }
+        case "ORC-ef544d": {
+            parsed = yield elrd.ORC(nft, account, whitelisted);
+            break;
+        }
+        case "STRAYCATS-b079a7": {
+            parsed = yield elrd.WrappedXPNET(nft, account, whitelisted);
             break;
         }
         default:
