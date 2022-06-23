@@ -38,12 +38,12 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
                             ? ""
                             : "",
                 imageFormat: "png",
-                animation_url: format.includes("json")
-                    ? uri.replace(".json", ".mp4")
-                    : format.includes("mp4")
-                        ? uri
-                        : format.includes("png")
-                            ? ""
+                animation_url: format.includes("png")
+                    ? ""
+                    : format.includes("json")
+                        ? uri.replace(".json", ".mp4")
+                        : format.includes("mp4")
+                            ? uri
                             : "",
                 animation_url_format: "mp4",
             },
