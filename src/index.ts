@@ -45,7 +45,13 @@ export const nftGeneralParser = async (
       parsed = await evmParser(collectionIdent, nft, account, whitelisted);
       break;
     case "7":
-      parsed = await evmParser(collectionIdent, nft, account, whitelisted);
+      parsed = await evmParser(
+        collectionIdent,
+        nft,
+        account,
+        whitelisted,
+        chainId
+      );
       break;
     case "8":
       parsed = await evmParser(collectionIdent, nft, account, whitelisted);
@@ -104,7 +110,8 @@ const evmParser = async (
   collectionIdent: string,
   nft: any,
   account: string,
-  whitelisted: boolean
+  whitelisted: boolean,
+  chainId?: string
 ) => {
   let parsed;
   switch (collectionIdent) {
@@ -166,7 +173,9 @@ const evmParser = async (
       parsed = await evm.IDoDirtPolygon(nft, account, whitelisted);
       break;
     case "0x2953399124f0cbb46d2cbacd8a89cf0599974963":
-      parsed = await evm.ArsenalGame(nft, account, whitelisted);
+      parsed = chainId
+        ? await evm.OPENSTORE(nft, account, whitelisted)
+        : await evm.ArsenalGame(nft, account, whitelisted);
       break;
     case "0xc69ecd37122a9b5fd7e62bc229d478bb83063c9d":
       parsed = await evm.Mate(nft, account, whitelisted);
@@ -232,6 +241,16 @@ const elrondParser = async (
 
     case "CGPASS-73ac68": {
       parsed = await elrd.MEDUSA(nft, account, whitelisted);
+      break;
+    }
+
+    case "ORC-ef544d": {
+      parsed = await elrd.ORC(nft, account, whitelisted);
+      break;
+    }
+
+    case "STRAYCATS-b079a7": {
+      parsed = await elrd.WrappedXPNET(nft, account, whitelisted);
       break;
     }
 

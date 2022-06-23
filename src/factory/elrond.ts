@@ -218,3 +218,82 @@ export const MEDUSA = async (
     return nft;
   }
 };
+
+export const ORC = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const { data } = await axios(proxy + uri);
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: uri.replace(".json", ".png"),
+        imageFormat: "png",
+        attributes: data.attributes,
+        description: data.description,
+      },
+    };
+
+    return nft;
+  } catch (error) {
+    console.error(error);
+    return nft;
+  }
+};
+
+export const WrappedXPNET = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const { data } = await axios(proxy + uri);
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: data.image,
+        imageFormat: "png",
+        name: data.name,
+        attributes: data.attributes,
+        description: data.description,
+      },
+    };
+
+    return nft;
+  } catch (error) {
+    console.error(error);
+    return nft;
+  }
+};

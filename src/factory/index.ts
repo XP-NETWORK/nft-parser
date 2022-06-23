@@ -1393,3 +1393,45 @@ export const OpenSEA = async (
     return nft;
   }
 };
+
+export const OPENSTORE = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const response = await axios(
+      `${proxy}${uri.replace(/:\d+/, "").replace(".moralis", "")}`
+    );
+
+    const { data } = response;
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: data && setupURI(data.image_url),
+        imageFormat: "png",
+        description: data && data.description,
+        name: data.name,
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+
+    return nft;
+  }
+};
