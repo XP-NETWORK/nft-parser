@@ -30,10 +30,22 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: format === "mp4" ? "" : uri,
-                imageFormat: format,
-                animation_url: format === "png" ? "" : uri,
-                //animation_url_format: "mp4",
+                image: format.includes("json")
+                    ? uri.replace(".json", ".png")
+                    : format.includes("png")
+                        ? uri
+                        : format.includes("mp4")
+                            ? ""
+                            : "",
+                imageFormat: "png",
+                animation_url: format.includes("json")
+                    ? uri.replace(".json", ".mp4")
+                    : format.includes("mp4")
+                        ? uri
+                        : format.includes("png")
+                            ? ""
+                            : "",
+                animation_url_format: "mp4",
             },
         };
         return nft;
