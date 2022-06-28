@@ -204,6 +204,16 @@ const evmParser = async (
     case "0x495f947276749ce646f68ac8c248420045cb7b5e":
       parsed = await evm.OpenSEA(nft, account, whitelisted);
       break;
+    case "0x0c5ab026d74c451376a4798342a685a0e99a5bee":
+      parsed = await evm.MachineFi(nft, account, whitelisted);
+      break;
+    case "0xc254a8d4ef5f825fd31561bdc69551ed2b8db134":
+      parsed = await evm.WrappedXPNET(nft, account, whitelisted);
+      break;
+
+    case "0xca4f6b3f9e45e2484913bcc46667f1bb6db72906":
+      parsed = await evm.TRSRNFT(nft, account, whitelisted);
+      break;
     default:
       parsed = await evm.Default(nft, account, whitelisted);
       break;
@@ -251,6 +261,11 @@ const elrondParser = async (
 
     case "STRAYCATS-b079a7": {
       parsed = await elrd.WrappedXPNET(nft, account, whitelisted);
+      break;
+    }
+
+    case "TAKANNE-3db244": {
+      parsed = await elrd.APOPHIS(nft, account, whitelisted);
       break;
     }
 

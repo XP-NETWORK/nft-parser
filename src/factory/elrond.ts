@@ -154,6 +154,41 @@ export const DRIFTERS = async (
   }
 };
 
+export const APOPHIS = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: uri.replace(".json", ".png"),
+        imageFormat: "png",
+      },
+    };
+
+    return nft;
+  } catch (error) {
+    console.error(error);
+    return nft;
+  }
+};
+
 export const INNOVATOR = async (
   nft: any,
   account: string,
