@@ -1435,3 +1435,168 @@ export const OPENSTORE = async (
     return nft;
   }
 };
+
+export const MachineFi = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const data = JSON.parse(uri);
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: data && data.image,
+        imageFormat: "gif",
+        description: data && data.description,
+        name: data && data.name,
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+
+    return nft;
+  }
+};
+
+export const TRSRNFT = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const { data } = await axios(`${proxy}${uri}`).catch(() => ({
+      data: null,
+    }));
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: data && data.data?.image,
+        imageFormat: "png",
+        description: data && data.data?.description,
+        name: data && data.data?.name,
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+
+    return nft;
+  }
+};
+
+//WUBI
+
+export const WUBI = async (nft: any, account: string, whitelisted: boolean) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const response = (await pool.addRequest(`${uri}`)) as AxiosResponse<
+      any,
+      any
+    >;
+
+    const { data } = response;
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: data && setupURI(data?.image),
+        imageFormat: "png",
+        description: data && data?.description,
+        name: data && data?.name,
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+
+    return nft;
+  }
+};
+
+export const WrappedXPNET = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const { data } = await axios(`${proxy}${uri}`).catch(() => ({
+      data: null,
+    }));
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: data && data.data?.image,
+        imageFormat: "png",
+        description: data && data.data?.description,
+        name: data && data.data?.name,
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+
+    return nft;
+  }
+};
+
+//"{"name": "MachineFi NFT", "description": "The MachineFi NFT.", "image": "https://machinefi.com/nft/image/6505"}"
