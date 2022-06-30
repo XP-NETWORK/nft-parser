@@ -4,6 +4,7 @@
     "description": "",
     "main": "dist/index.js",
     "dependencies": {
+        "@taquito/taquito": "^13.0.0",
         "@types/node": "^17.0.35",
         "axios": "^0.27.2",
         "bignumber.js": "^9.0.2",

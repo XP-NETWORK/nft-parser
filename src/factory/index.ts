@@ -1,14 +1,14 @@
 import { stringify } from "querystring";
 import BigNumber from "bignumber.js";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-
+import { checkEmptyFromTezos } from "./tezos";
 import requestPool from "../../tools/requestPool";
 
 const pool = requestPool(3000);
 const cheerio = require("cherio");
 
 export const proxy = "https://sheltered-crag-76748.herokuapp.com/";
-interface NFT {
+export interface NFT {
   chainId: string;
   tokenId: string;
   owner: string;
@@ -43,6 +43,8 @@ export const setupURI = (uri: string): string => {
       uri.includes("data:application/")
     ) {
       return uri;
+    } else if (uri[0] === "Q") {
+      return `https://ipfs.io/ipfs/${uri}`;
     } else {
       return uri.replace("http://", "https://");
     }
@@ -414,7 +416,9 @@ export const TheBlackMagic = async (
   let nestedImage;
   try {
     const response = await axios(url);
-    const { data } = response;
+    let { data } = response;
+    data = await checkEmptyFromTezos(data)
+
     const imgResp = await axios(setupURI(data.image));
     const headers = imgResp.headers["content-type"];
     let formats;
@@ -1558,7 +1562,7 @@ export const WUBI = async (nft: any, account: string, whitelisted: boolean) => {
   }
 };
 
-export const WOVY = async (nft: any, account: string, whitelisted: boolean) => {
+export const PACK = async (nft: any, account: string, whitelisted: boolean) => {
   const {
     native,
     native: { contract, tokenId, chainId },
@@ -1566,18 +1570,12 @@ export const WOVY = async (nft: any, account: string, whitelisted: boolean) => {
     uri,
   } = nft;
 
-  console.log("buba");
-
   try {
     const response = await axios(`${proxy}${uri}`).catch(() => ({
       data: null,
     }));
 
-    const $ = cheerio.load(response);
-
-    const txt = $("#__NEXT_DATA__").text();
-
-    console.log(txt);
+    const { data } = response;
 
     const nft: NFT = {
       native,
@@ -1589,10 +1587,13 @@ export const WOVY = async (nft: any, account: string, whitelisted: boolean) => {
       collectionIdent,
       metaData: {
         whitelisted,
-        image: "",
+        image: setupURI(data.image),
         imageFormat: "png",
-        description: "",
-        name: "",
+        description: data.description,
+        name: data.name,
+        symbol: data.symbol,
+        attributes: data.attributes,
+        contractType: data.type,
       },
     };
     return nft;
@@ -1616,9 +1617,11 @@ export const WrappedXPNET = async (
   } = nft;
 
   try {
-    const { data } = await axios(`${proxy}${uri}`).catch(() => ({
+    let { data } = await axios(`${proxy}${uri}`).catch(() => ({
       data: null,
     }));
+
+      data = await checkEmptyFromTezos(data)
 
     const nft: NFT = {
       native,

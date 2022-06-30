@@ -3,6 +3,7 @@ import * as evm from "./factory";
 import { algorandParser } from "./factory/algorand";
 import * as elrd from "./factory/elrond";
 import * as tezos from "./factory/tezos";
+import * as veChain from "./factory/veChain";
 import { tronParser } from "./factory/tron";
 
 interface ParsedNFT {
@@ -81,7 +82,12 @@ export const nftGeneralParser = async (
       parsed = await evmParser(collectionIdent, nft, account, whitelisted);
       break;
     case "25":
-      parsed = await evmParser(collectionIdent, nft, account, whitelisted);
+      parsed = await veChain.veChainParser(
+        collectionIdent,
+        nft,
+        account,
+        whitelisted
+      );
       break;
     case "2":
       parsed = await elrondParser(collectionIdent, nft, account, whitelisted);
@@ -218,8 +224,8 @@ const evmParser = async (
       parsed = await evm.WUBI(nft, account, whitelisted);
       break;
 
-    case "0x5E6265680087520DC022d75f4C45F9CCD712BA97":
-      parsed = await evm.WOVY(nft, account, whitelisted);
+    case "0xeA380Be04a398d93030E4Bff15cBC87f6B35b5ae":
+      parsed = await evm.PACK(nft, account, whitelisted);
       break;
 
     default:
