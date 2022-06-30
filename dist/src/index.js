@@ -203,6 +203,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
         case "0xeA380Be04a398d93030E4Bff15cBC87f6B35b5ae":
             parsed = yield evm.WUBI(nft, account, whitelisted);
             break;
+        case "0x5E6265680087520DC022d75f4C45F9CCD712BA97":
+            parsed = yield evm.WOVY(nft, account, whitelisted);
+            break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
             break;

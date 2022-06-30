@@ -12,10 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WrappedXPNET = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.OPENSTORE = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
+exports.WrappedXPNET = exports.WOVY = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.OPENSTORE = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
 const axios_1 = __importDefault(require("axios"));
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
 const pool = (0, requestPool_1.default)(3000);
+const cheerio = require("cherio");
 exports.proxy = "https://sheltered-crag-76748.herokuapp.com/";
 const setupURI = (uri) => {
     if (uri) {
@@ -1225,6 +1226,40 @@ const WUBI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.WUBI = WUBI;
+const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    console.log("buba");
+    try {
+        const response = yield (0, axios_1.default)(`${exports.proxy}${uri}`).catch(() => ({
+            data: null,
+        }));
+        const $ = cheerio.load(response);
+        const txt = $("#__NEXT_DATA__").text();
+        console.log(txt);
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image: "",
+                imageFormat: "png",
+                description: "",
+                name: "",
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+exports.WOVY = WOVY;
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _e, _f, _g;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
