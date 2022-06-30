@@ -1,11 +1,11 @@
 import { stringify } from "querystring";
 import BigNumber from "bignumber.js";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { nftGeneralParser } from "..";
 
 import requestPool from "../../tools/requestPool";
 
 const pool = requestPool(3000);
+const cheerio = require("cherio");
 
 export const proxy = "https://sheltered-crag-76748.herokuapp.com/";
 interface NFT {
@@ -1548,6 +1548,51 @@ export const WUBI = async (nft: any, account: string, whitelisted: boolean) => {
         imageFormat: "png",
         description: data && data?.description,
         name: data && data?.name,
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+
+    return nft;
+  }
+};
+
+export const WOVY = async (nft: any, account: string, whitelisted: boolean) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  console.log("buba");
+
+  try {
+    const response = await axios(`${proxy}${uri}`).catch(() => ({
+      data: null,
+    }));
+
+    const $ = cheerio.load(response);
+
+    const txt = $("#__NEXT_DATA__").text();
+
+    console.log(txt);
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: "",
+        imageFormat: "png",
+        description: "",
+        name: "",
       },
     };
     return nft;

@@ -218,6 +218,10 @@ const evmParser = async (
       parsed = await evm.WUBI(nft, account, whitelisted);
       break;
 
+    case "0x5E6265680087520DC022d75f4C45F9CCD712BA97":
+      parsed = await evm.WOVY(nft, account, whitelisted);
+      break;
+
     default:
       parsed = await evm.Default(nft, account, whitelisted);
       break;
