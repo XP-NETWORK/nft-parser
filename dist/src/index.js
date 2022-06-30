@@ -37,6 +37,7 @@ const evm = __importStar(require("./factory"));
 const algorand_1 = require("./factory/algorand");
 const elrd = __importStar(require("./factory/elrond"));
 const tezos = __importStar(require("./factory/tezos"));
+const veChain = __importStar(require("./factory/veChain"));
 const tron_1 = require("./factory/tron");
 const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
@@ -79,7 +80,7 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
             parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
             break;
         case "25":
-            parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
+            parsed = yield veChain.veChainParser(collectionIdent, nft, account, whitelisted);
             break;
         case "2":
             parsed = yield elrondParser(collectionIdent, nft, account, whitelisted);
@@ -203,8 +204,8 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
         case "0xeA380Be04a398d93030E4Bff15cBC87f6B35b5ae":
             parsed = yield evm.WUBI(nft, account, whitelisted);
             break;
-        case "0x5E6265680087520DC022d75f4C45F9CCD712BA97":
-            parsed = yield evm.WOVY(nft, account, whitelisted);
+        case "0xeA380Be04a398d93030E4Bff15cBC87f6B35b5ae":
+            parsed = yield evm.PACK(nft, account, whitelisted);
             break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);

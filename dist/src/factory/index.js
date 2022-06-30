@@ -12,8 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WrappedXPNET = exports.WOVY = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.OPENSTORE = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
+exports.WrappedXPNET = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.OPENSTORE = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
 const axios_1 = __importDefault(require("axios"));
+const tezos_1 = require("./tezos");
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
 const pool = (0, requestPool_1.default)(3000);
 const cheerio = require("cherio");
@@ -32,6 +33,9 @@ const setupURI = (uri) => {
         else if (uri.includes("data:image/") ||
             uri.includes("data:application/")) {
             return uri;
+        }
+        else if (uri[0] === "Q") {
+            return `https://ipfs.io/ipfs/${uri}`;
         }
         else {
             return uri.replace("http://", "https://");
@@ -326,7 +330,8 @@ const TheBlackMagic = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
     let nestedImage;
     try {
         const response = yield (0, axios_1.default)(url);
-        const { data } = response;
+        let { data } = response;
+        data = yield (0, tezos_1.checkEmptyFromTezos)(data);
         const imgResp = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
         const headers = imgResp.headers["content-type"];
         let formats;
@@ -1226,16 +1231,13 @@ const WUBI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.WUBI = WUBI;
-const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+const PACK = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    console.log("buba");
     try {
         const response = yield (0, axios_1.default)(`${exports.proxy}${uri}`).catch(() => ({
             data: null,
         }));
-        const $ = cheerio.load(response);
-        const txt = $("#__NEXT_DATA__").text();
-        console.log(txt);
+        const { data } = response;
         const nft = {
             native,
             chainId,
@@ -1246,10 +1248,13 @@ const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: "",
+                image: (0, exports.setupURI)(data.image),
                 imageFormat: "png",
-                description: "",
-                name: "",
+                description: data.description,
+                name: data.name,
+                symbol: data.symbol,
+                attributes: data.attributes,
+                contractType: data.type,
             },
         };
         return nft;
@@ -1259,14 +1264,15 @@ const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
         return nft;
     }
 });
-exports.WOVY = WOVY;
+exports.PACK = PACK;
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _e, _f, _g;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const { data } = yield (0, axios_1.default)(`${exports.proxy}${uri}`).catch(() => ({
+        let { data } = yield (0, axios_1.default)(`${exports.proxy}${uri}`).catch(() => ({
             data: null,
         }));
+        data = yield (0, tezos_1.checkEmptyFromTezos)(data);
         const nft = {
             native,
             chainId,
