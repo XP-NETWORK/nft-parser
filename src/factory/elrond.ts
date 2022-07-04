@@ -306,6 +306,48 @@ export const ORC = async (
   }
 };
 
+export const KINGSGUARD = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    //const { data } = await axios(proxy + uri);
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: `https://media.elrond.com/nfts/asset/QmbtT4ca7TjE8fKd9ufkNm3H2sD9caz4GZ7VPn76Burx4J/${uri
+          .match(/([^\/]+$)/)
+          ?.at(0)
+          .replace(/\D+/, "")}.jpg`,
+        imageFormat: "jpg",
+      },
+    };
+
+    return nft;
+  } catch (error) {
+    console.error(error);
+    return nft;
+  }
+};
+
+//KINGSGUARD
+
 export const WrappedXPNET = async (
   nft: any,
   account: string,
@@ -332,10 +374,18 @@ export const WrappedXPNET = async (
       metaData: {
         whitelisted,
         image: data.image,
-        imageFormat: "png",
+        imageFormat: data.image?.match(/\.([^.]*)$/)?.at(1),
         name: data.name,
         attributes: data.attributes,
         description: data.description,
+        ...(data.animation_url ? { animation_url: data.animation_url } : {}),
+        ...(data.animation_url
+          ? {
+              animation_url_format: data.animation_url
+                ?.match(/\.([^.]*)$/)
+                ?.at(1),
+            }
+          : {}),
       },
     };
 
