@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WrappedXPNET = exports.KINGSGUARD = exports.ORC = exports.MEDUSA = exports.INNOVATOR = exports.APOPHIS = exports.DRIFTERS = exports.AERMES = exports.DEFAULT = void 0;
+exports.Default = exports.WrappedXPNET = exports.KINGSGUARD = exports.ORC = exports.MEDUSA = exports.INNOVATOR = exports.APOPHIS = exports.DRIFTERS = exports.AERMES = exports.DEFAULT = void 0;
 const axios_1 = __importDefault(require("axios"));
 const _1 = require(".");
 const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
@@ -273,3 +273,39 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
     }
 });
 exports.WrappedXPNET = WrappedXPNET;
+const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _f, _g, _h, _j;
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    try {
+        let data;
+        if (/(png|jpe?g)/.test(uri)) {
+            data = {
+                image: (0, _1.setupURI)(uri),
+            };
+        }
+        else {
+            const res = yield (0, axios_1.default)(_1.proxy + uri);
+            data = res.data;
+        }
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_g = (_f = data.image) === null || _f === void 0 ? void 0 : _f.match(/\.([^.]*)$/)) === null || _g === void 0 ? void 0 : _g.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url ? { animation_url: data.animation_url } : {})), (data.animation_url
+                ? {
+                    animation_url_format: (_j = (_h = data.animation_url) === null || _h === void 0 ? void 0 : _h.match(/\.([^.]*)$/)) === null || _j === void 0 ? void 0 : _j.at(1),
+                }
+                : {})),
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+exports.Default = Default;

@@ -207,6 +207,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
         case "0xeA380Be04a398d93030E4Bff15cBC87f6B35b5ae":
             parsed = yield evm.PACK(nft, account, whitelisted);
             break;
+        case "0x32319834d90323127988E4e2DC7b2162d4262904": //fuze
+            parsed = yield evm.COZYCOSM(nft, account, whitelisted);
+            break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
             break;
@@ -257,7 +260,7 @@ const elrondParser = (collectionIdent, nft, account, whitelisted) => __awaiter(v
             break;
         }
         default:
-            parsed = yield elrd.WrappedXPNET(nft, account, whitelisted);
+            parsed = yield elrd.Default(nft, account, whitelisted);
             break;
     }
     return parsed;
