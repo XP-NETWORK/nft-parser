@@ -38,6 +38,7 @@ const algorand_1 = require("./factory/algorand");
 const elrd = __importStar(require("./factory/elrond"));
 const tezos = __importStar(require("./factory/tezos"));
 const veChain = __importStar(require("./factory/veChain"));
+const fantom = __importStar(require("./factory/fantom"));
 const tron_1 = require("./factory/tron");
 const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
@@ -53,7 +54,7 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
             parsed = yield evmParser(collectionIdent, nft, account, whitelisted, chainId);
             break;
         case "8":
-            parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
+            parsed = yield fantom.fantomParser(collectionIdent, nft, account, whitelisted);
             break;
         case "12":
             parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
