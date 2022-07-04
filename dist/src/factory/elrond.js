@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WrappedXPNET = exports.ORC = exports.MEDUSA = exports.INNOVATOR = exports.APOPHIS = exports.DRIFTERS = exports.AERMES = exports.DEFAULT = void 0;
+exports.WrappedXPNET = exports.KINGSGUARD = exports.ORC = exports.MEDUSA = exports.INNOVATOR = exports.APOPHIS = exports.DRIFTERS = exports.AERMES = exports.DEFAULT = void 0;
 const axios_1 = __importDefault(require("axios"));
 const _1 = require(".");
 const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
@@ -217,7 +217,37 @@ const ORC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.ORC = ORC;
+const KINGSGUARD = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    try {
+        //const { data } = await axios(proxy + uri);
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image: `https://media.elrond.com/nfts/asset/QmbtT4ca7TjE8fKd9ufkNm3H2sD9caz4GZ7VPn76Burx4J/${(_a = uri
+                    .match(/([^\/]+$)/)) === null || _a === void 0 ? void 0 : _a.at(0).replace(/\D+/, "")}.jpg`,
+                imageFormat: "jpg",
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+exports.KINGSGUARD = KINGSGUARD;
+//KINGSGUARD
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b, _c, _d, _e;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const { data } = yield (0, axios_1.default)(_1.proxy + uri);
@@ -229,14 +259,11 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             uri,
             contract,
             collectionIdent,
-            metaData: {
-                whitelisted,
-                image: data.image,
-                imageFormat: "png",
-                name: data.name,
-                attributes: data.attributes,
-                description: data.description,
-            },
+            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_c = (_b = data.image) === null || _b === void 0 ? void 0 : _b.match(/\.([^.]*)$/)) === null || _c === void 0 ? void 0 : _c.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url ? { animation_url: data.animation_url } : {})), (data.animation_url
+                ? {
+                    animation_url_format: (_e = (_d = data.animation_url) === null || _d === void 0 ? void 0 : _d.match(/\.([^.]*)$/)) === null || _e === void 0 ? void 0 : _e.at(1),
+                }
+                : {})),
         };
         return nft;
     }

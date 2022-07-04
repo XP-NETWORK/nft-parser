@@ -244,12 +244,20 @@ const elrondParser = (collectionIdent, nft, account, whitelisted) => __awaiter(v
             parsed = yield elrd.WrappedXPNET(nft, account, whitelisted);
             break;
         }
+        case "PMONC-4032bc": {
+            parsed = yield elrd.WrappedXPNET(nft, account, whitelisted);
+            break;
+        }
         case "TAKANNE-3db244": {
             parsed = yield elrd.APOPHIS(nft, account, whitelisted);
             break;
         }
+        case "KINGSGUARD-8e5d07": {
+            parsed = yield elrd.KINGSGUARD(nft, account, whitelisted);
+            break;
+        }
         default:
-            parsed = yield elrd.DEFAULT(nft, account, whitelisted);
+            parsed = yield elrd.WrappedXPNET(nft, account, whitelisted);
             break;
     }
     return parsed;
