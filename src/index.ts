@@ -228,6 +228,10 @@ const evmParser = async (
       parsed = await evm.PACK(nft, account, whitelisted);
       break;
 
+    case "0x32319834d90323127988E4e2DC7b2162d4262904": //fuze
+      parsed = await evm.COZYCOSM(nft, account, whitelisted);
+      break;
+
     default:
       parsed = await evm.Default(nft, account, whitelisted);
       break;
@@ -294,7 +298,7 @@ const elrondParser = async (
     }
 
     default:
-      parsed = await elrd.WrappedXPNET(nft, account, whitelisted);
+      parsed = await elrd.Default(nft, account, whitelisted);
       break;
   }
   return parsed;

@@ -417,7 +417,7 @@ export const TheBlackMagic = async (
   try {
     const response = await axios(url);
     let { data } = response;
-    data = await checkEmptyFromTezos(data)
+    data = await checkEmptyFromTezos(data);
 
     const imgResp = await axios(setupURI(data.image));
     const headers = imgResp.headers["content-type"];
@@ -1440,6 +1440,48 @@ export const OPENSTORE = async (
   }
 };
 
+export const COZYCOSM = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const res = await axios(setupURI(uri));
+
+    const { data } = res;
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: setupURI(data.image),
+        imageFormat: "png",
+        name: data.name,
+        description: data.description,
+        attributes: data.attributes,
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+
+    return nft;
+  }
+};
+
 export const MachineFi = async (
   nft: any,
   account: string,
@@ -1621,7 +1663,7 @@ export const WrappedXPNET = async (
       data: null,
     }));
 
-      data = await checkEmptyFromTezos(data)
+    data = await checkEmptyFromTezos(data);
 
     const nft: NFT = {
       native,

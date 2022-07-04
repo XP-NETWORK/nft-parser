@@ -395,3 +395,60 @@ export const WrappedXPNET = async (
     return nft;
   }
 };
+
+export const Default = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    let data;
+
+    if (/(png|jpe?g)/.test(uri)) {
+      data = {
+        image: setupURI(uri),
+      };
+    } else {
+      const res = await axios(proxy + uri);
+      data = res.data;
+    }
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: data.image,
+        imageFormat: data.image?.match(/\.([^.]*)$/)?.at(1),
+        name: data.name,
+        attributes: data.attributes,
+        description: data.description,
+        ...(data.animation_url ? { animation_url: data.animation_url } : {}),
+        ...(data.animation_url
+          ? {
+              animation_url_format: data.animation_url
+                ?.match(/\.([^.]*)$/)
+                ?.at(1),
+            }
+          : {}),
+      },
+    };
+
+    return nft;
+  } catch (error) {
+    console.error(error);
+    return nft;
+  }
+};
