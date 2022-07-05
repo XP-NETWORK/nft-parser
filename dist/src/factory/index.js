@@ -1114,9 +1114,11 @@ const OpenSEA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
 });
 exports.OpenSEA = OpenSEA;
 const OPENSTORE = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    const { native, native: { contract, tokenId, chainId, contractType }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(`${exports.proxy}${uri.replace(/:\d+/, "").replace(".moralis", "")}`);
+        const response = yield (0, axios_1.default)(contractType === "ERC1155"
+            ? `${exports.proxy}https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/${tokenId}`
+            : `${exports.proxy}${uri.replace(/:\d+/, "").replace(".moralis", "")}`);
         const { data } = response;
         const nft = {
             native,
@@ -1128,10 +1130,11 @@ const OPENSTORE = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: data && (0, exports.setupURI)(data.image_url),
+                image: data && (0, exports.setupURI)(data.image_url || data.image),
                 imageFormat: "png",
                 description: data && data.description,
-                name: data.name,
+                animation_url: data && data.animation_url,
+                name: data && data.name,
             },
         };
         return nft;
@@ -1296,7 +1299,6 @@ const PACK = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
 });
 exports.PACK = PACK;
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _e, _f, _g;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         let { data } = yield (0, axios_1.default)(`${exports.proxy}${uri}`).catch(() => ({
@@ -1313,10 +1315,11 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: data && ((_e = data.data) === null || _e === void 0 ? void 0 : _e.image),
+                image: data && data.image,
                 imageFormat: "png",
-                description: data && ((_f = data.data) === null || _f === void 0 ? void 0 : _f.description),
-                name: data && ((_g = data.data) === null || _g === void 0 ? void 0 : _g.name),
+                description: data && (data === null || data === void 0 ? void 0 : data.description),
+                name: data && (data === null || data === void 0 ? void 0 : data.name),
+                attributes: data && (data === null || data === void 0 ? void 0 : data.attributes),
             },
         };
         return nft;
