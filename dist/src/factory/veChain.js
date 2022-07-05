@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -38,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.veChainParser = void 0;
 const axios_1 = __importDefault(require("axios"));
 const _1 = require(".");
-const evm = __importStar(require("./index"));
 const tezos_1 = require("./tezos");
 const cheerio = require("cherio");
 const veChainParser = (collectionIdent, nft, account, whitelisted, chainId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -51,7 +27,7 @@ const veChainParser = (collectionIdent, nft, account, whitelisted, chainId) => _
             parsed = yield WrappedXPNET(nft, account, whitelisted);
             break;
         default:
-            parsed = yield evm.Default(nft, account, whitelisted);
+            parsed = yield WrappedXPNET(nft, account, whitelisted);
             break;
     }
     return parsed;
@@ -94,9 +70,10 @@ const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _d, _e;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(`${_1.proxy}${uri}`).catch(() => ({
+        const response = yield (0, axios_1.default)(`${_1.proxy}${(0, _1.setupURI)(uri)}`).catch(() => ({
             data: null,
         }));
         let { data } = response;
@@ -112,7 +89,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),
-                imageFormat: "png",
+                imageFormat: (_e = (_d = data.image) === null || _d === void 0 ? void 0 : _d.match(/\.([^.]*)$/)) === null || _e === void 0 ? void 0 : _e.at(1),
                 description: data.description,
                 name: data.name,
                 symbol: data.symbol,
