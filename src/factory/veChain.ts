@@ -26,7 +26,7 @@ export const veChainParser = async (
       break;
 
     default:
-      parsed = await evm.Default(nft, account, whitelisted);
+      parsed = await WrappedXPNET(nft, account, whitelisted);
       break;
   }
 
@@ -93,14 +93,14 @@ const WrappedXPNET = async (
   } = nft;
 
   try {
-    const response = await axios(`${proxy}${uri}`).catch(() => ({
+    const response = await axios(`${proxy}${setupURI(uri)}`).catch(() => ({
       data: null,
     }));
 
     let { data } = response;
 
     data = await checkEmptyFromTezos(data);
-    
+
     const nft: NFT = {
       native,
       chainId,
@@ -112,7 +112,7 @@ const WrappedXPNET = async (
       metaData: {
         whitelisted,
         image: setupURI(data.image),
-        imageFormat: "png",
+        imageFormat: data.image?.match(/\.([^.]*)$/)?.at(1),
         description: data.description,
         name: data.name,
         symbol: data.symbol,
