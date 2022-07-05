@@ -1405,17 +1405,20 @@ export const OPENSTORE = async (
 ) => {
   const {
     native,
-    native: { contract, tokenId, chainId },
+    native: { contract, tokenId, chainId, contractType },
     collectionIdent,
     uri,
   } = nft;
 
   try {
     const response = await axios(
-      `${proxy}${uri.replace(/:\d+/, "").replace(".moralis", "")}`
+      contractType === "ERC1155"
+        ? `${proxy}https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/${tokenId}`
+        : `${proxy}${uri.replace(/:\d+/, "").replace(".moralis", "")}`
     );
 
     const { data } = response;
+
     const nft: NFT = {
       native,
       chainId,
@@ -1426,10 +1429,11 @@ export const OPENSTORE = async (
       collectionIdent,
       metaData: {
         whitelisted,
-        image: data && setupURI(data.image_url),
+        image: data && setupURI(data.image_url || data.image),
         imageFormat: "png",
         description: data && data.description,
-        name: data.name,
+        animation_url: data && data.animation_url,
+        name: data && data.name,
       },
     };
     return nft;
@@ -1675,10 +1679,11 @@ export const WrappedXPNET = async (
       collectionIdent,
       metaData: {
         whitelisted,
-        image: data && data.data?.image,
+        image: data && data.image,
         imageFormat: "png",
-        description: data && data.data?.description,
-        name: data && data.data?.name,
+        description: data && data?.description,
+        name: data && data?.name,
+        attributes: data && data?.attributes,
       },
     };
     return nft;
