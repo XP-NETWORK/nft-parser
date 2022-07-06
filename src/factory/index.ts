@@ -1679,7 +1679,7 @@ export const WrappedXPNET = async (
       collectionIdent,
       metaData: {
         whitelisted,
-        image: data && data.image,
+        image: data && setupURI(data.image),
         imageFormat: "png",
         description: data && data?.description,
         name: data && data?.name,
