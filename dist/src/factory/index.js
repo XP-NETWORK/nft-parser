@@ -1315,7 +1315,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: data && data.image,
+                image: data && (0, exports.setupURI)(data.image),
                 imageFormat: "png",
                 description: data && (data === null || data === void 0 ? void 0 : data.description),
                 name: data && (data === null || data === void 0 ? void 0 : data.name),
