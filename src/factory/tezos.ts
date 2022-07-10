@@ -82,6 +82,9 @@ export const tezosParser = async (
         case "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA":
             parsed = await TributeTezoTrooperz(nft, account, whitelisted);
             break;
+        case "KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS":
+            parsed = await Rarible(nft, account, whitelisted);
+            break;
         default:
             parsed = await Default(nft, account, whitelisted);
             break;
