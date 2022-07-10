@@ -211,6 +211,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
         case "0x32319834d90323127988E4e2DC7b2162d4262904": //fuze
             parsed = yield evm.COZYCOSM(nft, account, whitelisted);
             break;
+        case "0xF4823Ffa8133f6B27c7e3A5218B40a9087B6d2c7": //aurora
+            parsed = yield evm.Virtual(nft, account, whitelisted);
+            break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
             break;
