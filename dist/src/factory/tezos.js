@@ -56,7 +56,7 @@ const tezosParser = (collectionIdent, nft, account, whitelisted) => __awaiter(vo
 });
 exports.tezosParser = tezosParser;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { displayUri, image, animation_url, description, attributes, name, symbol, formats, }, }, }, }, } = nft;
+    const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { displayUri, image, description, attributes, name, symbol, formats, }, }, }, }, } = nft;
     const mimeType = Array.isArray(formats) ? formats[0].mimeType : formats;
     const format = mimeType === null || mimeType === void 0 ? void 0 : mimeType.slice(mimeType.lastIndexOf("/") + 1);
     const parsed = {
@@ -71,8 +71,6 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             whitelisted,
             image: (0, _1.setupURI)(displayUri || image),
             imageFormat: format,
-            animation_url,
-            animation_url_format: "mp4",
             attributes,
             symbol,
             description,
@@ -84,7 +82,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
 exports.Default = Default;
 // ! "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA"
 const TributeTezoTrooperz = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { description, attributes, formats, image, name, symbol }, }, }, }, } = nft;
+    const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { description, attributes, formats, image, name, symbol, }, }, }, }, } = nft;
     const mimeType = formats[0].mimeType;
     const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
     const parsed = {
