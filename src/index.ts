@@ -3,6 +3,8 @@ import * as evm from "./factory";
 import { algorandParser } from "./factory/algorand";
 import * as elrd from "./factory/elrond";
 import * as tezos from "./factory/tezos";
+import * as veChain from "./factory/veChain";
+import * as fantom from "./factory/fantom";
 import { tronParser } from "./factory/tron";
 
 interface ParsedNFT {
@@ -64,7 +66,7 @@ export const nftGeneralParser = async (
             );
             break;
         case "8":
-            parsed = await evmParser(
+            parsed = await fantom.fantomParser(
                 collectionIdent,
                 nft,
                 account,
@@ -136,7 +138,7 @@ export const nftGeneralParser = async (
             );
             break;
         case "25":
-            parsed = await evmParser(
+            parsed = await veChain.veChainParser(
                 collectionIdent,
                 nft,
                 account,
@@ -279,6 +281,32 @@ const evmParser = async (
         case "0x495f947276749ce646f68ac8c248420045cb7b5e":
             parsed = await evm.OpenSEA(nft, account, whitelisted);
             break;
+        case "0x0c5ab026d74c451376a4798342a685a0e99a5bee":
+            parsed = await evm.MachineFi(nft, account, whitelisted);
+            break;
+        case "0xc254a8d4ef5f825fd31561bdc69551ed2b8db134":
+            parsed = await evm.WrappedXPNET(nft, account, whitelisted);
+            break;
+
+        case "0xca4f6b3f9e45e2484913bcc46667f1bb6db72906":
+            parsed = await evm.TRSRNFT(nft, account, whitelisted);
+            break;
+        case "0xeA380Be04a398d93030E4Bff15cBC87f6B35b5ae":
+            parsed = await evm.WUBI(nft, account, whitelisted);
+            break;
+
+        case "0xeA380Be04a398d93030E4Bff15cBC87f6B35b5ae":
+            parsed = await evm.PACK(nft, account, whitelisted);
+            break;
+
+        case "0x32319834d90323127988E4e2DC7b2162d4262904": //fuze
+            parsed = await evm.COZYCOSM(nft, account, whitelisted);
+            break;
+
+        case "0xF4823Ffa8133f6B27c7e3A5218B40a9087B6d2c7": //aurora
+            parsed = await evm.Virtual(nft, account, whitelisted);
+            break;
+
         default:
             parsed = await evm.Default(nft, account, whitelisted);
             break;
@@ -329,8 +357,23 @@ const elrondParser = async (
             break;
         }
 
+        case "PMONC-4032bc": {
+            parsed = await elrd.WrappedXPNET(nft, account, whitelisted);
+            break;
+        }
+
+        case "TAKANNE-3db244": {
+            parsed = await elrd.APOPHIS(nft, account, whitelisted);
+            break;
+        }
+
+        case "KINGSGUARD-8e5d07": {
+            parsed = await elrd.KINGSGUARD(nft, account, whitelisted);
+            break;
+        }
+
         default:
-            parsed = await elrd.DEFAULT(nft, account, whitelisted);
+            parsed = await elrd.Default(nft, account, whitelisted);
             break;
     }
     return parsed;
