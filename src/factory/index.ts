@@ -1419,13 +1419,8 @@ export const Virtual = async (
 
     const code = $(".card code").text();
 
-    //const json = JSON.stringify(code)
-
-    //console.log(json);
 
     const meta = JSON.parse(code);
-
-    console.log(meta);
 
 
     const nft: NFT = {
