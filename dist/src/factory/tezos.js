@@ -48,6 +48,9 @@ const tezosParser = (collectionIdent, nft, account, whitelisted) => __awaiter(vo
         case "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA":
             parsed = yield (0, exports.TributeTezoTrooperz)(nft, account, whitelisted);
             break;
+        case "KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS":
+            parsed = yield (0, exports.Rarible)(nft, account, whitelisted);
+            break;
         default:
             parsed = yield (0, exports.Default)(nft, account, whitelisted);
             break;
