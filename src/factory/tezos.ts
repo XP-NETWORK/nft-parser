@@ -189,3 +189,54 @@ export const TributeTezoTrooperz = async (
     };
     return parsed;
 };
+// ! KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS
+export const Rarible = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+): Promise<NFT> => {
+    const {
+        collectionIdent,
+        uri,
+        native,
+        native: {
+            tokenId,
+            chainId,
+            contract,
+            meta: {
+                token: {
+                    metadata: {
+                        description,
+                        attributes,
+                        formats,
+                        displayUri,
+                        artifactUri,
+                        name,
+                        symbol,
+                    },
+                },
+            },
+        },
+    } = nft;
+    const parsed: NFT = {
+        native,
+        chainId,
+        tokenId,
+        contract,
+        uri,
+        owner: account,
+        collectionIdent,
+        metaData: {
+            whitelisted,
+            image: setupURI(displayUri),
+            imageFormat: "gif",
+            animation_url: setupURI(artifactUri),
+            animation_url_format: "mp4",
+            attributes,
+            symbol,
+            description,
+            name,
+        },
+    };
+    return parsed;
+};
