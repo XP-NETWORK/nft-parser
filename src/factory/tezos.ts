@@ -1,187 +1,191 @@
 import { setupURI } from ".";
 import { bytes2Char } from "@taquito/utils";
 import {
-  BigMapAbstraction,
-  MichelCodecPacker,
-  MichelsonMap,
-  OperationContent,
-  TezosToolkit,
+    BigMapAbstraction,
+    MichelCodecPacker,
+    MichelsonMap,
+    OperationContent,
+    TezosToolkit,
 } from "@taquito/taquito";
 
-import axios from 'axios'
+import axios from "axios";
 
 interface NFT {
-  native: any;
-  chainId: string;
-  tokenId: string;
-  owner: string;
-  uri: string;
-  contract?: string;
-  collectionIdent: string;
-  metaData: {
-    whitelisted: boolean;
-    image: string;
-    imageFormat: string;
-    animation_url?: string;
-    animation_url_format?: string;
-    name?: string;
-    symbol?: string;
-    attributes?: any;
-    description?: string;
-    contractType?: string;
-  };
+    native: any;
+    chainId: string;
+    tokenId: string;
+    owner: string;
+    uri: string;
+    contract?: string;
+    collectionIdent: string;
+    metaData: {
+        whitelisted: boolean;
+        image: string;
+        imageFormat: string;
+        animation_url?: string;
+        animation_url_format?: string;
+        name?: string;
+        symbol?: string;
+        attributes?: any;
+        description?: string;
+        contractType?: string;
+    };
 }
 
 const tezos = new TezosToolkit("https://mainnet.smartpy.io/");
 
-export const checkEmptyFromTezos = async (data:any) => {
-  if (!data?.image && data?.wrapped?.origin === "18") {
-    try {
-        const contract = await tezos.contract.at(data?.wrapped?.contract);
-        const storage = (await contract.storage()) as any;
-        const tokenStorage = await storage.token_metadata.get(data?.wrapped?.tokenId);
-    
-        const nativeUrl =  bytes2Char(tokenStorage!.token_info.get("")!);
+export const checkEmptyFromTezos = async (data: any) => {
+    if (!data?.image && data?.wrapped?.origin === "18") {
+        try {
+            const contract = await tezos.contract.at(data?.wrapped?.contract);
+            const storage = (await contract.storage()) as any;
+            const tokenStorage = await storage.token_metadata.get(
+                data?.wrapped?.tokenId
+            );
 
-        const nativeMeta = await axios(`${setupURI(nativeUrl)}`).catch(() => ({
-            data: null,
-          }));
+            const nativeUrl = bytes2Char(tokenStorage!.token_info.get("")!);
 
-          return {
-              ...data,
-              image :nativeMeta?.data?.displayUri,
-              name :nativeMeta?.data?.name,
-              description:nativeMeta?.data?.description,
-              symbol:nativeMeta?.data?.symbol
-          }
+            const nativeMeta = await axios(`${setupURI(nativeUrl)}`).catch(
+                () => ({
+                    data: null,
+                })
+            );
 
-      } catch (e) {
-        console.log("in checkEmptyFromTezos");
+            return {
+                ...data,
+                image: nativeMeta?.data?.displayUri,
+                name: nativeMeta?.data?.name,
+                description: nativeMeta?.data?.description,
+                symbol: nativeMeta?.data?.symbol,
+            };
+        } catch (e) {
+            console.log("in checkEmptyFromTezos");
+            return data;
+        }
+    } else {
         return data;
-      }
-
-  } else {
-      return data
-  }
-
-  
+    }
 };
 
 export const tezosParser = async (
-  collectionIdent: string,
-  nft: any,
-  account: string,
-  whitelisted: boolean
+    collectionIdent: string,
+    nft: any,
+    account: string,
+    whitelisted: boolean
 ) => {
-  const {
-    native: { contract, tokenId, chainId },
-    uri,
-  } = nft;
-  let parsed;
-  switch (collectionIdent) {
-    case "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA":
-      parsed = await TributeTezoTrooperz(nft, account, whitelisted);
-      break;
-    default:
-      parsed = await Default(nft, account, whitelisted);
-      break;
-  }
-  return parsed;
+    const {
+        native: { contract, tokenId, chainId },
+        uri,
+    } = nft;
+    let parsed;
+    switch (collectionIdent) {
+        case "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA":
+            parsed = await TributeTezoTrooperz(nft, account, whitelisted);
+            break;
+        default:
+            parsed = await Default(nft, account, whitelisted);
+            break;
+    }
+    return parsed;
 };
 
 export const Default = async (
-  nft: any,
-  account: string,
-  whitelisted: boolean
+    nft: any,
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
-  const {
-    collectionIdent,
-    uri,
-    native,
-    native: {
-      tokenId,
-      chainId,
-      contract,
-      meta: {
-        token: {
-          metadata: {
-            displayUri,
-            image,
-            animation_url,
-            description,
-            attributes,
-            name,
-            symbol,
-            formats,
-          },
+    const {
+        collectionIdent,
+        uri,
+        native,
+        native: {
+            tokenId,
+            chainId,
+            contract,
+            meta: {
+                token: {
+                    metadata: {
+                        displayUri,
+                        image,
+                        description,
+                        attributes,
+                        name,
+                        symbol,
+                        formats,
+                    },
+                },
+            },
         },
-      },
-    },
-  } = nft;
-  const mimeType = Array.isArray(formats) ? formats[0].mimeType : formats;
-  const format = mimeType?.slice(mimeType.lastIndexOf("/") + 1);
-  const parsed: NFT = {
-    native,
-    chainId,
-    tokenId,
-    contract,
-    uri,
-    owner: account,
-    collectionIdent,
-    metaData: {
-      whitelisted,
-      image: setupURI(displayUri || image),
-      imageFormat: format,
-      animation_url,
-      animation_url_format: "mp4",
-      attributes,
-      symbol,
-      description,
-      name,
-    },
-  };
-  return parsed;
+    } = nft;
+    const mimeType = Array.isArray(formats) ? formats[0].mimeType : formats;
+    const format = mimeType?.slice(mimeType.lastIndexOf("/") + 1);
+    const parsed: NFT = {
+        native,
+        chainId,
+        tokenId,
+        contract,
+        uri,
+        owner: account,
+        collectionIdent,
+        metaData: {
+            whitelisted,
+            image: setupURI(displayUri || image),
+            imageFormat: format,
+            attributes,
+            symbol,
+            description,
+            name,
+        },
+    };
+    return parsed;
 };
 // ! "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA"
 export const TributeTezoTrooperz = async (
-  nft: any,
-  account: string,
-  whitelisted: boolean
+    nft: any,
+    account: string,
+    whitelisted: boolean
 ): Promise<NFT> => {
-  const {
-    collectionIdent,
-    uri,
-    native,
-    native: {
-      tokenId,
-      chainId,
-      contract,
-      meta: {
-        token: {
-          metadata: { description, attributes, formats, image, name, symbol },
+    const {
+        collectionIdent,
+        uri,
+        native,
+        native: {
+            tokenId,
+            chainId,
+            contract,
+            meta: {
+                token: {
+                    metadata: {
+                        description,
+                        attributes,
+                        formats,
+                        image,
+                        name,
+                        symbol,
+                    },
+                },
+            },
         },
-      },
-    },
-  } = nft;
-  const mimeType = formats[0].mimeType;
-  const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
-  const parsed: NFT = {
-    native,
-    chainId,
-    tokenId,
-    contract,
-    uri,
-    owner: account,
-    collectionIdent,
-    metaData: {
-      whitelisted,
-      image: setupURI(image),
-      imageFormat: format,
-      attributes,
-      symbol,
-      description,
-      name,
-    },
-  };
-  return parsed;
+    } = nft;
+    const mimeType = formats[0].mimeType;
+    const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
+    const parsed: NFT = {
+        native,
+        chainId,
+        tokenId,
+        contract,
+        uri,
+        owner: account,
+        collectionIdent,
+        metaData: {
+            whitelisted,
+            image: setupURI(image),
+            imageFormat: format,
+            attributes,
+            symbol,
+            description,
+            name,
+        },
+    };
+    return parsed;
 };
