@@ -211,7 +211,6 @@ export const Rarible = async (
                     metadata: {
                         description,
                         attributes,
-                        formats,
                         displayUri,
                         artifactUri,
                         name,
