@@ -1119,10 +1119,7 @@ const Virtual = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         const response = yield (0, axios_1.default)(`${exports.proxy}https://explorer.mainnet.aurora.dev/token/${collectionIdent}/instance/${tokenId}/metadata`);
         const $ = cheerio.load(response.data);
         const code = $(".card code").text();
-        //const json = JSON.stringify(code)
-        //console.log(json);
         const meta = JSON.parse(code);
-        console.log(meta);
         const nft = {
             native,
             chainId,
