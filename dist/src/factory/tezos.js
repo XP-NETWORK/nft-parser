@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TributeTezoTrooperz = exports.Default = exports.tezosParser = exports.checkEmptyFromTezos = void 0;
+exports.Rarible = exports.TributeTezoTrooperz = exports.Default = exports.tezosParser = exports.checkEmptyFromTezos = void 0;
 const _1 = require(".");
 const utils_1 = require("@taquito/utils");
 const taquito_1 = require("@taquito/taquito");
@@ -106,3 +106,29 @@ const TributeTezoTrooperz = (nft, account, whitelisted) => __awaiter(void 0, voi
     return parsed;
 });
 exports.TributeTezoTrooperz = TributeTezoTrooperz;
+// ! KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS
+const Rarible = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { description, attributes, formats, displayUri, artifactUri, name, symbol, }, }, }, }, } = nft;
+    const parsed = {
+        native,
+        chainId,
+        tokenId,
+        contract,
+        uri,
+        owner: account,
+        collectionIdent,
+        metaData: {
+            whitelisted,
+            image: (0, _1.setupURI)(displayUri),
+            imageFormat: "gif",
+            animation_url: (0, _1.setupURI)(artifactUri),
+            animation_url_format: "mp4",
+            attributes,
+            symbol,
+            description,
+            name,
+        },
+    };
+    return parsed;
+});
+exports.Rarible = Rarible;
