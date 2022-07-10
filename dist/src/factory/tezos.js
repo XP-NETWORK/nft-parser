@@ -111,7 +111,7 @@ const TributeTezoTrooperz = (nft, account, whitelisted) => __awaiter(void 0, voi
 exports.TributeTezoTrooperz = TributeTezoTrooperz;
 // ! KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS
 const Rarible = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { description, attributes, formats, displayUri, artifactUri, name, symbol, }, }, }, }, } = nft;
+    const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { description, attributes, displayUri, artifactUri, name, symbol, }, }, }, }, } = nft;
     const parsed = {
         native,
         chainId,
