@@ -4,7 +4,7 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    //"outDir": "../bridge-interface/node_modules/nft-parser/dist",
+   // "outDir": "../bridge-interface/node_modules/nft-parser/dist",
     "outDir": "./dist",
     "strict": true,
     "skipLibCheck": true,

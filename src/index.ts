@@ -238,6 +238,11 @@ const evmParser = async (
       parsed = await evm.COZYCOSM(nft, account, whitelisted);
       break;
 
+    case "0xF4823Ffa8133f6B27c7e3A5218B40a9087B6d2c7": //aurora
+      parsed = await evm.Virtual(nft, account, whitelisted);
+      break;
+
+
     default:
       parsed = await evm.Default(nft, account, whitelisted);
       break;
