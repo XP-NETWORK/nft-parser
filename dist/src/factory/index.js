@@ -1136,6 +1136,8 @@ const Virtual = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
                 description: meta && meta.description,
                 animation_url: meta && meta['animation_url'],
                 name: meta && meta.name,
+                collectionName: 'Virtual Reality 3D NFTs',
+                symbol: "vr3DNFTs"
             },
         };
         return nft;
