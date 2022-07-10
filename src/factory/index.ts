@@ -29,6 +29,7 @@ export interface NFT {
     attributes?: any;
     description?: string;
     contractType?: string;
+    collectionName?: string;
   };
 }
 
@@ -1439,6 +1440,8 @@ export const Virtual = async (
         description: meta && meta.description,
         animation_url: meta && meta['animation_url'],
         name: meta && meta.name,
+        collectionName: 'Virtual Reality 3D NFTs',
+        symbol: "vr3DNFTs"
       },
     };
 
