@@ -214,6 +214,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
         case "0xF4823Ffa8133f6B27c7e3A5218B40a9087B6d2c7": //aurora
             parsed = yield evm.Virtual(nft, account, whitelisted);
             break;
+        case "0xb73cc6d7a621e0e220b369c319dbfac258cef4d2": //veals OGPUNKS
+            parsed = yield evm.VelasOgPunks(nft, account, whitelisted);
+            break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
             break;
