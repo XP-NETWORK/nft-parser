@@ -1706,6 +1706,49 @@ export const PACK = async (nft: any, account: string, whitelisted: boolean) => {
   }
 };
 
+export const VelasOgPunks = async (nft: any, account: string, whitelisted: boolean) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+
+  try {
+    const response = await fetch(uri);
+
+
+    const data = await response.json();
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: setupURI(data.image),
+        imageFormat: "png",
+        description: data.description,
+        name: data.name,
+        symbol: data.symbol || "PUNK",
+        attributes: data.attributes,
+        contractType: data.type || '721',
+        collectionName: "VelasOGPunks"
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+
+    return nft;
+  }
+};
+
 export const WrappedXPNET = async (
   nft: any,
   account: string,
