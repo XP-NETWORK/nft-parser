@@ -58,18 +58,18 @@ export const DEFAULT = async (
         image: format.includes("json")
           ? uri.replace(".json", ".png")
           : format.includes("png")
-          ? uri
-          : format.includes("mp4")
-          ? ""
-          : "",
+            ? uri
+            : format.includes("mp4")
+              ? ""
+              : "",
         imageFormat: "png",
         animation_url: format.includes("png")
           ? ""
           : format.includes("json")
-          ? uri.replace(".json", ".mp4")
-          : format.includes("mp4")
-          ? uri
-          : "",
+            ? uri.replace(".json", ".mp4")
+            : format.includes("mp4")
+              ? uri
+              : "",
 
         animation_url_format: "mp4",
       },
@@ -348,6 +348,8 @@ export const KINGSGUARD = async (
 
 //KINGSGUARD
 
+export const ALIEN = ORC
+
 export const WrappedXPNET = async (
   nft: any,
   account: string,
@@ -381,10 +383,10 @@ export const WrappedXPNET = async (
         ...(data.animation_url ? { animation_url: data.animation_url } : {}),
         ...(data.animation_url
           ? {
-              animation_url_format: data.animation_url
-                ?.match(/\.([^.]*)$/)
-                ?.at(1),
-            }
+            animation_url_format: data.animation_url
+              ?.match(/\.([^.]*)$/)
+              ?.at(1),
+          }
           : {}),
       },
     };
@@ -438,10 +440,10 @@ export const Default = async (
         ...(data.animation_url ? { animation_url: data.animation_url } : {}),
         ...(data.animation_url
           ? {
-              animation_url_format: data.animation_url
-                ?.match(/\.([^.]*)$/)
-                ?.at(1),
-            }
+            animation_url_format: data.animation_url
+              ?.match(/\.([^.]*)$/)
+              ?.at(1),
+          }
           : {}),
       },
     };

@@ -378,6 +378,12 @@ const elrondParser = async (
             break;
         }
 
+
+        case "ALIEN-a499ab": {
+            parsed = await elrd.ALIEN(nft, account, whitelisted);
+            break;
+        }
+
         default:
             parsed = await elrd.Default(nft, account, whitelisted);
             break;
