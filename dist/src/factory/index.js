@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WrappedXPNET = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.COZYCOSM = exports.OPENSTORE = exports.Virtual = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
+exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.COZYCOSM = exports.OPENSTORE = exports.Virtual = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
 const axios_1 = __importDefault(require("axios"));
 const tezos_1 = require("./tezos");
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
@@ -25,7 +25,7 @@ const setupURI = (uri) => {
             return uri;
         }
         else if (uri.includes("ipfs://")) {
-            return "https://ipfs.io/" + uri.replace(":/", "");
+            return "https://ipfs.io/" + uri.replace(":/", "").replace("ipfs/", "");
         }
         else if (uri.includes("https://ipfs.io")) {
             return uri;
@@ -65,14 +65,14 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
                 description: data.description,
-                name: data.name,
+                name: data.name
             },
         };
         return nft;
@@ -102,7 +102,7 @@ const ART_NFT_MATIC = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -135,7 +135,7 @@ const EtherHead = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -168,7 +168,7 @@ const AngelOfAether = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -203,7 +203,7 @@ const Legend = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -239,7 +239,7 @@ const AlphaBettyDoodle = (nft, account, whitelisted) => __awaiter(void 0, void 0
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -272,7 +272,7 @@ const Mabstronauts = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             owner: account,
             uri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: `https://ipfs.io/ipfs/${data.image}`,
@@ -309,7 +309,7 @@ const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
             owner: account,
             uri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -366,7 +366,7 @@ const TheBlackMagic = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
             owner: account,
             uri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: nestedImage
@@ -409,7 +409,7 @@ const CartelPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             owner: account,
             uri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -445,7 +445,7 @@ const TreatNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
             owner: account,
             uri: newUrl,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -481,7 +481,7 @@ const IdoDirt = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             owner: account,
             uri: newUrl,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -517,7 +517,7 @@ const Awokensages = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             owner: account,
             uri: newUri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -554,7 +554,7 @@ const Technomaniacs = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
             owner: account,
             uri: newUri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -589,7 +589,7 @@ const ArcadeEdition = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
             owner: account,
             uri: newUri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -624,7 +624,7 @@ const Founders_Cabinet = (nft, account, whitelisted) => __awaiter(void 0, void 0
             owner: account,
             uri: newUri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -658,7 +658,7 @@ const TTAV = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -692,7 +692,7 @@ const BoredGUtterCats = (nft, account, whitelisted) => __awaiter(void 0, void 0,
             owner: account,
             uri: newUri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -725,7 +725,7 @@ const IDoDirtPolygon = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -762,7 +762,7 @@ const ArsenalGame = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -799,7 +799,7 @@ const Mate = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.animation_url),
@@ -837,7 +837,7 @@ const ABCBears = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -875,7 +875,7 @@ const TragicMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -911,7 +911,7 @@ const SuperFatAcademy = (nft, account, whitelisted) => __awaiter(void 0, void 0,
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -948,7 +948,7 @@ const ForgottenRunesComic = (nft, account, whitelisted) => __awaiter(void 0, voi
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: "",
@@ -987,7 +987,7 @@ const LilDickie = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -1024,7 +1024,7 @@ const TheCheeks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -1059,7 +1059,7 @@ const InterestingCPeople = (nft, account, whitelisted) => __awaiter(void 0, void
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -1091,7 +1091,7 @@ const Nagato = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data
@@ -1124,7 +1124,7 @@ const OpenSEA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -1194,7 +1194,7 @@ const OPENSTORE = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && (0, exports.setupURI)(data.image_url || data.image),
@@ -1225,7 +1225,7 @@ const COZYCOSM = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -1255,7 +1255,7 @@ const MachineFi = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && data.image,
@@ -1287,7 +1287,7 @@ const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && ((_b = data.data) === null || _b === void 0 ? void 0 : _b.image),
@@ -1318,7 +1318,7 @@ const WUBI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && (0, exports.setupURI)(data === null || data === void 0 ? void 0 : data.image),
@@ -1350,7 +1350,7 @@ const PACK = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -1383,7 +1383,7 @@ const VelasOgPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -1404,6 +1404,41 @@ const VelasOgPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
     }
 });
 exports.VelasOgPunks = VelasOgPunks;
+const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    try {
+        const response = yield pool.addRequest(exports.proxy + uri); // await fetch(proxy + uri);
+        const { data } = response;
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            wrapped: data && data.wrapped,
+            metaData: {
+                whitelisted,
+                image: data && (0, exports.setupURI)(data.image),
+                imageFormat: "png",
+                description: data && data.description,
+                name: data && data.name,
+                symbol: data && data.symbol || "CFOD",
+                attributes: data && data.attributes,
+                contractType: data && data.type || "721",
+                collectionName: "Cities From Our Dreams",
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+exports.Cities = Cities;
+exports.Mountains = exports.Cities;
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
@@ -1419,7 +1454,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             uri,
             contract,
             collectionIdent,
-            wrapped: data && data.wrapped,
+            wrapped: data && data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && (0, exports.setupURI)(data.image),
