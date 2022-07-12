@@ -62,6 +62,7 @@ const WOVY = async (nft: any, account: string, whitelisted: boolean) => {
             uri,
             contract,
             collectionIdent,
+            wrapped: metadata.wrapped,
             metaData: {
                 whitelisted,
                 image: "",
@@ -109,6 +110,7 @@ const WrappedXPNET = async (
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),

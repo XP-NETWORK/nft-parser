@@ -10,6 +10,7 @@ interface NFT {
     contract?: string;
     collectionIdent: string;
     native: any;
+    wrapped?: any;
     metaData: {
         whitelisted: boolean;
         image: string;
@@ -161,6 +162,7 @@ export const Default = async (
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -203,6 +205,7 @@ export const LikeD00dles = async (
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(url),
@@ -246,6 +249,7 @@ export const WarriorCroc = async (
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -289,6 +293,7 @@ export const Alchemon = async (
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: "",
