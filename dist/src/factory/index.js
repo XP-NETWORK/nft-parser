@@ -65,6 +65,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -101,6 +102,7 @@ const ART_NFT_MATIC = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -133,6 +135,7 @@ const EtherHead = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -165,6 +168,7 @@ const AngelOfAether = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -199,6 +203,7 @@ const Legend = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -234,6 +239,7 @@ const AlphaBettyDoodle = (nft, account, whitelisted) => __awaiter(void 0, void 0
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -266,6 +272,7 @@ const Mabstronauts = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             owner: account,
             uri,
             contract,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: `https://ipfs.io/ipfs/${data.image}`,
@@ -302,6 +309,7 @@ const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
             owner: account,
             uri,
             contract,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -358,6 +366,7 @@ const TheBlackMagic = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
             owner: account,
             uri,
             contract,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: nestedImage
@@ -400,6 +409,7 @@ const CartelPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             owner: account,
             uri,
             contract,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -435,6 +445,7 @@ const TreatNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
             owner: account,
             uri: newUrl,
             contract,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -470,6 +481,7 @@ const IdoDirt = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             owner: account,
             uri: newUrl,
             contract,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -505,6 +517,7 @@ const Awokensages = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             owner: account,
             uri: newUri,
             contract,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -541,6 +554,7 @@ const Technomaniacs = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
             owner: account,
             uri: newUri,
             contract,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -575,6 +589,7 @@ const ArcadeEdition = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
             owner: account,
             uri: newUri,
             contract,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -609,6 +624,7 @@ const Founders_Cabinet = (nft, account, whitelisted) => __awaiter(void 0, void 0
             owner: account,
             uri: newUri,
             contract,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -642,6 +658,7 @@ const TTAV = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -675,6 +692,7 @@ const BoredGUtterCats = (nft, account, whitelisted) => __awaiter(void 0, void 0,
             owner: account,
             uri: newUri,
             contract,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -707,6 +725,7 @@ const IDoDirtPolygon = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -743,6 +762,7 @@ const ArsenalGame = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -779,6 +799,7 @@ const Mate = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.animation_url),
@@ -816,6 +837,7 @@ const ABCBears = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -853,6 +875,7 @@ const TragicMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -888,6 +911,7 @@ const SuperFatAcademy = (nft, account, whitelisted) => __awaiter(void 0, void 0,
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -924,6 +948,7 @@ const ForgottenRunesComic = (nft, account, whitelisted) => __awaiter(void 0, voi
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: "",
@@ -962,6 +987,7 @@ const LilDickie = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -998,6 +1024,7 @@ const TheCheeks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -1032,6 +1059,7 @@ const InterestingCPeople = (nft, account, whitelisted) => __awaiter(void 0, void
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -1063,6 +1091,7 @@ const Nagato = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: data
@@ -1095,6 +1124,7 @@ const OpenSEA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -1128,16 +1158,17 @@ const Virtual = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             uri,
             contract,
             collectionIdent,
+            wrapped: meta && meta.wrapped,
             metaData: {
                 whitelisted,
                 image: meta && meta.image,
                 imageFormat: "png",
                 attributes: meta && meta.attributes,
                 description: meta && meta.description,
-                animation_url: meta && meta['animation_url'],
+                animation_url: meta && meta["animation_url"],
                 name: meta && meta.name,
-                collectionName: 'Virtual Reality 3D NFTs',
-                symbol: "vr3DNFTs"
+                collectionName: "Virtual Reality 3D NFTs",
+                symbol: "vr3DNFTs",
             },
         };
         return nft;
@@ -1163,6 +1194,7 @@ const OPENSTORE = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && (0, exports.setupURI)(data.image_url || data.image),
@@ -1193,6 +1225,7 @@ const COZYCOSM = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -1222,6 +1255,7 @@ const MachineFi = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && data.image,
@@ -1253,6 +1287,7 @@ const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && ((_b = data.data) === null || _b === void 0 ? void 0 : _b.image),
@@ -1283,6 +1318,7 @@ const WUBI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && (0, exports.setupURI)(data === null || data === void 0 ? void 0 : data.image),
@@ -1314,6 +1350,7 @@ const PACK = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -1346,6 +1383,7 @@ const VelasOgPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, exports.setupURI)(data.image),
@@ -1354,8 +1392,8 @@ const VelasOgPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
                 name: data.name,
                 symbol: data.symbol || "PUNK",
                 attributes: data.attributes,
-                contractType: data.type || '721',
-                collectionName: "VelasOGPunks"
+                contractType: data.type || "721",
+                collectionName: "VelasOGPunks",
             },
         };
         return nft;
@@ -1381,6 +1419,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             uri,
             contract,
             collectionIdent,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && (0, exports.setupURI)(data.image),
