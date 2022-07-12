@@ -15,6 +15,7 @@ interface ParsedNFT {
     contract?: string;
     collectionIdent: string;
     native: any;
+    wrapped?: any;
     metaData: {
         image: string;
         imageFormat: string;
