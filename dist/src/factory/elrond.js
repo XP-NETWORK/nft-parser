@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Default = exports.WrappedXPNET = exports.KINGSGUARD = exports.ORC = exports.MEDUSA = exports.INNOVATOR = exports.APOPHIS = exports.DRIFTERS = exports.AERMES = exports.DEFAULT = void 0;
+exports.Default = exports.WrappedXPNET = exports.ALIEN = exports.KINGSGUARD = exports.ORC = exports.MEDUSA = exports.INNOVATOR = exports.APOPHIS = exports.DRIFTERS = exports.AERMES = exports.DEFAULT = void 0;
 const axios_1 = __importDefault(require("axios"));
 const _1 = require(".");
 const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
@@ -246,6 +246,7 @@ const KINGSGUARD = (nft, account, whitelisted) => __awaiter(void 0, void 0, void
 });
 exports.KINGSGUARD = KINGSGUARD;
 //KINGSGUARD
+exports.ALIEN = exports.ORC;
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _b, _c, _d, _e;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;

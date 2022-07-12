@@ -266,6 +266,10 @@ const elrondParser = (collectionIdent, nft, account, whitelisted) => __awaiter(v
             parsed = yield elrd.KINGSGUARD(nft, account, whitelisted);
             break;
         }
+        case "ALIEN-a499ab": {
+            parsed = yield elrd.ALIEN(nft, account, whitelisted);
+            break;
+        }
         default:
             parsed = yield elrd.Default(nft, account, whitelisted);
             break;
