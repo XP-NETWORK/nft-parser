@@ -308,6 +308,12 @@ const evmParser = async (
             parsed = await evm.Virtual(nft, account, whitelisted);
             break;
 
+        case "0xb73cc6d7a621e0e220b369c319dbfac258cef4d2": //veals OGPUNKS
+            parsed = await evm.VelasOgPunks(nft, account, whitelisted);
+            break;
+
+
+
         default:
             parsed = await evm.Default(nft, account, whitelisted);
             break;
