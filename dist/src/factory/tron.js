@@ -44,6 +44,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),

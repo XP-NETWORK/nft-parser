@@ -52,6 +52,7 @@ const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             uri,
             contract,
             collectionIdent,
+            wrapped: metadata.wrapped,
             metaData: {
                 whitelisted,
                 image: "",
@@ -86,6 +87,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),

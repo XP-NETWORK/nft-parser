@@ -42,6 +42,7 @@ const Falacy = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: `https://ipfs.moralis.io:2053/ipfs/${data.image.replace("ipfs://", "")}`,
@@ -74,6 +75,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),

@@ -18,7 +18,8 @@ const _1 = require(".");
 const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const headers = yield (yield (0, axios_1.default)(uri)).headers;
+        const { data } = yield (0, axios_1.default)(uri);
+        const headers = data.headers;
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -28,6 +29,7 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: format.includes("json")
@@ -145,6 +147,7 @@ const INNOVATOR = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -172,6 +175,7 @@ const MEDUSA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),
@@ -201,6 +205,7 @@ const ORC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fun
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: uri.replace(".json", ".png"),
@@ -260,7 +265,10 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             uri,
             contract,
             collectionIdent,
-            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_c = (_b = data.image) === null || _b === void 0 ? void 0 : _b.match(/\.([^.]*)$/)) === null || _c === void 0 ? void 0 : _c.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url ? { animation_url: data.animation_url } : {})), (data.animation_url
+            wrapped: data.wrapped,
+            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_c = (_b = data.image) === null || _b === void 0 ? void 0 : _b.match(/\.([^.]*)$/)) === null || _c === void 0 ? void 0 : _c.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url
+                ? { animation_url: data.animation_url }
+                : {})), (data.animation_url
                 ? {
                     animation_url_format: (_e = (_d = data.animation_url) === null || _d === void 0 ? void 0 : _d.match(/\.([^.]*)$/)) === null || _e === void 0 ? void 0 : _e.at(1),
                 }
@@ -296,7 +304,10 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             uri,
             contract,
             collectionIdent,
-            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_g = (_f = data.image) === null || _f === void 0 ? void 0 : _f.match(/\.([^.]*)$/)) === null || _g === void 0 ? void 0 : _g.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url ? { animation_url: data.animation_url } : {})), (data.animation_url
+            wrapped: data.wrapped,
+            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_g = (_f = data.image) === null || _f === void 0 ? void 0 : _f.match(/\.([^.]*)$/)) === null || _g === void 0 ? void 0 : _g.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url
+                ? { animation_url: data.animation_url }
+                : {})), (data.animation_url
                 ? {
                     animation_url_format: (_j = (_h = data.animation_url) === null || _h === void 0 ? void 0 : _h.match(/\.([^.]*)$/)) === null || _j === void 0 ? void 0 : _j.at(1),
                 }

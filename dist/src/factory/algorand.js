@@ -136,6 +136,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),
@@ -169,6 +170,7 @@ const LikeD00dles = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(url),
@@ -203,6 +205,7 @@ const WarriorCroc = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),
@@ -237,6 +240,7 @@ const Alchemon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: "",
