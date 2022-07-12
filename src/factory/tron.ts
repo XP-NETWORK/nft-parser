@@ -15,6 +15,7 @@ interface NFT {
     contract: string;
     collectionIdent: string;
     native: any;
+    wrapped?: any;
     metaData: {
         whitelisted: boolean;
         image: string;
@@ -72,6 +73,7 @@ export const Default = async (
             uri,
             contract,
             collectionIdent,
+            wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
