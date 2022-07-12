@@ -37,7 +37,7 @@ export const setupURI = (uri: string): string => {
         if (uri.includes("https://ipfs.io")) {
             return uri;
         } else if (uri.includes("ipfs://")) {
-            return "https://ipfs.io/" + uri.replace(":/", "");
+            return "https://ipfs.io/" + uri.replace(":/", "").replace("ipfs/", "");
         } else if (uri.includes("https://ipfs.io")) {
             return uri;
         } else if (
@@ -86,14 +86,14 @@ export const Default = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
                 description: data.description,
-                name: data.name,
+                name: data.name
             },
         };
         return nft;
@@ -133,7 +133,7 @@ export const ART_NFT_MATIC = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -173,7 +173,7 @@ export const EtherHead = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -213,7 +213,7 @@ export const AngelOfAether = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -257,7 +257,7 @@ export const Legend = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -302,7 +302,7 @@ export const AlphaBettyDoodle = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -343,7 +343,7 @@ export const Mabstronauts = async (
             owner: account,
             uri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: `https://ipfs.io/ipfs/${data.image}`,
@@ -390,7 +390,7 @@ export const RocketMonsters = async (
             owner: account,
             uri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -457,7 +457,7 @@ export const TheBlackMagic = async (
             owner: account,
             uri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: nestedImage
@@ -508,7 +508,7 @@ export const CartelPunks = async (
             owner: account,
             uri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -551,7 +551,7 @@ export const TreatNFT = async (
             owner: account,
             uri: newUrl,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -594,7 +594,7 @@ export const IdoDirt = async (
             owner: account,
             uri: newUrl,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -637,7 +637,7 @@ export const Awokensages = async (
             owner: account,
             uri: newUri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -681,7 +681,7 @@ export const Technomaniacs = async (
             owner: account,
             uri: newUri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -723,7 +723,7 @@ export const ArcadeEdition = async (
             owner: account,
             uri: newUri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -765,7 +765,7 @@ export const Founders_Cabinet = async (
             owner: account,
             uri: newUri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -808,7 +808,7 @@ export const TTAV = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -851,7 +851,7 @@ export const BoredGUtterCats = async (
             owner: account,
             uri: newUri,
             contract,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -893,7 +893,7 @@ export const IDoDirtPolygon = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -944,7 +944,7 @@ export const ArsenalGame = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -987,7 +987,7 @@ export const Mate = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.animation_url),
@@ -1039,7 +1039,7 @@ export const ABCBears = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -1091,7 +1091,7 @@ export const TragicMonsters = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -1141,7 +1141,7 @@ export const SuperFatAcademy = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -1188,7 +1188,7 @@ export const ForgottenRunesComic = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: "",
@@ -1236,7 +1236,7 @@ export const LilDickie = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -1282,7 +1282,7 @@ export const TheCheeks = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -1324,7 +1324,7 @@ export const InterestingCPeople = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -1370,7 +1370,7 @@ export const Nagato = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data
@@ -1416,7 +1416,7 @@ export const OpenSEA = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data.image,
@@ -1517,7 +1517,7 @@ export const OPENSTORE = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && setupURI(data.image_url || data.image),
@@ -1560,7 +1560,7 @@ export const COZYCOSM = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -1601,7 +1601,7 @@ export const MachineFi = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && data.image,
@@ -1643,7 +1643,7 @@ export const TRSRNFT = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && data.data?.image,
@@ -1686,7 +1686,7 @@ export const WUBI = async (nft: any, account: string, whitelisted: boolean) => {
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && setupURI(data?.image),
@@ -1726,7 +1726,7 @@ export const PACK = async (nft: any, account: string, whitelisted: boolean) => {
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -1771,7 +1771,7 @@ export const VelasOgPunks = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: setupURI(data.image),
@@ -1791,6 +1791,57 @@ export const VelasOgPunks = async (
         return nft;
     }
 };
+
+export const Cities = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+) => {
+    const {
+        native,
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+        uri,
+    } = nft;
+
+    try {
+        const response = await pool.addRequest(proxy + uri) as AxiosResponse<
+            any,
+            any
+        >; // await fetch(proxy + uri);
+
+        const { data } = response
+
+        const nft: NFT = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            wrapped: data && data.wrapped,
+            metaData: {
+                whitelisted,
+                image: data && setupURI(data.image),
+                imageFormat: "png",
+                description: data && data.description,
+                name: data && data.name,
+                symbol: data && data.symbol || "CFOD",
+                attributes: data && data.attributes,
+                contractType: data && data.type || "721",
+                collectionName: "Cities From Our Dreams",
+            },
+        };
+        return nft;
+    } catch (error) {
+        console.error(error);
+
+        return nft;
+    }
+};
+
+export const Mountains = Cities
 
 export const WrappedXPNET = async (
     nft: any,
@@ -1819,7 +1870,7 @@ export const WrappedXPNET = async (
             uri,
             contract,
             collectionIdent,
-            wrapped: data && data.wrapped,
+            wrapped: data && data && data.wrapped,
             metaData: {
                 whitelisted,
                 image: data && setupURI(data.image),

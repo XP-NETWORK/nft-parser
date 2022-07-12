@@ -312,6 +312,14 @@ const evmParser = async (
             parsed = await evm.VelasOgPunks(nft, account, whitelisted);
             break;
 
+        case "0x868c047be897e30e8e5e7e2feeef4ae95cb28796": //veals OGPUNKS
+            parsed = await evm.Cities(nft, account, whitelisted);
+            break;
+
+        case "0xe38400150bde0f8efdda9f3a11f89c8a1660fa84": //veals OGPUNKS
+            parsed = await evm.Mountains(nft, account, whitelisted);
+            break;
+
 
 
         default:
