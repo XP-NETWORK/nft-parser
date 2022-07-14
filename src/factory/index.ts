@@ -1497,12 +1497,12 @@ export const ChainCaders = async (
 
   try {
     const response = await axios(
-      `${proxy}https://api.alturanft.com/item/56/${collectionIdent}/${tokenId}`
+      `${proxy}https://api.alturanft.com/api/item/56/${collectionIdent}/${tokenId}`
     );
 
-    const $ = cheerio.load(response.data);
+    const { data } = response;
 
-    const img = $("#root .item-image-slider img").attr("src");
+    console.log(data);
 
     const nft: NFT = {
       native,
@@ -1512,13 +1512,15 @@ export const ChainCaders = async (
       uri,
       contract,
       collectionIdent,
-      //wrapped: meta && meta.wrapped,
+      wrapped: data?.wrapped,
       metaData: {
         whitelisted,
-        image: img,
-        imageFormat: "png",
-        name: native.name,
-        collectionName: "ChainCaders",
+        image: data?.item?.imageUrl,
+        imageFormat: data?.item?.imageUrl?.match(/(?:\.([^.]+))?$/)[1],
+        name: data?.item?.name,
+        description: data?.item?.description,
+        collectionName: data?.item?.collectionName,
+        attributes: data?.item?.properties,
         contractType: "1155",
       },
     };
