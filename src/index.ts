@@ -5,6 +5,7 @@ import * as elrd from "./factory/elrond";
 import * as tezos from "./factory/tezos";
 import * as veChain from "./factory/veChain";
 import * as fantom from "./factory/fantom";
+import * as secret from "./factory/secret";
 import { tronParser } from "./factory/tron";
 
 interface ParsedNFT {
@@ -178,6 +179,14 @@ export const nftGeneralParser = async (
                 whitelisted
             );
             break;
+        case "24":
+            parsed = await secret.secretParser(
+                collectionIdent,
+                nft,
+                account,
+                whitelisted
+            );
+            break;
         default:
             return nft;
     }
@@ -320,8 +329,6 @@ const evmParser = async (
             parsed = await evm.Mountains(nft, account, whitelisted);
             break;
 
-
-
         default:
             parsed = await evm.Default(nft, account, whitelisted);
             break;
@@ -386,7 +393,6 @@ const elrondParser = async (
             parsed = await elrd.KINGSGUARD(nft, account, whitelisted);
             break;
         }
-
 
         case "ALIEN-a499ab": {
             parsed = await elrd.ALIEN(nft, account, whitelisted);
