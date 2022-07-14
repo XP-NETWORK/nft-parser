@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.COZYCOSM = exports.OPENSTORE = exports.ChainCaders = exports.Virtual = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
+exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.COZYCOSM = exports.OPENSTORE = exports.Virtual = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
 const axios_1 = __importDefault(require("axios"));
 const tezos_1 = require("./tezos");
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
@@ -72,7 +72,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
                 imageFormat: format,
                 attributes: data.attributes,
                 description: data.description,
-                name: data.name,
+                name: data.name
             },
         };
         return nft;
@@ -1179,41 +1179,6 @@ const Virtual = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.Virtual = Virtual;
-const ChainCaders = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b, _c, _d, _e, _f, _g, _h;
-    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    try {
-        const response = yield (0, axios_1.default)(`${exports.proxy}https://api.alturanft.com/api/item/56/${collectionIdent}/${tokenId}`);
-        const { data } = response;
-        console.log(data);
-        const nft = {
-            native,
-            chainId,
-            tokenId,
-            owner: account,
-            uri,
-            contract,
-            collectionIdent,
-            wrapped: data === null || data === void 0 ? void 0 : data.wrapped,
-            metaData: {
-                whitelisted,
-                image: (_b = data === null || data === void 0 ? void 0 : data.item) === null || _b === void 0 ? void 0 : _b.imageUrl,
-                imageFormat: (_d = (_c = data === null || data === void 0 ? void 0 : data.item) === null || _c === void 0 ? void 0 : _c.imageUrl) === null || _d === void 0 ? void 0 : _d.match(/(?:\.([^.]+))?$/)[1],
-                name: (_e = data === null || data === void 0 ? void 0 : data.item) === null || _e === void 0 ? void 0 : _e.name,
-                description: (_f = data === null || data === void 0 ? void 0 : data.item) === null || _f === void 0 ? void 0 : _f.description,
-                collectionName: (_g = data === null || data === void 0 ? void 0 : data.item) === null || _g === void 0 ? void 0 : _g.collectionName,
-                attributes: (_h = data === null || data === void 0 ? void 0 : data.item) === null || _h === void 0 ? void 0 : _h.properties,
-                contractType: "1155",
-            },
-        };
-        return nft;
-    }
-    catch (error) {
-        console.error(error);
-        return nft;
-    }
-});
-exports.ChainCaders = ChainCaders;
 const OPENSTORE = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId, contractType }, collectionIdent, uri, } = nft;
     try {
@@ -1308,7 +1273,7 @@ const MachineFi = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
 });
 exports.MachineFi = MachineFi;
 const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _j, _k, _l;
+    var _b, _c, _d;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const { data } = yield (0, axios_1.default)(`${exports.proxy}${uri}`).catch(() => ({
@@ -1325,10 +1290,10 @@ const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: data && ((_j = data.data) === null || _j === void 0 ? void 0 : _j.image),
+                image: data && ((_b = data.data) === null || _b === void 0 ? void 0 : _b.image),
                 imageFormat: "png",
-                description: data && ((_k = data.data) === null || _k === void 0 ? void 0 : _k.description),
-                name: data && ((_l = data.data) === null || _l === void 0 ? void 0 : _l.name),
+                description: data && ((_c = data.data) === null || _c === void 0 ? void 0 : _c.description),
+                name: data && ((_d = data.data) === null || _d === void 0 ? void 0 : _d.name),
             },
         };
         return nft;
@@ -1442,7 +1407,7 @@ exports.VelasOgPunks = VelasOgPunks;
 const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = (yield pool.addRequest(exports.proxy + uri)); // await fetch(proxy + uri);
+        const response = yield pool.addRequest(exports.proxy + uri); // await fetch(proxy + uri);
         const { data } = response;
         const nft = {
             native,
@@ -1459,9 +1424,9 @@ const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
                 imageFormat: "png",
                 description: data && data.description,
                 name: data && data.name,
-                symbol: (data && data.symbol) || "CFOD",
+                symbol: data && data.symbol || "CFOD",
                 attributes: data && data.attributes,
-                contractType: (data && data.type) || "721",
+                contractType: data && data.type || "721",
                 collectionName: "Cities From Our Dreams",
             },
         };
