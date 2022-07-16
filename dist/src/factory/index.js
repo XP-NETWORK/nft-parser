@@ -24,10 +24,10 @@ const setupURI = (uri) => {
         if (uri.includes("https://ipfs.io")) {
             return uri;
         }
-        else if (uri.includes("ipfs://")) {
-            return "https://ipfs.io/" + uri.replace(":/", "").replace("ipfs/", "");
+        else if (/^ipfs:\/\//.test(uri)) {
+            return "https://ipfs.io/ipfs/" + uri.split('://')[1];
         }
-        else if (uri.includes("https://ipfs.io")) {
+        else if (/^https\:\/\/ipfs.io/.test(uri)) {
             return uri;
         }
         else if (uri.includes("data:image/") ||
