@@ -36,9 +36,9 @@ export const setupURI = (uri: string): string => {
   if (uri) {
     if (uri.includes("https://ipfs.io")) {
       return uri;
-    } else if (uri.includes("ipfs://")) {
-      return "https://ipfs.io/" + uri.replace(":/", "").replace("ipfs/", "");
-    } else if (uri.includes("https://ipfs.io")) {
+    } else if (/^ipfs:\/\//.test(uri)) {
+      return "https://ipfs.io/ipfs/" + uri.split('://')[1];
+    } else if (/^https\:\/\/ipfs.io/.test(uri)) {
       return uri;
     } else if (
       uri.includes("data:image/") ||
@@ -74,6 +74,7 @@ export const Default = async (
   try {
     const response = await axios(url);
     const { data } = response;
+
     const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
     const format = headers["content-type"].slice(
       headers["content-type"].lastIndexOf("/") + 1
