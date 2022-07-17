@@ -37,7 +37,7 @@ export const setupURI = (uri: string): string => {
     if (uri.includes("https://ipfs.io")) {
       return uri;
     } else if (/^ipfs:\/\//.test(uri)) {
-      return "https://ipfs.io/ipfs/" + uri.split('://')[1];
+      return "https://ipfs.io/ipfs/" + uri.split("://")[1];
     } else if (/^https\:\/\/ipfs.io/.test(uri)) {
       return uri;
     } else if (
@@ -75,10 +75,18 @@ export const Default = async (
     const response = await axios(url);
     const { data } = response;
 
-    const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
-    const format = headers["content-type"].slice(
-      headers["content-type"].lastIndexOf("/") + 1
-    );
+    let format;
+
+    if (/(\.png$|\.jpe?g$)/.test(data.image)) {
+      format = data.image.match(/(?:\.([^.]+))?$/)[1];
+    } else {
+      const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
+
+      format = headers["content-type"].slice(
+        headers["content-type"].lastIndexOf("/") + 1
+      );
+    }
+
     const nft: NFT = {
       native,
       chainId,
