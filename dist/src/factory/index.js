@@ -25,7 +25,7 @@ const setupURI = (uri) => {
             return uri;
         }
         else if (/^ipfs:\/\//.test(uri)) {
-            return "https://ipfs.io/ipfs/" + uri.split('://')[1];
+            return "https://ipfs.io/ipfs/" + uri.split("://")[1];
         }
         else if (/^https\:\/\/ipfs.io/.test(uri)) {
             return uri;
@@ -55,8 +55,14 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${exports.proxy}${(0, exports.setupURI)(data.image)}`);
-        const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
+        let format;
+        if (/(\.png$|\.jpe?g$)/.test(data.image)) {
+            format = data.image.match(/(?:\.([^.]+))?$/)[1];
+        }
+        else {
+            const { headers } = yield (0, axios_1.default)(`${exports.proxy}${(0, exports.setupURI)(data.image)}`);
+            format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
+        }
         const nft = {
             native,
             chainId,
