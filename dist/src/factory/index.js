@@ -16,6 +16,7 @@ exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.VelasOgPunks
 const axios_1 = __importDefault(require("axios"));
 const tezos_1 = require("./tezos");
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
+const helpers_1 = require("../../tools/helpers");
 const pool = (0, requestPool_1.default)(3000);
 const cheerio = require("cherio");
 exports.proxy = "https://sheltered-crag-76748.herokuapp.com/";
@@ -49,8 +50,9 @@ exports.setupURI = setupURI;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = (0, exports.setupURI)(uri);
-    if (!baseUrl)
-        return nft;
+    if (!baseUrl && tokenId) {
+        return yield (0, helpers_1.getWrappedNft)(nft, account, whitelisted);
+    }
     const url = `${exports.proxy}${(0, exports.setupURI)(baseUrl)}`;
     try {
         const response = yield (0, axios_1.default)(url);
