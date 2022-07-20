@@ -3,6 +3,7 @@ import BigNumber from "bignumber.js";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { checkEmptyFromTezos } from "./tezos";
 import requestPool from "../../tools/requestPool";
+import { getWrappedNft } from "../../tools/helpers";
 
 const pool = requestPool(3000);
 const cheerio = require("cherio");
@@ -68,7 +69,9 @@ export const Default = async (
   } = nft;
   const baseUrl = setupURI(uri);
 
-  if (!baseUrl) return nft;
+  if (!baseUrl && tokenId) {
+    return await getWrappedNft(nft, account, whitelisted);
+  }
 
   const url = `${proxy}${setupURI(baseUrl)}`;
   try {
