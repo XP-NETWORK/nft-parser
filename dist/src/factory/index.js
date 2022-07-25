@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.COZYCOSM = exports.OPENSTORE = exports.ChainCaders = exports.Virtual = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
+exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.COZYCOSM = exports.OPENSTORE = exports.ChainCaders = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
 const axios_1 = __importDefault(require("axios"));
 const tezos_1 = require("./tezos");
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
@@ -1151,42 +1151,6 @@ const OpenSEA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     }
 });
 exports.OpenSEA = OpenSEA;
-const Virtual = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    try {
-        const response = yield (0, axios_1.default)(`${exports.proxy}https://explorer.mainnet.aurora.dev/token/${collectionIdent}/instance/${tokenId}/metadata`);
-        const $ = cheerio.load(response.data);
-        const code = $(".card code").text();
-        const meta = JSON.parse(code);
-        const nft = {
-            native,
-            chainId,
-            tokenId,
-            owner: account,
-            uri,
-            contract,
-            collectionIdent,
-            wrapped: meta && meta.wrapped,
-            metaData: {
-                whitelisted,
-                image: meta && meta.image,
-                imageFormat: "png",
-                attributes: meta && meta.attributes,
-                description: meta && meta.description,
-                animation_url: meta && meta["animation_url"],
-                name: meta && meta.name,
-                collectionName: "Virtual Reality 3D NFTs",
-                symbol: "vr3DNFTs",
-            },
-        };
-        return nft;
-    }
-    catch (error) {
-        console.error(error);
-        return nft;
-    }
-});
-exports.Virtual = Virtual;
 const ChainCaders = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _b, _c, _d, _e, _f, _g, _h;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;

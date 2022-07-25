@@ -22,6 +22,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -31,6 +34,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.nftGeneralParser = void 0;
 const evm = __importStar(require("./factory"));
@@ -39,10 +45,14 @@ const elrd = __importStar(require("./factory/elrond"));
 const tezos = __importStar(require("./factory/tezos"));
 const veChain = __importStar(require("./factory/veChain"));
 const fantom = __importStar(require("./factory/fantom"));
+const aurora = __importStar(require("./factory/auora"));
 const secret = __importStar(require("./factory/secret"));
 const tron_1 = require("./factory/tron");
-const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+const evm_1 = __importDefault(require("../tools/evm"));
+const evmHelper = (0, evm_1.default)();
+const nftGeneralParser = (nft, account, whitelisted, factory) => __awaiter(void 0, void 0, void 0, function* () {
     const { native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    evmHelper.init(factory);
     let parsed;
     switch (chainId) {
         case "4":
@@ -73,7 +83,7 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
             parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
             break;
         case "21":
-            parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
+            parsed = yield aurora.auroraParser(collectionIdent, nft, account, whitelisted);
             break;
         case "23":
             parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
@@ -105,8 +115,12 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
     return parsed;
 });
 exports.nftGeneralParser = nftGeneralParser;
+__exportStar(require("../tools/helpers"), exports);
 const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
+    if (!nft.uri) {
+        nft = yield evmHelper.getUri(nft, collectionIdent);
+    }
     switch (collectionIdent) {
         case "0x0271c6853d4b2bdccd53aaf9edb66993e14d4cba":
             parsed = yield evm.ART_NFT_MATIC(nft, account, whitelisted);
@@ -214,9 +228,6 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
             break;
         case "0x32319834d90323127988E4e2DC7b2162d4262904": //fuze
             parsed = yield evm.COZYCOSM(nft, account, whitelisted);
-            break;
-        case "0xF4823Ffa8133f6B27c7e3A5218B40a9087B6d2c7": //aurora
-            parsed = yield evm.Virtual(nft, account, whitelisted);
             break;
         case "0xb73cc6d7a621e0e220b369c319dbfac258cef4d2": //veals OGPUNKS
             parsed = yield evm.VelasOgPunks(nft, account, whitelisted);

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getWrappedNft = void 0;
+exports.getUri = exports.getWrappedNft = void 0;
 const axios_1 = __importDefault(require("axios"));
 const factory_1 = require("../src/factory");
 const getWrappedNft = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
@@ -40,3 +40,5 @@ const getWrappedNft = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
     };
 });
 exports.getWrappedNft = getWrappedNft;
+const getUri = (nft) => __awaiter(void 0, void 0, void 0, function* () { });
+exports.getUri = getUri;
