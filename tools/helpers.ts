@@ -36,3 +36,5 @@ export const getWrappedNft = async (
     },
   };
 };
+
+export const getUri = async (nft: any) => {};

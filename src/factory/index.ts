@@ -1442,59 +1442,6 @@ export const OpenSEA = async (
   }
 };
 
-export const Virtual = async (
-  nft: any,
-  account: string,
-  whitelisted: boolean
-) => {
-  const {
-    native,
-    native: { contract, tokenId, chainId },
-    collectionIdent,
-    uri,
-  } = nft;
-
-  try {
-    const response = await axios(
-      `${proxy}https://explorer.mainnet.aurora.dev/token/${collectionIdent}/instance/${tokenId}/metadata`
-    );
-
-    const $ = cheerio.load(response.data);
-
-    const code = $(".card code").text();
-
-    const meta = JSON.parse(code);
-
-    const nft: NFT = {
-      native,
-      chainId,
-      tokenId,
-      owner: account,
-      uri,
-      contract,
-      collectionIdent,
-      wrapped: meta && meta.wrapped,
-      metaData: {
-        whitelisted,
-        image: meta && meta.image,
-        imageFormat: "png",
-        attributes: meta && meta.attributes,
-        description: meta && meta.description,
-        animation_url: meta && meta["animation_url"],
-        name: meta && meta.name,
-        collectionName: "Virtual Reality 3D NFTs",
-        symbol: "vr3DNFTs",
-      },
-    };
-
-    return nft;
-  } catch (error) {
-    console.error(error);
-
-    return nft;
-  }
-};
-
 export const ChainCaders = async (
   nft: any,
   account: string,
