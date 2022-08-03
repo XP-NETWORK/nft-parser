@@ -96,8 +96,9 @@ const Anon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
                 image: `https://blackv2.mypinata.cloud/ipfs/QmNrySrtR9E9VfnNGoJqohTvZh4K6Bo79L3eonRVk3xwUs/${tokenId}.png`,
                 imageFormat: "png",
                 description: data === null || data === void 0 ? void 0 : data.description,
-                name: data === null || data === void 0 ? void 0 : data.name,
+                name: "Venonymous " + (data === null || data === void 0 ? void 0 : data.name),
                 symbol: "VENONYMOUS",
+                collectionName: "Venonymous",
                 attributes: data === null || data === void 0 ? void 0 : data.attributes,
             },
         };
