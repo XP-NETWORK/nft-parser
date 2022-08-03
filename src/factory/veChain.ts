@@ -120,8 +120,9 @@ const Anon = async (nft: any, account: string, whitelisted: boolean) => {
         image: `https://blackv2.mypinata.cloud/ipfs/QmNrySrtR9E9VfnNGoJqohTvZh4K6Bo79L3eonRVk3xwUs/${tokenId}.png`,
         imageFormat: "png",
         description: data?.description,
-        name: data?.name,
+        name: "Venonymous " + data?.name,
         symbol: "VENONYMOUS",
+        collectionName: "Venonymous",
         attributes: data?.attributes,
       },
     };
