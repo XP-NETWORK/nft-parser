@@ -470,6 +470,8 @@ const TreatNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.TreatNFT = TreatNFT;
+//0x2c83eaf6e460c673d92477a7c49eb4ecd04e1216
+//c
 // ! 0x2c83eaf6e460c673d92477a7c49eb4ecd04e1216
 const IdoDirt = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;

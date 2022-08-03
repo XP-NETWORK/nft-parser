@@ -26,6 +26,10 @@ const veChainParser = (collectionIdent, nft, account, whitelisted, chainId) => _
         case "0xf0E778BD5C4c2F219A2A5699e3AfD2D82D50E271":
             parsed = yield WrappedXPNET(nft, account, whitelisted);
             break;
+        case "0x2FD3d1E1a3F1E072c89d67301a86a5ba850Ccd4E":
+            parsed = yield Anon(nft, account, whitelisted);
+            break;
+        //0x2FD3d1E1a3F1E072c89d67301a86a5ba850Ccd4E
         default:
             parsed = yield WrappedXPNET(nft, account, whitelisted);
             break;
@@ -61,6 +65,40 @@ const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
                 animation_url: (0, _1.setupURI)(metadata.fileUrl),
                 animation_url_format: "mp4",
                 name: metadata.name,
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+const Anon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    try {
+        const response = yield (0, axios_1.default)(`${_1.proxy}${`https://blackv2.mypinata.cloud/ipfs/QmNrySrtR9E9VfnNGoJqohTvZh4K6Bo79L3eonRVk3xwUs/${tokenId}.json`}`).catch(() => ({
+            data: null,
+        }));
+        let { data } = response;
+        data = yield (0, tezos_1.checkEmptyFromTezos)(data);
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            wrapped: data.wrapped,
+            metaData: {
+                whitelisted,
+                image: `https://blackv2.mypinata.cloud/ipfs/QmNrySrtR9E9VfnNGoJqohTvZh4K6Bo79L3eonRVk3xwUs/${tokenId}.png`,
+                imageFormat: "png",
+                description: data === null || data === void 0 ? void 0 : data.description,
+                name: data === null || data === void 0 ? void 0 : data.name,
+                symbol: "VENONYMOUS",
+                attributes: data === null || data === void 0 ? void 0 : data.attributes,
             },
         };
         return nft;
