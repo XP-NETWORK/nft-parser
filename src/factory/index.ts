@@ -578,6 +578,8 @@ export const TreatNFT = async (
     return nft;
   }
 };
+//0x2c83eaf6e460c673d92477a7c49eb4ecd04e1216
+//c
 // ! 0x2c83eaf6e460c673d92477a7c49eb4ecd04e1216
 export const IdoDirt = async (
   nft: any,
