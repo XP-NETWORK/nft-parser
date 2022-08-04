@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.COZYCOSM = exports.OPENSTORE = exports.ChainCaders = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
+exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.DirtyLife = exports.COZYCOSM = exports.OPENSTORE = exports.ChainCaders = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
 const axios_1 = __importDefault(require("axios"));
 const tezos_1 = require("./tezos");
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
@@ -1252,6 +1252,39 @@ const COZYCOSM = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.COZYCOSM = COZYCOSM;
+const DirtyLife = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    try {
+        const { data } = yield (0, axios_1.default)(`${exports.proxy}${uri}`).catch(() => ({
+            data: null,
+        }));
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            wrapped: data === null || data === void 0 ? void 0 : data.wrapped,
+            metaData: {
+                whitelisted,
+                image: (0, exports.setupURI)(data === null || data === void 0 ? void 0 : data.image),
+                imageFormat: "png",
+                description: data === null || data === void 0 ? void 0 : data.description,
+                name: data === null || data === void 0 ? void 0 : data.name,
+                attributes: data === null || data === void 0 ? void 0 : data.attributes,
+                collectionName: "DirtLife",
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+exports.DirtyLife = DirtyLife;
 const MachineFi = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {

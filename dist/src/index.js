@@ -155,6 +155,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
         case "0x36f8f51f65fe200311f709b797baf4e193dd0b0d":
             parsed = yield evm.TreatNFT(nft, account, whitelisted);
             break;
+        case "0x2C83EAf6E460C673d92477a7c49eb4ECd04e1216":
+            parsed = yield evm.DirtyLife(nft, account, whitelisted);
+            break;
         case "0x2c83eaf6e460c673d92477a7c49eb4ecd04e1216":
             parsed = yield evm.IdoDirt(nft, account, whitelisted);
             break;
