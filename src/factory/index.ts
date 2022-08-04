@@ -1584,6 +1584,50 @@ export const COZYCOSM = async (
   }
 };
 
+export const DirtyLife = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const { data } = await axios(`${proxy}${uri}`).catch(() => ({
+      data: null,
+    }));
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      wrapped: data?.wrapped,
+      metaData: {
+        whitelisted,
+        image: setupURI(data?.image),
+        imageFormat: "png",
+        description: data?.description,
+        name: data?.name,
+        attributes: data?.attributes,
+        collectionName: "DirtLife",
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+
+    return nft;
+  }
+};
+
 export const MachineFi = async (
   nft: any,
   account: string,
