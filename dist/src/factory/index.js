@@ -17,6 +17,7 @@ const axios_1 = __importDefault(require("axios"));
 const tezos_1 = require("./tezos");
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
 const helpers_1 = require("../../tools/helpers");
+const file_type_1 = require("file-type");
 const pool = (0, requestPool_1.default)(3000);
 const cheerio = require("cherio");
 exports.proxy = "https://sheltered-crag-76748.herokuapp.com/";
@@ -53,17 +54,28 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     if (!baseUrl && tokenId) {
         return yield (0, helpers_1.getWrappedNft)(nft, account, whitelisted);
     }
-    const url = `${exports.proxy}${(0, exports.setupURI)(baseUrl)}`;
+    const url = `${(0, exports.setupURI)(baseUrl)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
         let format;
         if (/(\.png$|\.jpe?g$)/.test(data.image)) {
+            console.log("default pic");
             format = data.image.match(/(?:\.([^.]+))?$/)[1];
         }
         else {
-            const { headers } = yield (0, axios_1.default)(`${exports.proxy}${(0, exports.setupURI)(data.image)}`);
-            format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
+            console.log("reading chunk");
+            format = yield new Promise((resolve) => __awaiter(void 0, void 0, void 0, function* () {
+                const stream = yield (0, axios_1.default)((0, exports.setupURI)(data.image), {
+                    responseType: "stream",
+                });
+                stream.data.on("data", (chunk) => __awaiter(void 0, void 0, void 0, function* () {
+                    var _a;
+                    const res = yield (0, file_type_1.fromBuffer)(chunk);
+                    (_a = stream.data) === null || _a === void 0 ? void 0 : _a.destroy();
+                    resolve(res === null || res === void 0 ? void 0 : res.ext);
+                }));
+            }));
         }
         const nft = {
             native,
@@ -793,13 +805,13 @@ const ArsenalGame = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
 exports.ArsenalGame = ArsenalGame;
 // ! 0xc69ecd37122a9b5fd7e62bc229d478bb83063c9d
 const Mate = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _b;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const { data } = yield (0, axios_1.default)(url);
         const imgResp = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
-        const mimeType = (_a = imgResp === null || imgResp === void 0 ? void 0 : imgResp.headers) === null || _a === void 0 ? void 0 : _a["content-type"];
+        const mimeType = (_b = imgResp === null || imgResp === void 0 ? void 0 : imgResp.headers) === null || _b === void 0 ? void 0 : _b["content-type"];
         const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -1154,7 +1166,7 @@ const OpenSEA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
 });
 exports.OpenSEA = OpenSEA;
 const ChainCaders = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b, _c, _d, _e, _f, _g, _h;
+    var _c, _d, _e, _f, _g, _h, _j;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = yield (0, axios_1.default)(`${exports.proxy}https://api.alturanft.com/api/item/56/${collectionIdent}/${tokenId}`);
@@ -1171,12 +1183,12 @@ const ChainCaders = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             wrapped: data === null || data === void 0 ? void 0 : data.wrapped,
             metaData: {
                 whitelisted,
-                image: (_b = data === null || data === void 0 ? void 0 : data.item) === null || _b === void 0 ? void 0 : _b.imageUrl,
-                imageFormat: (_d = (_c = data === null || data === void 0 ? void 0 : data.item) === null || _c === void 0 ? void 0 : _c.imageUrl) === null || _d === void 0 ? void 0 : _d.match(/(?:\.([^.]+))?$/)[1],
-                name: (_e = data === null || data === void 0 ? void 0 : data.item) === null || _e === void 0 ? void 0 : _e.name,
-                description: (_f = data === null || data === void 0 ? void 0 : data.item) === null || _f === void 0 ? void 0 : _f.description,
-                collectionName: (_g = data === null || data === void 0 ? void 0 : data.item) === null || _g === void 0 ? void 0 : _g.collectionName,
-                attributes: (_h = data === null || data === void 0 ? void 0 : data.item) === null || _h === void 0 ? void 0 : _h.properties,
+                image: (_c = data === null || data === void 0 ? void 0 : data.item) === null || _c === void 0 ? void 0 : _c.imageUrl,
+                imageFormat: (_e = (_d = data === null || data === void 0 ? void 0 : data.item) === null || _d === void 0 ? void 0 : _d.imageUrl) === null || _e === void 0 ? void 0 : _e.match(/(?:\.([^.]+))?$/)[1],
+                name: (_f = data === null || data === void 0 ? void 0 : data.item) === null || _f === void 0 ? void 0 : _f.name,
+                description: (_g = data === null || data === void 0 ? void 0 : data.item) === null || _g === void 0 ? void 0 : _g.description,
+                collectionName: (_h = data === null || data === void 0 ? void 0 : data.item) === null || _h === void 0 ? void 0 : _h.collectionName,
+                attributes: (_j = data === null || data === void 0 ? void 0 : data.item) === null || _j === void 0 ? void 0 : _j.properties,
                 contractType: "1155",
             },
         };
@@ -1315,7 +1327,7 @@ const MachineFi = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
 });
 exports.MachineFi = MachineFi;
 const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _j, _k, _l;
+    var _k, _l, _m;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const { data } = yield (0, axios_1.default)(`${exports.proxy}${uri}`).catch(() => ({
@@ -1332,10 +1344,10 @@ const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: data && ((_j = data.data) === null || _j === void 0 ? void 0 : _j.image),
+                image: data && ((_k = data.data) === null || _k === void 0 ? void 0 : _k.image),
                 imageFormat: "png",
-                description: data && ((_k = data.data) === null || _k === void 0 ? void 0 : _k.description),
-                name: data && ((_l = data.data) === null || _l === void 0 ? void 0 : _l.name),
+                description: data && ((_l = data.data) === null || _l === void 0 ? void 0 : _l.description),
+                name: data && ((_m = data.data) === null || _m === void 0 ? void 0 : _m.name),
             },
         };
         return nft;
@@ -1415,8 +1427,8 @@ exports.PACK = PACK;
 const VelasOgPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield fetch(uri);
-        const data = yield response.json();
+        const response = yield (0, axios_1.default)(uri);
+        const { data } = response;
         const nft = {
             native,
             chainId,
