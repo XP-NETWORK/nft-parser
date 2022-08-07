@@ -5,10 +5,23 @@ import { checkEmptyFromTezos } from "./tezos";
 import requestPool from "../../tools/requestPool";
 import { getWrappedNft } from "../../tools/helpers";
 
-import { fromBuffer } from "file-type";
-
 const pool = requestPool(3000);
 const cheerio = require("cherio");
+
+/*console.log("reading chunk");
+      format = await new Promise(async (resolve) => {
+        const stream = await axios.get(setupURI(data.image), {
+          responseType: "stream",
+        });
+
+        console.log(stream, "stream");
+
+        stream.data.on("data", async (chunk: ArrayBuffer) => {
+          const res = await fromBuffer(chunk);
+          stream.data?.destroy();
+          resolve(res?.ext);
+        });
+      });*/
 
 export const proxy = "https://sheltered-crag-76748.herokuapp.com/";
 export interface NFT {
@@ -75,29 +88,23 @@ export const Default = async (
     return await getWrappedNft(nft, account, whitelisted);
   }
 
-  const url = `${setupURI(baseUrl)}`;
+  const url = `${proxy}${setupURI(baseUrl)}`;
   try {
     const response = await axios(url);
-    const { data } = response;
+    let { data } = response;
+
+    data = await checkEmptyFromTezos(data);
 
     let format;
 
     if (/(\.png$|\.jpe?g$)/.test(data.image)) {
-      console.log("default pic");
       format = data.image.match(/(?:\.([^.]+))?$/)[1];
     } else {
-      console.log("reading chunk");
-      format = await new Promise(async (resolve) => {
-        const stream = await axios(setupURI(data.image), {
-          responseType: "stream",
-        });
+      const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
 
-        stream.data.on("data", async (chunk: ArrayBuffer) => {
-          const res = await fromBuffer(chunk);
-          stream.data?.destroy();
-          resolve(res?.ext);
-        });
-      });
+      format = headers["content-type"].slice(
+        headers["content-type"].lastIndexOf("/") + 1
+      );
     }
 
     const nft: NFT = {
