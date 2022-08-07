@@ -5,6 +5,8 @@ import { checkEmptyFromTezos } from "./tezos";
 import requestPool from "../../tools/requestPool";
 import { getWrappedNft } from "../../tools/helpers";
 
+import { fromBuffer } from "file-type";
+
 const pool = requestPool(3000);
 const cheerio = require("cherio");
 
@@ -73,7 +75,7 @@ export const Default = async (
     return await getWrappedNft(nft, account, whitelisted);
   }
 
-  const url = `${proxy}${setupURI(baseUrl)}`;
+  const url = `${setupURI(baseUrl)}`;
   try {
     const response = await axios(url);
     const { data } = response;
@@ -81,13 +83,21 @@ export const Default = async (
     let format;
 
     if (/(\.png$|\.jpe?g$)/.test(data.image)) {
+      console.log("default pic");
       format = data.image.match(/(?:\.([^.]+))?$/)[1];
     } else {
-      const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
+      console.log("reading chunk");
+      format = await new Promise(async (resolve) => {
+        const stream = await axios(setupURI(data.image), {
+          responseType: "stream",
+        });
 
-      format = headers["content-type"].slice(
-        headers["content-type"].lastIndexOf("/") + 1
-      );
+        stream.data.on("data", async (chunk: ArrayBuffer) => {
+          const res = await fromBuffer(chunk);
+          stream.data?.destroy();
+          resolve(res?.ext);
+        });
+      });
     }
 
     const nft: NFT = {
@@ -1809,9 +1819,9 @@ export const VelasOgPunks = async (
   } = nft;
 
   try {
-    const response = await fetch(uri);
+    const response = await axios(uri);
 
-    const data = await response.json();
+    const { data } = response;
 
     const nft: NFT = {
       native,
