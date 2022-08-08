@@ -11,6 +11,8 @@ import { tronParser } from "./factory/tron";
 import { Minter__factory, UserNftMinter__factory } from "xpnet-web3-contracts";
 import Evm from "../tools/evm";
 
+export let proxy = "https://sheltered-crag-76748.herokuapp.com/";
+
 interface ParsedNFT {
   chainId: string;
   tokenId: string;
@@ -33,14 +35,29 @@ interface ParsedNFT {
   };
 }
 
+interface NFT {
+  uri: string;
+  native: {
+    tokenId: string;
+    chainId: string;
+    contract: string | undefined;
+    [x: string]: any;
+  };
+  collectionIdent: string;
+  [x: string]: any;
+}
+
 const evmHelper = Evm();
 
 export const nftGeneralParser = async (
-  nft: any,
+  nft: NFT,
   account: string,
   whitelisted: boolean,
+  mode?: "default" | "proxy",
   factory?: any
 ): Promise<ParsedNFT> => {
+  proxy = mode === "proxy" ? proxy : "";
+
   const {
     native: { contract, tokenId, chainId },
     collectionIdent,
@@ -137,7 +154,7 @@ export const nftGeneralParser = async (
       );
       break;
     default:
-      return nft;
+      return nft as ParsedNFT;
   }
   return parsed;
 };

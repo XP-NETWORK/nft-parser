@@ -1,6 +1,8 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
-import { proxy, NFT, setupURI } from ".";
+import { NFT, setupURI } from ".";
+
+import { proxy } from "..";
 
 import { Default } from "./index";
 

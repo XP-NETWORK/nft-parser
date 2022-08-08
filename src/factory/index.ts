@@ -5,6 +5,8 @@ import { checkEmptyFromTezos } from "./tezos";
 import requestPool from "../../tools/requestPool";
 import { getWrappedNft } from "../../tools/helpers";
 
+import { proxy } from "..";
+
 const pool = requestPool(3000);
 const cheerio = require("cherio");
 
@@ -23,7 +25,6 @@ const cheerio = require("cherio");
         });
       });*/
 
-export const proxy = "https://sheltered-crag-76748.herokuapp.com/";
 export interface NFT {
   chainId: string;
   tokenId: string;

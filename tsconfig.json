@@ -5,12 +5,14 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     //"outDir": "../bridge-interface/node_modules/nft-parser/dist",
-    //"outDir": "../nft-cache/node_modules/nft-parser/dist",
-    "outDir": "./dist",
+    "outDir": "../nft-cache/node_modules/nft-parser/dist",
+    //"outDir": "./dist",
     "strict": true,
+    "declaration": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "typeRoots": ["./node_modules/@types", "./typings"]
-  }
+    "emitDecoratorMetadata": true
+    //"typeRoots": ["./node_modules/@types", "./types"]
+  },
+  "include": ["src/**/*"]
 }

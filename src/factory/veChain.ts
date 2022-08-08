@@ -3,9 +3,11 @@ import BigNumber from "bignumber.js";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 import requestPool from "../../tools/requestPool";
-import { proxy, NFT, setupURI } from ".";
+import { NFT, setupURI } from ".";
 import * as evm from "./index";
 import { checkEmptyFromTezos } from "./tezos";
+
+import { proxy } from "..";
 
 const pool = requestPool(3000);
 const cheerio = require("cherio");
