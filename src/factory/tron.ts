@@ -4,7 +4,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { nftGeneralParser } from "..";
 import requestPool from "../../tools/requestPool";
 import { setupURI } from ".";
-
+import { getAssetFormat } from "../../tools/helpers";
 import { proxy } from "..";
 
 const pool = requestPool(3000);
@@ -63,10 +63,9 @@ export const Default = async (
   try {
     const response = await axios(url);
     const { data } = response;
-    const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
-    const format = headers["content-type"].slice(
-      headers["content-type"].lastIndexOf("/") + 1
-    );
+
+    const format = await getAssetFormat(data.image);
+
     const nft: NFT = {
       native,
       chainId,
