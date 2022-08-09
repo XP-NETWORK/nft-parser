@@ -3,27 +3,13 @@ import BigNumber from "bignumber.js";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { checkEmptyFromTezos } from "./tezos";
 import requestPool from "../../tools/requestPool";
-import { getWrappedNft } from "../../tools/helpers";
+import { getWrappedNft, getAssetFormat } from "../../tools/helpers";
+
+import { proxy } from "..";
 
 const pool = requestPool(3000);
 const cheerio = require("cherio");
 
-/*console.log("reading chunk");
-      format = await new Promise(async (resolve) => {
-        const stream = await axios.get(setupURI(data.image), {
-          responseType: "stream",
-        });
-
-        console.log(stream, "stream");
-
-        stream.data.on("data", async (chunk: ArrayBuffer) => {
-          const res = await fromBuffer(chunk);
-          stream.data?.destroy();
-          resolve(res?.ext);
-        });
-      });*/
-
-export const proxy = "https://sheltered-crag-76748.herokuapp.com/";
 export interface NFT {
   chainId: string;
   tokenId: string;
@@ -91,21 +77,12 @@ export const Default = async (
   const url = `${proxy}${setupURI(baseUrl)}`;
   try {
     const response = await axios(url);
+
     let { data } = response;
 
     data = await checkEmptyFromTezos(data);
 
-    let format;
-
-    if (/(\.png$|\.jpe?g$)/.test(data.image)) {
-      format = data.image.match(/(?:\.([^.]+))?$/)[1];
-    } else {
-      const { headers } = await axios(`${proxy}${setupURI(data.image)}`);
-
-      format = headers["content-type"].slice(
-        headers["content-type"].lastIndexOf("/") + 1
-      );
-    }
+    let format = await getAssetFormat(data.image);
 
     const nft: NFT = {
       native,
@@ -126,8 +103,8 @@ export const Default = async (
       },
     };
     return nft;
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    console.error("error in default parser: ", error.message);
     return nft;
   }
 };
@@ -1875,8 +1852,7 @@ export const Cities = async (
     const response = (await pool.addRequest(proxy + uri)) as AxiosResponse<
       any,
       any
-    >; // await fetch(proxy + uri);
-
+    >;
     const { data } = response;
 
     const nft: NFT = {

@@ -2,6 +2,10 @@ import axios from "axios";
 
 import { setupURI } from "../src/factory";
 
+import { proxy } from "../src";
+
+import { fromBuffer } from "file-type";
+
 export const getWrappedNft = async (
   nft: any,
   account: string,
@@ -37,4 +41,32 @@ export const getWrappedNft = async (
   };
 };
 
-export const getUri = async (nft: any) => {};
+export const getAssetFormat = async (imageUri: string): Promise<string> => {
+  let format = "";
+
+  if (/(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$)/.test(imageUri)) {
+    format = imageUri.match(/(?:\.([^.]+))?$/)?.at(1) || "";
+  } else {
+    if (proxy) {
+      const { headers } = await axios(`${proxy}${setupURI(imageUri)}`);
+
+      format = headers["content-type"].slice(
+        headers["content-type"].lastIndexOf("/") + 1
+      );
+    } else {
+      format = await new Promise(async (resolve) => {
+        const stream = await axios.get(`${proxy}${setupURI(imageUri)}`, {
+          responseType: "stream",
+        });
+
+        stream.data.on("data", async (chunk: ArrayBuffer) => {
+          const res = await fromBuffer(chunk);
+          stream.data?.destroy();
+          resolve(res?.ext || "");
+        });
+      });
+    }
+  }
+
+  return format;
+};

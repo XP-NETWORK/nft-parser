@@ -11,6 +11,33 @@ import { tronParser } from "./factory/tron";
 import { Minter__factory, UserNftMinter__factory } from "xpnet-web3-contracts";
 import Evm from "../tools/evm";
 
+var isNode = false;
+if (typeof process === "object") {
+  if (typeof process.versions === "object") {
+    if (typeof process.versions.node !== "undefined") {
+      isNode = true;
+    }
+  }
+}
+
+export const proxy = isNode
+  ? ""
+  : "https://sheltered-crag-76748.herokuapp.com/";
+
+axios.defaults.timeout = isNode ? 5000 : axios.defaults.timeout;
+axios.interceptors.request.use(
+  function (config) {
+    // Do something before request is sent
+    return config;
+  },
+  function (error: any) {
+    if (error.code === "ECONNABORTED") {
+      return Promise.reject("parse timeout");
+    }
+    return Promise.reject(error);
+  }
+);
+
 interface ParsedNFT {
   chainId: string;
   tokenId: string;
@@ -33,14 +60,28 @@ interface ParsedNFT {
   };
 }
 
+interface NFT {
+  uri: string;
+  native: {
+    tokenId: string;
+    chainId: string;
+    contract: string | undefined;
+    [x: string]: any;
+  };
+  collectionIdent: string;
+  [x: string]: any;
+}
+
 const evmHelper = Evm();
 
 export const nftGeneralParser = async (
-  nft: any,
+  nft: NFT,
   account: string,
   whitelisted: boolean,
   factory?: any
 ): Promise<ParsedNFT> => {
+  //proxy = mode === "proxy" ? proxy : "";
+
   const {
     native: { contract, tokenId, chainId },
     collectionIdent,
@@ -137,7 +178,7 @@ export const nftGeneralParser = async (
       );
       break;
     default:
-      return nft;
+      return nft as ParsedNFT;
   }
   return parsed;
 };

@@ -3,9 +3,13 @@ import BigNumber from "bignumber.js";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 import requestPool from "../../tools/requestPool";
-import { proxy, NFT, setupURI } from ".";
+import { NFT, setupURI } from ".";
 import * as evm from "./index";
 import { checkEmptyFromTezos } from "./tezos";
+
+import { fromBuffer } from "file-type";
+
+import { proxy } from "..";
 
 const pool = requestPool(3000);
 const cheerio = require("cherio");
@@ -200,13 +204,12 @@ const Forest = async (nft: any, account: string, whitelisted: boolean) => {
   } = nft;
 
   try {
-    //const response = await axios().catch(() => ({
-    // // data: null,
-    //}));
-
-    const response = (await pool.addRequest(
-      `${proxy}${setupURI(uri)}`
-    )) as AxiosResponse<any, any>;
+    const response = proxy
+      ? ((await pool.addRequest(`${proxy}${setupURI(uri)}`)) as AxiosResponse<
+          any,
+          any
+        >)
+      : await axios(`${proxy}${setupURI(uri)}`);
 
     let { data } = response;
 
@@ -234,9 +237,8 @@ const Forest = async (nft: any, account: string, whitelisted: boolean) => {
       },
     };
     return nft;
-  } catch (error) {
-    console.error(error);
-
+  } catch (error: any) {
+    console.log(error.message || "parse timeout forest");
     return nft;
   }
 };
