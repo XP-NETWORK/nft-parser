@@ -16,6 +16,8 @@ exports.Default = exports.tronParser = void 0;
 const axios_1 = __importDefault(require("axios"));
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
 const _1 = require(".");
+const helpers_1 = require("../../tools/helpers");
+const __1 = require("..");
 const pool = (0, requestPool_1.default)(3000);
 const tronParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
@@ -30,12 +32,11 @@ exports.tronParser = tronParser;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${_1.proxy}${(0, _1.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, _1.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${_1.proxy}${(0, _1.setupURI)(data.image)}`);
-        const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
+        const format = yield (0, helpers_1.getAssetFormat)(data.image);
         const nft = {
             native,
             chainId,

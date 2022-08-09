@@ -12,28 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.DirtyLife = exports.COZYCOSM = exports.OPENSTORE = exports.ChainCaders = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = exports.proxy = void 0;
+exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.DirtyLife = exports.COZYCOSM = exports.OPENSTORE = exports.ChainCaders = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = void 0;
 const axios_1 = __importDefault(require("axios"));
 const tezos_1 = require("./tezos");
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
 const helpers_1 = require("../../tools/helpers");
+const __1 = require("..");
 const pool = (0, requestPool_1.default)(3000);
 const cheerio = require("cherio");
-/*console.log("reading chunk");
-      format = await new Promise(async (resolve) => {
-        const stream = await axios.get(setupURI(data.image), {
-          responseType: "stream",
-        });
-
-        console.log(stream, "stream");
-
-        stream.data.on("data", async (chunk: ArrayBuffer) => {
-          const res = await fromBuffer(chunk);
-          stream.data?.destroy();
-          resolve(res?.ext);
-        });
-      });*/
-exports.proxy = "https://sheltered-crag-76748.herokuapp.com/";
 const setupURI = (uri) => {
     if (uri) {
         if (uri.includes("https://ipfs.io")) {
@@ -67,19 +53,12 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     if (!baseUrl && tokenId) {
         return yield (0, helpers_1.getWrappedNft)(nft, account, whitelisted);
     }
-    const url = `${exports.proxy}${(0, exports.setupURI)(baseUrl)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(baseUrl)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         let { data } = response;
         data = yield (0, tezos_1.checkEmptyFromTezos)(data);
-        let format;
-        if (/(\.png$|\.jpe?g$)/.test(data.image)) {
-            format = data.image.match(/(?:\.([^.]+))?$/)[1];
-        }
-        else {
-            const { headers } = yield (0, axios_1.default)(`${exports.proxy}${(0, exports.setupURI)(data.image)}`);
-            format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
-        }
+        let format = yield (0, helpers_1.getAssetFormat)(data.image);
         const nft = {
             native,
             chainId,
@@ -101,7 +80,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         return nft;
     }
     catch (error) {
-        console.error(error);
+        console.error("error in default parser: ", error.message);
         return nft;
     }
 });
@@ -111,11 +90,11 @@ exports.Default = Default;
 const ART_NFT_MATIC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${exports.proxy}${data.image}`);
+        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${data.image}`);
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -146,7 +125,7 @@ exports.ART_NFT_MATIC = ART_NFT_MATIC;
 const EtherHead = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
@@ -179,7 +158,7 @@ exports.EtherHead = EtherHead;
 const AngelOfAether = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
@@ -212,11 +191,11 @@ exports.AngelOfAether = AngelOfAether;
 const Legend = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${exports.proxy}${(0, exports.setupURI)(data.image)}`);
+        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(data.image)}`);
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -248,11 +227,11 @@ exports.Legend = Legend;
 const AlphaBettyDoodle = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${exports.proxy}${(0, exports.setupURI)(data.image)}`);
+        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(data.image)}`);
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -283,7 +262,7 @@ exports.AlphaBettyDoodle = AlphaBettyDoodle;
 const Mabstronauts = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
@@ -318,11 +297,11 @@ exports.Mabstronauts = Mabstronauts;
 const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${exports.proxy}${(0, exports.setupURI)(data.image)}`);
+        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(data.image)}`);
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -356,7 +335,7 @@ const TheBlackMagic = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
     // debugger;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     const imageFormats = ["gif", "jpg", "jpeg", "png", "svg", "webp"];
     let nestedImage;
     try {
@@ -417,7 +396,7 @@ exports.TheBlackMagic = TheBlackMagic;
 const CartelPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
@@ -453,7 +432,7 @@ exports.CartelPunks = CartelPunks;
 const TreatNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const newUrl = `${exports.proxy}https://treatdao.com/api/nft/${tokenId}`;
+    const newUrl = `${__1.proxy}https://treatdao.com/api/nft/${tokenId}`;
     try {
         const response = yield (0, axios_1.default)(newUrl);
         const { data } = response;
@@ -491,7 +470,7 @@ exports.TreatNFT = TreatNFT;
 const IdoDirt = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const newUrl = `${exports.proxy}https://treatdao.com/api/nft/${tokenId}`;
+    const newUrl = `${__1.proxy}https://treatdao.com/api/nft/${tokenId}`;
     try {
         const response = yield (0, axios_1.default)(newUrl);
         const { data } = response;
@@ -670,7 +649,7 @@ exports.Founders_Cabinet = Founders_Cabinet;
 const TTAV = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const { data } = yield (0, axios_1.default)(url);
         const { headers } = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
@@ -737,7 +716,7 @@ exports.BoredGUtterCats = BoredGUtterCats;
 // ! 0x2FeEE2Cc7fB32bD48AB22080e2C680f5390Ef426
 const IDoDirtPolygon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const { data } = yield (0, axios_1.default)(url);
         const { headers } = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
@@ -774,7 +753,7 @@ const ArsenalGame = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     if (!uri)
         console.log("NFT with no uri collection: ", collectionIdent, "tokenId: ", tokenId);
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const { data } = yield (0, axios_1.default)(url);
         const { headers } = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
@@ -810,7 +789,7 @@ exports.ArsenalGame = ArsenalGame;
 const Mate = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const { data } = yield (0, axios_1.default)(url);
         const imgResp = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
@@ -849,7 +828,7 @@ const ABCBears = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     if (!uri)
         console.log("NFT with no uri collection: ", collectionIdent, "tokenId: ", tokenId);
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const { data } = yield (0, axios_1.default)(url);
         const { headers } = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
@@ -887,7 +866,7 @@ const TragicMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     if (!uri)
         console.log("NFT with no uri collection: ", collectionIdent, "tokenId: ", tokenId);
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const { data } = yield (0, axios_1.default)(url);
         const { headers } = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
@@ -923,7 +902,7 @@ const SuperFatAcademy = (nft, account, whitelisted) => __awaiter(void 0, void 0,
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     if (!uri)
         console.log("NFT with no uri collection: ", collectionIdent, "tokenId: ", tokenId);
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const { data } = yield (0, axios_1.default)(url);
         const { headers } = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
@@ -958,11 +937,11 @@ exports.SuperFatAcademy = SuperFatAcademy;
 const ForgottenRunesComic = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${exports.proxy}${(0, exports.setupURI)(data.image)}`);
+        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(data.image)}`);
         const video = headers["content-type"].includes("video");
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
@@ -998,11 +977,11 @@ exports.ForgottenRunesComic = ForgottenRunesComic;
 const LilDickie = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${exports.proxy}${(0, exports.setupURI)(data.image)}`);
+        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(data.image)}`);
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -1035,11 +1014,11 @@ exports.LilDickie = LilDickie;
 const TheCheeks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${exports.proxy}${(0, exports.setupURI)(data.image)}`);
+        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(data.image)}`);
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -1072,7 +1051,7 @@ exports.TheCheeks = TheCheeks;
 const InterestingCPeople = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
@@ -1104,7 +1083,7 @@ const InterestingCPeople = (nft, account, whitelisted) => __awaiter(void 0, void
 exports.InterestingCPeople = InterestingCPeople;
 const Nagato = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const url = `${exports.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = (yield pool.addRequest(url));
         const { data } = response;
@@ -1139,7 +1118,7 @@ exports.Nagato = Nagato;
 const OpenSEA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(`${exports.proxy}${uri.replace("0x{id}", tokenId)}`);
+        const response = yield (0, axios_1.default)(`${__1.proxy}${uri.replace("0x{id}", tokenId)}`);
         const { data } = response;
         const nft = {
             native,
@@ -1172,7 +1151,7 @@ const ChainCaders = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
     var _b, _c, _d, _e, _f, _g, _h;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(`${exports.proxy}https://api.alturanft.com/api/item/56/${collectionIdent}/${tokenId}`);
+        const response = yield (0, axios_1.default)(`${__1.proxy}https://api.alturanft.com/api/item/56/${collectionIdent}/${tokenId}`);
         const { data } = response;
         console.log(data);
         const nft = {
@@ -1207,8 +1186,8 @@ const OPENSTORE = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
     const { native, native: { contract, tokenId, chainId, contractType }, collectionIdent, uri, } = nft;
     try {
         const response = yield (0, axios_1.default)(contractType === "ERC1155"
-            ? `${exports.proxy}https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/${tokenId}`
-            : `${exports.proxy}${uri.replace(/:\d+/, "").replace(".moralis", "")}`);
+            ? `${__1.proxy}https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/${tokenId}`
+            : `${__1.proxy}${uri.replace(/:\d+/, "").replace(".moralis", "")}`);
         const { data } = response;
         const nft = {
             native,
@@ -1270,7 +1249,7 @@ exports.COZYCOSM = COZYCOSM;
 const DirtyLife = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const { data } = yield (0, axios_1.default)(`${exports.proxy}${uri}`).catch(() => ({
+        const { data } = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
             data: null,
         }));
         const nft = {
@@ -1333,7 +1312,7 @@ const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     var _j, _k, _l;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const { data } = yield (0, axios_1.default)(`${exports.proxy}${uri}`).catch(() => ({
+        const { data } = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
             data: null,
         }));
         const nft = {
@@ -1395,7 +1374,7 @@ exports.WUBI = WUBI;
 const PACK = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(`${exports.proxy}${uri}`).catch(() => ({
+        const response = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
             data: null,
         }));
         const { data } = response;
@@ -1464,7 +1443,7 @@ exports.VelasOgPunks = VelasOgPunks;
 const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = (yield pool.addRequest(exports.proxy + uri)); // await fetch(proxy + uri);
+        const response = (yield pool.addRequest(__1.proxy + uri));
         const { data } = response;
         const nft = {
             native,
@@ -1499,7 +1478,7 @@ exports.Mountains = exports.Cities;
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        let { data } = yield (0, axios_1.default)(`${exports.proxy}${uri}`).catch(() => ({
+        let { data } = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
             data: null,
         }));
         data = yield (0, tezos_1.checkEmptyFromTezos)(data);

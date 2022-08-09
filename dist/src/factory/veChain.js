@@ -41,6 +41,7 @@ const requestPool_1 = __importDefault(require("../../tools/requestPool"));
 const _1 = require(".");
 const evm = __importStar(require("./index"));
 const tezos_1 = require("./tezos");
+const __1 = require("..");
 const pool = (0, requestPool_1.default)(3000);
 const cheerio = require("cherio");
 const veChainParser = (collectionIdent, nft, account, whitelisted, chainId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -69,7 +70,7 @@ const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
     var _a, _b, _c;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(`${_1.proxy}${uri}`).catch(() => ({
+        const response = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
             data: null,
         }));
         const $ = cheerio.load(response.data);
@@ -106,7 +107,7 @@ const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
 const Anon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(`${_1.proxy}${`https://blackv2.mypinata.cloud/ipfs/QmNrySrtR9E9VfnNGoJqohTvZh4K6Bo79L3eonRVk3xwUs/${tokenId}.json`}`).catch(() => ({
+        const response = yield (0, axios_1.default)(`${__1.proxy}${`https://blackv2.mypinata.cloud/ipfs/QmNrySrtR9E9VfnNGoJqohTvZh4K6Bo79L3eonRVk3xwUs/${tokenId}.json`}`).catch(() => ({
             data: null,
         }));
         let { data } = response;
@@ -142,7 +143,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
     var _d, _e;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(`${_1.proxy}${(0, _1.setupURI)(uri)}`).catch(() => ({
+        const response = yield (0, axios_1.default)(`${__1.proxy}${(0, _1.setupURI)(uri)}`).catch(() => ({
             data: null,
         }));
         let { data } = response;
@@ -178,10 +179,9 @@ const Forest = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
     var _f, _g;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        //const response = await axios().catch(() => ({
-        // // data: null,
-        //}));
-        const response = (yield pool.addRequest(`${_1.proxy}${(0, _1.setupURI)(uri)}`));
+        const response = __1.proxy
+            ? (yield pool.addRequest(`${__1.proxy}${(0, _1.setupURI)(uri)}`))
+            : yield (0, axios_1.default)(`${__1.proxy}${(0, _1.setupURI)(uri)}`);
         let { data } = response;
         data = yield (0, tezos_1.checkEmptyFromTezos)(data);
         const nft = {
@@ -208,7 +208,7 @@ const Forest = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
         return nft;
     }
     catch (error) {
-        console.error(error);
+        console.log(error.message || "parse timeout forest");
         return nft;
     }
 });

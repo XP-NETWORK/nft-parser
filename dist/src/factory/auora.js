@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.auroraParser = void 0;
 const axios_1 = __importDefault(require("axios"));
-const _1 = require(".");
+const __1 = require("..");
 const index_1 = require("./index");
 const cheerio = require("cherio");
 const auroraParser = (collectionIdent, nft, account, whitelisted, chainId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -33,7 +33,7 @@ exports.auroraParser = auroraParser;
 const Virtual = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(`${_1.proxy}https://explorer.mainnet.aurora.dev/token/${collectionIdent}/instance/${tokenId}/metadata`);
+        const response = yield (0, axios_1.default)(`${__1.proxy}https://explorer.mainnet.aurora.dev/token/${collectionIdent}/instance/${tokenId}/metadata`);
         const $ = cheerio.load(response.data);
         const code = $(".card code").text();
         const collection = $(".card .card-body .card-title a").text();

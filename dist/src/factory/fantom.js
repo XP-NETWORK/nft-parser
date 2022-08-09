@@ -16,6 +16,7 @@ exports.fantomParser = void 0;
 const axios_1 = __importDefault(require("axios"));
 const _1 = require(".");
 const tezos_1 = require("./tezos");
+const __1 = require("..");
 const fantomParser = (collectionIdent, nft, account, whitelisted, chainId) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
     switch (collectionIdent) {
@@ -32,7 +33,7 @@ exports.fantomParser = fantomParser;
 const Falacy = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const res = yield (0, axios_1.default)(`${_1.proxy}${uri}`);
+        const res = yield (0, axios_1.default)(`${__1.proxy}${uri}`);
         const { data } = res;
         const nft = {
             native,
@@ -62,7 +63,7 @@ const Falacy = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(`${_1.proxy}${uri}`).catch(() => ({
+        const response = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
             data: null,
         }));
         let { data } = response;

@@ -38,7 +38,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.nftGeneralParser = void 0;
+exports.nftGeneralParser = exports.proxy = void 0;
+const axios_1 = __importDefault(require("axios"));
 const evm = __importStar(require("./factory"));
 const algorand_1 = require("./factory/algorand");
 const elrd = __importStar(require("./factory/elrond"));
@@ -49,8 +50,30 @@ const aurora = __importStar(require("./factory/auora"));
 const secret = __importStar(require("./factory/secret"));
 const tron_1 = require("./factory/tron");
 const evm_1 = __importDefault(require("../tools/evm"));
+var isNode = false;
+if (typeof process === "object") {
+    if (typeof process.versions === "object") {
+        if (typeof process.versions.node !== "undefined") {
+            isNode = true;
+        }
+    }
+}
+exports.proxy = isNode
+    ? ""
+    : "https://sheltered-crag-76748.herokuapp.com/";
+axios_1.default.defaults.timeout = isNode ? 5000 : axios_1.default.defaults.timeout;
+axios_1.default.interceptors.request.use(function (config) {
+    // Do something before request is sent
+    return config;
+}, function (error) {
+    if (error.code === "ECONNABORTED") {
+        return Promise.reject("parse timeout");
+    }
+    return Promise.reject(error);
+});
 const evmHelper = (0, evm_1.default)();
 const nftGeneralParser = (nft, account, whitelisted, factory) => __awaiter(void 0, void 0, void 0, function* () {
+    //proxy = mode === "proxy" ? proxy : "";
     const { native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     evmHelper.init(factory);
     let parsed;
