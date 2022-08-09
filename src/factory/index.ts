@@ -1364,7 +1364,9 @@ export const Nagato = async (
   const url = `${proxy}${setupURI(uri)}`;
 
   try {
-    const response = (await pool.addRequest(url)) as AxiosResponse<any, any>;
+    const response = proxy
+      ? ((await pool.addRequest(url)) as AxiosResponse<any, any>)
+      : await axios(url);
 
     const { data } = response;
     const nft: NFT = {
