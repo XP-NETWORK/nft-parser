@@ -1839,6 +1839,57 @@ export const VelasOgPunks = async (
   }
 };
 
+export const Drifters = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const response = proxy
+    ? ((await pool.addRequest(proxy + uri)) as AxiosResponse<any, any>)
+    : await axios(uri);
+
+
+    const { data } = response;
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      wrapped: data && data.wrapped,
+      metaData: {
+        whitelisted,
+        image: `https://drifters-nft.s3.amazonaws.com/${tokenId}.png`,
+        imageFormat: "png",
+        description: data?.description,
+        name: data?.name,
+        symbol: data?.symbol || "DRIFTER",
+        attributes: data?.attributes,
+        contractType: data?.type || "721",
+        collectionName: "Drifters",
+      },
+    };
+    return nft;
+  } catch (error:any) {
+    
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+    };
+  }
+};
+
 export const Cities = async (
   nft: any,
   account: string,

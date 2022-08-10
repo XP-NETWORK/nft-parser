@@ -42,6 +42,7 @@ export const DEFAULT = async (
   } = nft;
 
   try {
+    console.log("doritos");
     const { data } = await axios(uri);
     const headers = data.headers;
 
@@ -81,8 +82,8 @@ export const DEFAULT = async (
     };
 
     return nft;
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    console.error(error?.response?.status);
     return nft;
   }
 };
@@ -460,8 +461,8 @@ export const Default = async (
     };
 
     return nft;
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    console.error(error?.response?.status);
     return nft;
   }
 };
