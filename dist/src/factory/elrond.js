@@ -17,8 +17,10 @@ const axios_1 = __importDefault(require("axios"));
 const _1 = require(".");
 const __1 = require("..");
 const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
+        console.log("doritos");
         const { data } = yield (0, axios_1.default)(uri);
         const headers = data.headers;
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
@@ -54,7 +56,7 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         return nft;
     }
     catch (error) {
-        console.error(error);
+        console.error((_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.status);
         return nft;
     }
 });
@@ -224,7 +226,7 @@ const ORC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.ORC = ORC;
 const KINGSGUARD = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _b;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         //const { data } = await axios(proxy + uri);
@@ -238,8 +240,8 @@ const KINGSGUARD = (nft, account, whitelisted) => __awaiter(void 0, void 0, void
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: `https://media.elrond.com/nfts/asset/QmbtT4ca7TjE8fKd9ufkNm3H2sD9caz4GZ7VPn76Burx4J/${(_a = uri
-                    .match(/([^\/]+$)/)) === null || _a === void 0 ? void 0 : _a.at(0).replace(/\D+/, "")}.jpg`,
+                image: `https://media.elrond.com/nfts/asset/QmbtT4ca7TjE8fKd9ufkNm3H2sD9caz4GZ7VPn76Burx4J/${(_b = uri
+                    .match(/([^\/]+$)/)) === null || _b === void 0 ? void 0 : _b.at(0).replace(/\D+/, "")}.jpg`,
                 imageFormat: "jpg",
             },
         };
@@ -254,7 +256,7 @@ exports.KINGSGUARD = KINGSGUARD;
 //KINGSGUARD
 exports.ALIEN = exports.ORC;
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b, _c, _d, _e;
+    var _c, _d, _e, _f;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const { data } = yield (0, axios_1.default)(__1.proxy + uri);
@@ -267,9 +269,9 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             contract,
             collectionIdent,
             wrapped: data.wrapped,
-            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_c = (_b = data.image) === null || _b === void 0 ? void 0 : _b.match(/\.([^.]*)$/)) === null || _c === void 0 ? void 0 : _c.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url ? { animation_url: data.animation_url } : {})), (data.animation_url
+            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_d = (_c = data.image) === null || _c === void 0 ? void 0 : _c.match(/\.([^.]*)$/)) === null || _d === void 0 ? void 0 : _d.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url ? { animation_url: data.animation_url } : {})), (data.animation_url
                 ? {
-                    animation_url_format: (_e = (_d = data.animation_url) === null || _d === void 0 ? void 0 : _d.match(/\.([^.]*)$/)) === null || _e === void 0 ? void 0 : _e.at(1),
+                    animation_url_format: (_f = (_e = data.animation_url) === null || _e === void 0 ? void 0 : _e.match(/\.([^.]*)$/)) === null || _f === void 0 ? void 0 : _f.at(1),
                 }
                 : {})),
         };
@@ -282,7 +284,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
 });
 exports.WrappedXPNET = WrappedXPNET;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _f, _g, _h, _j;
+    var _g, _h, _j, _k, _l;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         let data;
@@ -304,16 +306,16 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             contract,
             collectionIdent,
             wrapped: data.wrapped,
-            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_g = (_f = data.image) === null || _f === void 0 ? void 0 : _f.match(/\.([^.]*)$/)) === null || _g === void 0 ? void 0 : _g.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url ? { animation_url: data.animation_url } : {})), (data.animation_url
+            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_h = (_g = data.image) === null || _g === void 0 ? void 0 : _g.match(/\.([^.]*)$/)) === null || _h === void 0 ? void 0 : _h.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url ? { animation_url: data.animation_url } : {})), (data.animation_url
                 ? {
-                    animation_url_format: (_j = (_h = data.animation_url) === null || _h === void 0 ? void 0 : _h.match(/\.([^.]*)$/)) === null || _j === void 0 ? void 0 : _j.at(1),
+                    animation_url_format: (_k = (_j = data.animation_url) === null || _j === void 0 ? void 0 : _j.match(/\.([^.]*)$/)) === null || _k === void 0 ? void 0 : _k.at(1),
                 }
                 : {})),
         };
         return nft;
     }
     catch (error) {
-        console.error(error);
+        console.error((_l = error === null || error === void 0 ? void 0 : error.response) === null || _l === void 0 ? void 0 : _l.status);
         return nft;
     }
 });

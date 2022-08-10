@@ -61,6 +61,7 @@ export declare const TRSRNFT: (nft: any, account: string, whitelisted: boolean) 
 export declare const WUBI: (nft: any, account: string, whitelisted: boolean) => Promise<any>;
 export declare const PACK: (nft: any, account: string, whitelisted: boolean) => Promise<any>;
 export declare const VelasOgPunks: (nft: any, account: string, whitelisted: boolean) => Promise<any>;
+export declare const Drifters: (nft: any, account: string, whitelisted: boolean) => Promise<any>;
 export declare const Cities: (nft: any, account: string, whitelisted: boolean) => Promise<any>;
 export declare const Mountains: (nft: any, account: string, whitelisted: boolean) => Promise<any>;
 export declare const WrappedXPNET: (nft: any, account: string, whitelisted: boolean) => Promise<any>;

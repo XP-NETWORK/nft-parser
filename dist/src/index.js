@@ -267,6 +267,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
         case "0x387d38eeaaa7f1235c00ae6ee9b1462c026007f4": //veals OGPUNKS
             parsed = yield evm.ChainCaders(nft, account, whitelisted);
             break;
+        case "0xf0F7C1159A523Ac3475Ef80F4a7292ce9b33A2b5":
+            parsed = yield evm.Drifters(nft, account, whitelisted);
+            break;
         //0x387d38eeaaa7f1235c00ae6ee9b1462c026007f4
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
