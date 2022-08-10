@@ -45,28 +45,42 @@ exports.getWrappedNft = getWrappedNft;
 const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     let format = "";
-    if (/(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$)/.test(imageUri)) {
-        format = ((_b = imageUri.match(/(?:\.([^.]+))?$/)) === null || _b === void 0 ? void 0 : _b.at(1)) || "";
-    }
-    else {
-        if (src_1.proxy) {
-            const { headers } = yield (0, axios_1.default)(`${src_1.proxy}${(0, factory_1.setupURI)(imageUri)}`);
-            format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
+    try {
+        if (/(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$)/.test(imageUri)) {
+            format = ((_b = imageUri.match(/(?:\.([^.]+))?$/)) === null || _b === void 0 ? void 0 : _b.at(1)) || "";
         }
         else {
-            format = yield new Promise((resolve) => __awaiter(void 0, void 0, void 0, function* () {
-                const stream = yield axios_1.default.get(`${src_1.proxy}${(0, factory_1.setupURI)(imageUri)}`, {
-                    responseType: "stream",
-                });
-                stream.data.on("data", (chunk) => __awaiter(void 0, void 0, void 0, function* () {
+            if (src_1.proxy) {
+                const { headers } = yield (0, axios_1.default)(`${src_1.proxy}${(0, factory_1.setupURI)(imageUri)}`);
+                format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
+            }
+            else {
+                format = yield new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
                     var _c;
-                    const res = yield (0, file_type_1.fromBuffer)(chunk);
-                    (_c = stream.data) === null || _c === void 0 ? void 0 : _c.destroy();
-                    resolve((res === null || res === void 0 ? void 0 : res.ext) || "");
+                    console.log("start streaming: ", imageUri);
+                    const stream = yield axios_1.default
+                        .get(`${src_1.proxy}${(0, factory_1.setupURI)(imageUri)}`, {
+                        responseType: "stream",
+                    })
+                        .catch((e) => {
+                        console.log(e.code, "code");
+                        reject(e);
+                    });
+                    (_c = stream === null || stream === void 0 ? void 0 : stream.data) === null || _c === void 0 ? void 0 : _c.on("data", (chunk) => __awaiter(void 0, void 0, void 0, function* () {
+                        var _d;
+                        const res = yield (0, file_type_1.fromBuffer)(chunk).catch((e) => reject(e));
+                        console.log("finish streaming:", imageUri);
+                        (_d = stream === null || stream === void 0 ? void 0 : stream.data) === null || _d === void 0 ? void 0 : _d.destroy();
+                        resolve((res === null || res === void 0 ? void 0 : res.ext) || "");
+                    }));
                 }));
-            }));
+            }
         }
+        return format;
     }
-    return format;
+    catch (e) {
+        console.log(e.message);
+        return "";
+    }
 });
 exports.getAssetFormat = getAssetFormat;

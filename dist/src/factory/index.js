@@ -50,6 +50,7 @@ exports.setupURI = setupURI;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = (0, exports.setupURI)(uri);
+    console.log("in default ", baseUrl);
     if (!baseUrl && tokenId) {
         return yield (0, helpers_1.getWrappedNft)(nft, account, whitelisted);
     }
@@ -57,6 +58,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     try {
         const response = yield (0, axios_1.default)(url);
         let { data } = response;
+        console.log(data, "data");
         data = yield (0, tezos_1.checkEmptyFromTezos)(data);
         let format = yield (0, helpers_1.getAssetFormat)(data.image);
         const nft = {
