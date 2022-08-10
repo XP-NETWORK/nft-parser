@@ -1390,10 +1390,11 @@ export const Nagato = async (
       },
     };
     return nft;
-  } catch (error) {
-    console.error(error);
-
-    return nft;
+  } catch (error: any) {
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+    };
   }
 };
 
@@ -1717,10 +1718,9 @@ export const WUBI = async (nft: any, account: string, whitelisted: boolean) => {
   } = nft;
 
   try {
-    const response = (await pool.addRequest(`${uri}`)) as AxiosResponse<
-      any,
-      any
-    >;
+    const response = proxy
+      ? ((await pool.addRequest(proxy + uri)) as AxiosResponse<any, any>)
+      : await axios(uri);
 
     const { data } = response;
 
@@ -1742,10 +1742,11 @@ export const WUBI = async (nft: any, account: string, whitelisted: boolean) => {
       },
     };
     return nft;
-  } catch (error) {
-    console.error(error);
-
-    return nft;
+  } catch (error: any) {
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+    };
   }
 };
 
@@ -1851,10 +1852,10 @@ export const Cities = async (
   } = nft;
 
   try {
-    const response = (await pool.addRequest(proxy + uri)) as AxiosResponse<
-      any,
-      any
-    >;
+    const response = proxy
+      ? ((await pool.addRequest(proxy + uri)) as AxiosResponse<any, any>)
+      : await axios(uri);
+
     const { data } = response;
 
     const nft: NFT = {
@@ -1879,10 +1880,11 @@ export const Cities = async (
       },
     };
     return nft;
-  } catch (error) {
-    console.error(error);
-
-    return nft;
+  } catch (error: any) {
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+    };
   }
 };
 
