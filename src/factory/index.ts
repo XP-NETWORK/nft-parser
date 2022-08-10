@@ -70,6 +70,8 @@ export const Default = async (
   } = nft;
   const baseUrl = setupURI(uri);
 
+  console.log("in default ", baseUrl);
+
   if (!baseUrl && tokenId) {
     return await getWrappedNft(nft, account, whitelisted);
   }
@@ -79,6 +81,8 @@ export const Default = async (
     const response = await axios(url);
 
     let { data } = response;
+
+    console.log(data, "data");
 
     data = await checkEmptyFromTezos(data);
 
@@ -1853,9 +1857,8 @@ export const Drifters = async (
 
   try {
     const response = proxy
-    ? ((await pool.addRequest(proxy + uri)) as AxiosResponse<any, any>)
-    : await axios(uri);
-
+      ? ((await pool.addRequest(proxy + uri)) as AxiosResponse<any, any>)
+      : await axios(uri);
 
     const { data } = response;
 
@@ -1881,8 +1884,7 @@ export const Drifters = async (
       },
     };
     return nft;
-  } catch (error:any) {
-    
+  } catch (error: any) {
     return {
       ...nft,
       ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
