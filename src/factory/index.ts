@@ -19,6 +19,7 @@ export interface NFT {
   collectionIdent: string;
   native: any;
   wrapped?: any;
+  forceCache?: boolean;
   metaData: {
     whitelisted: boolean;
     image: string;
@@ -70,8 +71,6 @@ export const Default = async (
   } = nft;
   const baseUrl = setupURI(uri);
 
-  console.log("in default ", baseUrl);
-
   if (!baseUrl && tokenId) {
     return await getWrappedNft(nft, account, whitelisted);
   }
@@ -81,8 +80,6 @@ export const Default = async (
     const response = await axios(url);
 
     let { data } = response;
-
-    console.log(data, "data");
 
     data = await checkEmptyFromTezos(data);
 
@@ -1880,6 +1877,51 @@ export const Drifters = async (
         symbol: data?.symbol || "DRIFTER",
         attributes: data?.attributes,
         contractType: data?.type || "721",
+        collectionName: "Drifters",
+      },
+    };
+    return nft;
+  } catch (error: any) {
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+    };
+  }
+};
+
+export const Weed = async (nft: any, account: string, whitelisted: boolean) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  if (proxy) return nft;
+
+  try {
+    const response = await axios(uri);
+
+    const { data } = response;
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      wrapped: data && data.wrapped,
+      forceCache: true,
+      metaData: {
+        whitelisted,
+        image: `https://nft.weedcommerce.info/metadata/${tokenId}.png`,
+        imageFormat: "png",
+        description: data?.description,
+        name: data?.name,
+        symbol: data?.symbol || "EOTM",
+        attributes: data?.attributes,
         collectionName: "Drifters",
       },
     };

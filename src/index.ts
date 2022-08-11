@@ -24,7 +24,7 @@ export const proxy = isNode
   ? ""
   : "https://sheltered-crag-76748.herokuapp.com/";
 
-axios.defaults.timeout = isNode ? 5000 : axios.defaults.timeout;
+axios.defaults.timeout = isNode ? 3000 : axios.defaults.timeout;
 axios.interceptors.request.use(
   function (config) {
     // Do something before request is sent
@@ -334,6 +334,11 @@ const evmParser = async (
       parsed = await evm.Drifters(nft, account, whitelisted);
       break;
     //0x387d38eeaaa7f1235c00ae6ee9b1462c026007f4
+
+    case "0x458d37551bd25C025648717E9Ee128b9DEd4dC59": {
+      parsed = await evm.Weed(nft, account, whitelisted);
+      break;
+    }
 
     default:
       parsed = await evm.Default(nft, account, whitelisted);

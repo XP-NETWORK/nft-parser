@@ -56,20 +56,17 @@ export const getAssetFormat = async (imageUri: string): Promise<string> => {
         );
       } else {
         format = await new Promise(async (resolve, reject) => {
-          console.log("start streaming: ", imageUri);
-
           const stream = await axios
             .get(`${proxy}${setupURI(imageUri)}`, {
               responseType: "stream",
             })
             .catch((e: any) => {
-              console.log(e.code, "code");
               reject(e);
             });
 
           stream?.data?.on("data", async (chunk: ArrayBuffer) => {
             const res = await fromBuffer(chunk).catch((e) => reject(e));
-            console.log("finish streaming:", imageUri);
+
             stream?.data?.destroy();
             resolve(res?.ext || "");
           });
