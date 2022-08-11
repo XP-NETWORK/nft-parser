@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.Drifters = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.DirtyLife = exports.COZYCOSM = exports.OPENSTORE = exports.ChainCaders = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = void 0;
+exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.Weed = exports.Drifters = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.DirtyLife = exports.COZYCOSM = exports.OPENSTORE = exports.ChainCaders = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.Default = exports.setupURI = void 0;
 const axios_1 = __importDefault(require("axios"));
 const tezos_1 = require("./tezos");
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
@@ -50,7 +50,6 @@ exports.setupURI = setupURI;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = (0, exports.setupURI)(uri);
-    console.log("in default ", baseUrl);
     if (!baseUrl && tokenId) {
         return yield (0, helpers_1.getWrappedNft)(nft, account, whitelisted);
     }
@@ -58,7 +57,6 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     try {
         const response = yield (0, axios_1.default)(url);
         let { data } = response;
-        console.log(data, "data");
         data = yield (0, tezos_1.checkEmptyFromTezos)(data);
         let format = yield (0, helpers_1.getAssetFormat)(data.image);
         const nft = {
@@ -1482,8 +1480,44 @@ const Drifters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.Drifters = Drifters;
-const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+const Weed = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _q;
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    if (__1.proxy)
+        return nft;
+    try {
+        const response = yield (0, axios_1.default)(uri);
+        const { data } = response;
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            wrapped: data && data.wrapped,
+            forceCache: true,
+            metaData: {
+                whitelisted,
+                image: `https://nft.weedcommerce.info/metadata/${tokenId}.png`,
+                imageFormat: "png",
+                description: data === null || data === void 0 ? void 0 : data.description,
+                name: data === null || data === void 0 ? void 0 : data.name,
+                symbol: (data === null || data === void 0 ? void 0 : data.symbol) || "EOTM",
+                attributes: data === null || data === void 0 ? void 0 : data.attributes,
+                collectionName: "Drifters",
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        return Object.assign(Object.assign({}, nft), (((_q = error.response) === null || _q === void 0 ? void 0 : _q.status) === 429 ? { errorStatus: 429 } : {}));
+    }
+});
+exports.Weed = Weed;
+const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _r;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = __1.proxy
@@ -1514,7 +1548,7 @@ const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
         return nft;
     }
     catch (error) {
-        return Object.assign(Object.assign({}, nft), (((_q = error.response) === null || _q === void 0 ? void 0 : _q.status) === 429 ? { errorStatus: 429 } : {}));
+        return Object.assign(Object.assign({}, nft), (((_r = error.response) === null || _r === void 0 ? void 0 : _r.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
 exports.Cities = Cities;

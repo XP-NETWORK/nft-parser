@@ -57,19 +57,16 @@ const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, function*
             else {
                 format = yield new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
                     var _c;
-                    console.log("start streaming: ", imageUri);
                     const stream = yield axios_1.default
                         .get(`${src_1.proxy}${(0, factory_1.setupURI)(imageUri)}`, {
                         responseType: "stream",
                     })
                         .catch((e) => {
-                        console.log(e.code, "code");
                         reject(e);
                     });
                     (_c = stream === null || stream === void 0 ? void 0 : stream.data) === null || _c === void 0 ? void 0 : _c.on("data", (chunk) => __awaiter(void 0, void 0, void 0, function* () {
                         var _d;
                         const res = yield (0, file_type_1.fromBuffer)(chunk).catch((e) => reject(e));
-                        console.log("finish streaming:", imageUri);
                         (_d = stream === null || stream === void 0 ? void 0 : stream.data) === null || _d === void 0 ? void 0 : _d.destroy();
                         resolve((res === null || res === void 0 ? void 0 : res.ext) || "");
                     }));
