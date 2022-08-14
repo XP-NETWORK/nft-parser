@@ -1922,7 +1922,7 @@ export const Weed = async (nft: any, account: string, whitelisted: boolean) => {
         name: data?.name,
         symbol: data?.symbol || "EOTM",
         attributes: data?.attributes,
-        collectionName: "Drifters",
+        collectionName: "Employees of the Metaverse",
       },
     };
     return nft;
