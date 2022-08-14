@@ -35,6 +35,10 @@ export const veChainParser = async (
       parsed = await Anon(nft, account, whitelisted);
       break;
 
+    case /0x3473c5282057D7BeDA96C1ce0FE708e890764009/.test(collectionIdent):
+      parsed = await Planet(nft, account, whitelisted);
+      break;
+
     case /(0x38914ed8E9AB65554A23CcF285dfd212C13795cE|0x4E9eB6f6e04464eEe33Ae04Bf430E20529482e60|0x1d971Ac972F671c19D1bE00E4Fbf3118d3861851)/.test(
       collectionIdent
     ):
@@ -47,6 +51,55 @@ export const veChainParser = async (
   }
 
   return parsed;
+};
+
+const Planet = async (nft: any, account: string, whitelisted: boolean) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const response = await axios(`${proxy}${setupURI(uri)}`).catch((e) => {
+      return {
+        data: null,
+      };
+    });
+
+    let { data } = response;
+
+    data = await checkEmptyFromTezos(data);
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      //wrapped: data.wrapped,
+      metaData: {
+        whitelisted,
+        image: setupURI(
+          data?.Image ||
+            `https://ipfs.io/ipfs/QmUPcqQoBZufMTeC9tY434o3Roa4b8ZKiTpUjk2rerd7UX/${tokenId}.jpg`
+        ),
+        imageFormat: data?.Image?.match(/\.([^.]*)$/)?.at(1) || "jpg",
+        description: data?.Description,
+        name: data?.Name,
+        attributes: data?.attributes,
+        collectionName: "Exoworlds New",
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+
+    return nft;
+  }
 };
 
 const WOVY = async (nft: any, account: string, whitelisted: boolean) => {
