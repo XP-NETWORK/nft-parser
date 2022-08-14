@@ -1506,7 +1506,7 @@ const Weed = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
                 name: data === null || data === void 0 ? void 0 : data.name,
                 symbol: (data === null || data === void 0 ? void 0 : data.symbol) || "EOTM",
                 attributes: data === null || data === void 0 ? void 0 : data.attributes,
-                collectionName: "Drifters",
+                collectionName: "Employees of the Metaverse",
             },
         };
         return nft;
