@@ -72,13 +72,25 @@ exports.veChainParser = veChainParser;
 const Planet = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    const gqlQuery = (tokenId) => ({
+        query: "\n    \n    fragment CollectionFields on TokenMarketplaceDTO {\n        collection {\n            collectionId\n            blockchainId\n            smartContractAddress\n            stakingContractAddresses\n            creatorAddress\n            name\n            customUrl\n            thumbnailImageUrl\n            placeholderImageUrl\n            isVerified\n            isVisible\n            isRevealed\n            type\n            importedAt\n            config\n        }\n    }\n\n    \n    fragment CreatorFields on TokenMarketplaceDTO {\n        creator {\n            address\n            name\n            customUrl\n            ipfsFileHash\n            profileImageUrl\n            blacklisted\n            verified\n            verifiedLevel\n        }\n    }\n\n    \n    fragment MediaFields on TokenMarketplaceDTO {\n        media {\n            url\n            mimeType\n            sizeType\n        }\n    }\n\n\n    query GetToken(\n        $tokenId: String!\n        $smartContractAddress: String!\n    ) {\n        token: getToken(\n            tokenId: $tokenId\n            smartContractAddress: $smartContractAddress\n        ) {\n            \ntokenId\nsmartContractAddress\nname\ndescription\ncreatorAddress\neditionsCount\nroyalty\nfileType\nfileUrl\nmetadataUrl\nmintedAt\nattributes\nscore\nrank\n...CollectionFields\n...CreatorFields\n...MediaFields\n\n        }\n    }\n",
+        variables: {
+            tokenId,
+            smartContractAddress: "0x3473c5282057D7BeDA96C1ce0FE708e890764009",
+        },
+        operationName: "GetToken",
+    });
     try {
-        const response = yield (0, axios_1.default)(`${__1.proxy}${(0, _1.setupURI)(uri)}`).catch((e) => {
+        const response = yield (0, axios_1.default)(`${__1.proxy}https://mainnet.api.worldofv.art/graphql`, {
+            method: "post",
+            data: gqlQuery(tokenId),
+        }).catch((e) => {
             return {
                 data: null,
             };
         });
         let { data } = response;
+        data = (_a = data === null || data === void 0 ? void 0 : data.data) === null || _a === void 0 ? void 0 : _a.token;
         data = yield (0, tezos_1.checkEmptyFromTezos)(data);
         const nft = {
             native,
@@ -91,11 +103,10 @@ const Planet = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             //wrapped: data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, _1.setupURI)((data === null || data === void 0 ? void 0 : data.Image) ||
-                    `https://ipfs.io/ipfs/QmUPcqQoBZufMTeC9tY434o3Roa4b8ZKiTpUjk2rerd7UX/${tokenId}.jpg`),
-                imageFormat: ((_b = (_a = data === null || data === void 0 ? void 0 : data.Image) === null || _a === void 0 ? void 0 : _a.match(/\.([^.]*)$/)) === null || _b === void 0 ? void 0 : _b.at(1)) || "jpg",
-                description: data === null || data === void 0 ? void 0 : data.Description,
-                name: data === null || data === void 0 ? void 0 : data.Name,
+                image: (0, _1.setupURI)(data === null || data === void 0 ? void 0 : data.fileUrl),
+                imageFormat: ((_b = data.fileUrl.match(/\.([^.]*)$/)) === null || _b === void 0 ? void 0 : _b.at(1)) || "jpg",
+                description: data === null || data === void 0 ? void 0 : data.escription,
+                name: data === null || data === void 0 ? void 0 : data.name,
                 attributes: data === null || data === void 0 ? void 0 : data.attributes,
                 collectionName: "Exoworlds New",
             },
@@ -253,3 +264,19 @@ const Forest = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
         return nft;
     }
 });
+/**
+ *
+ * {
+    "query": "\n            query itemList($filter:Filter, $page:Int, $perPage:Int, $sort:Sort){\n              itemList(filter:$filter, page:$page, perPage:$perPage, sortBy:$sort) {\n                    PlanetID\n                    PlanetName\n                    Image\n                    PlanetSector\n                    PlanetCoordinates\n                    Background\n                    BackgroundStarDensity\n                    BackgroundNebula\n                    SystemType\n                    StarOneType\n                    StarOneSpectralClass\n                    StarOneSpectralNumber\n                    StarOneSequence\n                    StarTwoType\n                    StarTwoSpectralClass\n                    StarTwoSpectralNumber\n                    StarTwoSequence\n                    StarThreeType\n                    StarThreeSpectralClass\n                    StarThreeSpectralNumber\n                    StarThreeSequence\n                    ExoClass\n                    MotherPlanetType\n                    MotherPlanetSubtype\n                    WorldType\n                    WorldSubtype\n                    Moons\n                    MoonOneType\n                    MoonTwoType\n                    MoonThreeType\n                    Ring\n                    RingType\n                    BioDiversityScale\n                    CarniverousVegetation\n                    SecretBiosphere\n                    Gaia\n                    IntelligentMicrobiome\n                    ApexPredators\n                    SentientLifeFormType\n                    FitnessFactor\n                    IntelligenceCapacity\n                    ConciousnessAffinity\n                    RarityScore\n                    Rank\n                    TokenOwner\n                    ItemID\n                    StartTime\n                    EndTime\n                    ReserveTokenPrice\n                    BuyoutTokenPrice\n                    ListingType\n                    Neighbor1\n                    Neighbor2\n                    Neighbor3\n                    Neighbor4\n                    Neighbor5\n                    Neighbor6\n                    Neighbor7\n                    Neighbor8\n                    Neighbor9\n                    Neighbor10\n                }\n            }",
+    "variables": {
+        "filter": {},
+        "perPage": 20,
+        "page": 0,
+        "sort": {
+            "OrderBy": "BuyoutTokenPrice",
+            "OrderDirection": 1
+        }
+    },
+    "operationName": "itemList"
+}
+ */
