@@ -56,6 +56,9 @@ const veChainParser = (collectionIdent, nft, account, whitelisted, chainId) => _
         case /0x2FD3d1E1a3F1E072c89d67301a86a5ba850Ccd4E/.test(collectionIdent):
             parsed = yield Anon(nft, account, whitelisted);
             break;
+        case /0x3473c5282057D7BeDA96C1ce0FE708e890764009/.test(collectionIdent):
+            parsed = yield Planet(nft, account, whitelisted);
+            break;
         case /(0x38914ed8E9AB65554A23CcF285dfd212C13795cE|0x4E9eB6f6e04464eEe33Ae04Bf430E20529482e60|0x1d971Ac972F671c19D1bE00E4Fbf3118d3861851)/.test(collectionIdent):
             parsed = yield Forest(nft, account, whitelisted);
             break;
@@ -66,8 +69,46 @@ const veChainParser = (collectionIdent, nft, account, whitelisted, chainId) => _
     return parsed;
 });
 exports.veChainParser = veChainParser;
+const Planet = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    try {
+        const response = yield (0, axios_1.default)(`${__1.proxy}${(0, _1.setupURI)(uri)}`).catch((e) => {
+            return {
+                data: null,
+            };
+        });
+        let { data } = response;
+        data = yield (0, tezos_1.checkEmptyFromTezos)(data);
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            //wrapped: data.wrapped,
+            metaData: {
+                whitelisted,
+                image: (0, _1.setupURI)((data === null || data === void 0 ? void 0 : data.Image) ||
+                    `https://ipfs.io/ipfs/QmUPcqQoBZufMTeC9tY434o3Roa4b8ZKiTpUjk2rerd7UX/${tokenId}.jpg`),
+                imageFormat: ((_b = (_a = data === null || data === void 0 ? void 0 : data.Image) === null || _a === void 0 ? void 0 : _a.match(/\.([^.]*)$/)) === null || _b === void 0 ? void 0 : _b.at(1)) || "jpg",
+                description: data === null || data === void 0 ? void 0 : data.Description,
+                name: data === null || data === void 0 ? void 0 : data.Name,
+                attributes: data === null || data === void 0 ? void 0 : data.attributes,
+                collectionName: "Exoworlds New",
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
 const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c;
+    var _c, _d, _e;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
@@ -76,7 +117,7 @@ const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
         const $ = cheerio.load(response.data);
         const script = $("#__NEXT_DATA__");
         const json = JSON.parse(script.get()[0].children[0].data);
-        const metadata = (_c = (_b = (_a = json === null || json === void 0 ? void 0 : json.props) === null || _a === void 0 ? void 0 : _a.pageProps) === null || _b === void 0 ? void 0 : _b.token) === null || _c === void 0 ? void 0 : _c.token;
+        const metadata = (_e = (_d = (_c = json === null || json === void 0 ? void 0 : json.props) === null || _c === void 0 ? void 0 : _c.pageProps) === null || _d === void 0 ? void 0 : _d.token) === null || _e === void 0 ? void 0 : _e.token;
         const src = (0, _1.setupURI)(metadata.fileUrl);
         const nft = {
             native,
@@ -140,7 +181,7 @@ const Anon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _d, _e;
+    var _f, _g;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = yield (0, axios_1.default)(`${__1.proxy}${(0, _1.setupURI)(uri)}`).catch(() => ({
@@ -160,7 +201,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),
-                imageFormat: (_e = (_d = data.image) === null || _d === void 0 ? void 0 : _d.match(/\.([^.]*)$/)) === null || _e === void 0 ? void 0 : _e.at(1),
+                imageFormat: (_g = (_f = data.image) === null || _f === void 0 ? void 0 : _f.match(/\.([^.]*)$/)) === null || _g === void 0 ? void 0 : _g.at(1),
                 description: data.description,
                 name: data.name,
                 symbol: data.symbol,
@@ -176,7 +217,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
     }
 });
 const Forest = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _f, _g;
+    var _h, _j;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = __1.proxy
@@ -196,7 +237,7 @@ const Forest = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),
-                imageFormat: (_g = (_f = data.image) === null || _f === void 0 ? void 0 : _f.match(/\.([^.]*)$/)) === null || _g === void 0 ? void 0 : _g.at(1),
+                imageFormat: (_j = (_h = data.image) === null || _h === void 0 ? void 0 : _h.match(/\.([^.]*)$/)) === null || _j === void 0 ? void 0 : _j.at(1),
                 description: data.description,
                 name: data === null || data === void 0 ? void 0 : data.name,
                 symbol: data.symbol,
