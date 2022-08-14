@@ -61,14 +61,32 @@ const Planet = async (nft: any, account: string, whitelisted: boolean) => {
     uri,
   } = nft;
 
+  const gqlQuery = (tokenId: string) => ({
+    query:
+      "\n    \n    fragment CollectionFields on TokenMarketplaceDTO {\n        collection {\n            collectionId\n            blockchainId\n            smartContractAddress\n            stakingContractAddresses\n            creatorAddress\n            name\n            customUrl\n            thumbnailImageUrl\n            placeholderImageUrl\n            isVerified\n            isVisible\n            isRevealed\n            type\n            importedAt\n            config\n        }\n    }\n\n    \n    fragment CreatorFields on TokenMarketplaceDTO {\n        creator {\n            address\n            name\n            customUrl\n            ipfsFileHash\n            profileImageUrl\n            blacklisted\n            verified\n            verifiedLevel\n        }\n    }\n\n    \n    fragment MediaFields on TokenMarketplaceDTO {\n        media {\n            url\n            mimeType\n            sizeType\n        }\n    }\n\n\n    query GetToken(\n        $tokenId: String!\n        $smartContractAddress: String!\n    ) {\n        token: getToken(\n            tokenId: $tokenId\n            smartContractAddress: $smartContractAddress\n        ) {\n            \ntokenId\nsmartContractAddress\nname\ndescription\ncreatorAddress\neditionsCount\nroyalty\nfileType\nfileUrl\nmetadataUrl\nmintedAt\nattributes\nscore\nrank\n...CollectionFields\n...CreatorFields\n...MediaFields\n\n        }\n    }\n",
+    variables: {
+      tokenId,
+      smartContractAddress: "0x3473c5282057D7BeDA96C1ce0FE708e890764009",
+    },
+    operationName: "GetToken",
+  });
+
   try {
-    const response = await axios(`${proxy}${setupURI(uri)}`).catch((e) => {
+    const response = await axios(
+      `${proxy}https://mainnet.api.worldofv.art/graphql`,
+      {
+        method: "post",
+        data: gqlQuery(tokenId),
+      }
+    ).catch((e) => {
       return {
         data: null,
       };
     });
 
     let { data } = response;
+
+    data = data?.data?.token;
 
     data = await checkEmptyFromTezos(data);
 
@@ -83,13 +101,10 @@ const Planet = async (nft: any, account: string, whitelisted: boolean) => {
       //wrapped: data.wrapped,
       metaData: {
         whitelisted,
-        image: setupURI(
-          data?.Image ||
-            `https://ipfs.io/ipfs/QmUPcqQoBZufMTeC9tY434o3Roa4b8ZKiTpUjk2rerd7UX/${tokenId}.jpg`
-        ),
-        imageFormat: data?.Image?.match(/\.([^.]*)$/)?.at(1) || "jpg",
-        description: data?.Description,
-        name: data?.Name,
+        image: setupURI(data?.fileUrl),
+        imageFormat: data.fileUrl.match(/\.([^.]*)$/)?.at(1) || "jpg",
+        description: data?.escription,
+        name: data?.name,
         attributes: data?.attributes,
         collectionName: "Exoworlds New",
       },
@@ -295,3 +310,20 @@ const Forest = async (nft: any, account: string, whitelisted: boolean) => {
     return nft;
   }
 };
+
+/**
+ * 
+ * {
+    "query": "\n            query itemList($filter:Filter, $page:Int, $perPage:Int, $sort:Sort){\n              itemList(filter:$filter, page:$page, perPage:$perPage, sortBy:$sort) {\n                    PlanetID\n                    PlanetName\n                    Image\n                    PlanetSector\n                    PlanetCoordinates\n                    Background\n                    BackgroundStarDensity\n                    BackgroundNebula\n                    SystemType\n                    StarOneType\n                    StarOneSpectralClass\n                    StarOneSpectralNumber\n                    StarOneSequence\n                    StarTwoType\n                    StarTwoSpectralClass\n                    StarTwoSpectralNumber\n                    StarTwoSequence\n                    StarThreeType\n                    StarThreeSpectralClass\n                    StarThreeSpectralNumber\n                    StarThreeSequence\n                    ExoClass\n                    MotherPlanetType\n                    MotherPlanetSubtype\n                    WorldType\n                    WorldSubtype\n                    Moons\n                    MoonOneType\n                    MoonTwoType\n                    MoonThreeType\n                    Ring\n                    RingType\n                    BioDiversityScale\n                    CarniverousVegetation\n                    SecretBiosphere\n                    Gaia\n                    IntelligentMicrobiome\n                    ApexPredators\n                    SentientLifeFormType\n                    FitnessFactor\n                    IntelligenceCapacity\n                    ConciousnessAffinity\n                    RarityScore\n                    Rank\n                    TokenOwner\n                    ItemID\n                    StartTime\n                    EndTime\n                    ReserveTokenPrice\n                    BuyoutTokenPrice\n                    ListingType\n                    Neighbor1\n                    Neighbor2\n                    Neighbor3\n                    Neighbor4\n                    Neighbor5\n                    Neighbor6\n                    Neighbor7\n                    Neighbor8\n                    Neighbor9\n                    Neighbor10\n                }\n            }",
+    "variables": {
+        "filter": {},
+        "perPage": 20,
+        "page": 0,
+        "sort": {
+            "OrderBy": "BuyoutTokenPrice",
+            "OrderDirection": 1
+        }
+    },
+    "operationName": "itemList"
+}
+ */
