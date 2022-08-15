@@ -76,8 +76,8 @@ const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, function*
         return format;
     }
     catch (e) {
-        console.log(e.message);
-        return "";
+        console.log(e.message, "reading format");
+        throw e;
     }
 });
 exports.getAssetFormat = getAssetFormat;

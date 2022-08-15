@@ -1155,7 +1155,6 @@ const ChainCaders = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
     try {
         const response = yield (0, axios_1.default)(`${__1.proxy}https://api.alturanft.com/api/item/56/${collectionIdent}/${tokenId}`);
         const { data } = response;
-        console.log(data);
         const nft = {
             native,
             chainId,
