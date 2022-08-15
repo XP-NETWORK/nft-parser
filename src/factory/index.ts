@@ -1461,8 +1461,6 @@ export const ChainCaders = async (
 
     const { data } = response;
 
-    console.log(data);
-
     const nft: NFT = {
       native,
       chainId,

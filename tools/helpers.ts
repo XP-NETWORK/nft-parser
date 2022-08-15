@@ -66,7 +66,6 @@ export const getAssetFormat = async (imageUri: string): Promise<string> => {
 
           stream?.data?.on("data", async (chunk: ArrayBuffer) => {
             const res = await fromBuffer(chunk).catch((e) => reject(e));
-
             stream?.data?.destroy();
             resolve(res?.ext || "");
           });
@@ -76,7 +75,7 @@ export const getAssetFormat = async (imageUri: string): Promise<string> => {
 
     return format;
   } catch (e: any) {
-    console.log(e.message);
-    return "";
+    console.log(e.message, "reading format");
+    throw e;
   }
 };
