@@ -30,5 +30,6 @@ export declare const ORC: (nft: any, account: string, whitelisted: boolean) => P
 export declare const KINGSGUARD: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const ALIEN: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const WrappedXPNET: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
+export declare const HOKI: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const Default: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export {};

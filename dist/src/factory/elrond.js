@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Default = exports.WrappedXPNET = exports.ALIEN = exports.KINGSGUARD = exports.ORC = exports.MEDUSA = exports.INNOVATOR = exports.APOPHIS = exports.DRIFTERS = exports.AERMES = exports.DEFAULT = void 0;
+exports.Default = exports.HOKI = exports.WrappedXPNET = exports.ALIEN = exports.KINGSGUARD = exports.ORC = exports.MEDUSA = exports.INNOVATOR = exports.APOPHIS = exports.DRIFTERS = exports.AERMES = exports.DEFAULT = void 0;
 const axios_1 = __importDefault(require("axios"));
 const _1 = require(".");
 const __1 = require("..");
@@ -283,8 +283,35 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
     }
 });
 exports.WrappedXPNET = WrappedXPNET;
+const HOKI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _g, _h, _j, _k;
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    try {
+        const { data } = yield (0, axios_1.default)(__1.proxy + uri);
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            wrapped: data.wrapped,
+            metaData: Object.assign(Object.assign({ whitelisted, image: (0, _1.setupURI)(data.image.replace("NewUriToReplace", "QmcnpaWrFmJjiq7nSnomyogsL5CVHjmTL1HLFeKeTz3Fia")), imageFormat: (_h = (_g = data.image) === null || _g === void 0 ? void 0 : _g.match(/\.([^.]*)$/)) === null || _h === void 0 ? void 0 : _h.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url ? { animation_url: data.animation_url } : {})), (data.animation_url
+                ? {
+                    animation_url_format: (_k = (_j = data.animation_url) === null || _j === void 0 ? void 0 : _j.match(/\.([^.]*)$/)) === null || _k === void 0 ? void 0 : _k.at(1),
+                }
+                : {})),
+        };
+        return nft;
+    }
+    catch (error) {
+        return Object.assign(Object.assign({}, nft), { errorStatus: 429 });
+    }
+});
+exports.HOKI = HOKI;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _g, _h, _j, _k, _l;
+    var _l, _m, _o, _p, _q;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         let data;
@@ -306,16 +333,16 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             contract,
             collectionIdent,
             wrapped: data.wrapped,
-            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_h = (_g = data.image) === null || _g === void 0 ? void 0 : _g.match(/\.([^.]*)$/)) === null || _h === void 0 ? void 0 : _h.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url ? { animation_url: data.animation_url } : {})), (data.animation_url
+            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_m = (_l = data.image) === null || _l === void 0 ? void 0 : _l.match(/\.([^.]*)$/)) === null || _m === void 0 ? void 0 : _m.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url ? { animation_url: data.animation_url } : {})), (data.animation_url
                 ? {
-                    animation_url_format: (_k = (_j = data.animation_url) === null || _j === void 0 ? void 0 : _j.match(/\.([^.]*)$/)) === null || _k === void 0 ? void 0 : _k.at(1),
+                    animation_url_format: (_p = (_o = data.animation_url) === null || _o === void 0 ? void 0 : _o.match(/\.([^.]*)$/)) === null || _p === void 0 ? void 0 : _p.at(1),
                 }
                 : {})),
         };
         return nft;
     }
     catch (error) {
-        console.error((_l = error === null || error === void 0 ? void 0 : error.response) === null || _l === void 0 ? void 0 : _l.status);
+        console.error((_q = error === null || error === void 0 ? void 0 : error.response) === null || _q === void 0 ? void 0 : _q.status);
         return nft;
     }
 });

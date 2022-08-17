@@ -328,6 +328,11 @@ const elrondParser = (collectionIdent, nft, account, whitelisted) => __awaiter(v
             parsed = yield elrd.ALIEN(nft, account, whitelisted);
             break;
         }
+        case "HOKIZUKI-2fe117": {
+            parsed = yield elrd.HOKI(nft, account, whitelisted);
+            break;
+        }
+        //HOKIZUKI-2fe117
         default:
             parsed = yield elrd.Default(nft, account, whitelisted);
             break;
