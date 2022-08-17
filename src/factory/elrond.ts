@@ -409,6 +409,62 @@ export const WrappedXPNET = async (
   }
 };
 
+export const HOKI = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const { data } = await axios(proxy + uri);
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      wrapped: data.wrapped,
+      metaData: {
+        whitelisted,
+        image: setupURI(
+          data.image.replace(
+            "NewUriToReplace",
+            "QmcnpaWrFmJjiq7nSnomyogsL5CVHjmTL1HLFeKeTz3Fia"
+          )
+        ),
+        imageFormat: data.image?.match(/\.([^.]*)$/)?.at(1),
+        name: data.name,
+        attributes: data.attributes,
+        description: data.description,
+        ...(data.animation_url ? { animation_url: data.animation_url } : {}),
+        ...(data.animation_url
+          ? {
+              animation_url_format: data.animation_url
+                ?.match(/\.([^.]*)$/)
+                ?.at(1),
+            }
+          : {}),
+      },
+    };
+
+    return nft;
+  } catch (error) {
+    return {
+      ...nft,
+      errorStatus: 429,
+    };
+  }
+};
+
 export const Default = async (
   nft: any,
   account: string,

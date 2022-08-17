@@ -410,6 +410,13 @@ const elrondParser = async (
       break;
     }
 
+    case "HOKIZUKI-2fe117": {
+      parsed = await elrd.HOKI(nft, account, whitelisted);
+      break;
+    }
+
+    //HOKIZUKI-2fe117
+
     default:
       parsed = await elrd.Default(nft, account, whitelisted);
       break;
