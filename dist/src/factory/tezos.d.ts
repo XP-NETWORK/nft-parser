@@ -17,6 +17,7 @@ interface NFT {
         attributes?: any;
         description?: string;
         contractType?: string;
+        collectionName?: string;
     };
 }
 export declare const checkEmptyFromTezos: (data: any) => Promise<any>;

@@ -17,6 +17,8 @@ const _1 = require(".");
 const utils_1 = require("@taquito/utils");
 const taquito_1 = require("@taquito/taquito");
 const axios_1 = __importDefault(require("axios"));
+const __1 = require("..");
+const helpers_1 = require("../../tools/helpers");
 const tezos = new taquito_1.TezosToolkit("https://mainnet.smartpy.io/");
 const checkEmptyFromTezos = (data) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g;
@@ -41,6 +43,29 @@ const checkEmptyFromTezos = (data) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.checkEmptyFromTezos = checkEmptyFromTezos;
+const getMetadata = (nft, account = "", whitelisted = true) => __awaiter(void 0, void 0, void 0, function* () {
+    const res = yield (0, axios_1.default)(__1.proxy + (0, _1.setupURI)(nft.uri));
+    const { data } = res;
+    const parsed = {
+        native: nft.native,
+        chainId: nft.native.chainId,
+        tokenId: nft.native.tokenId,
+        contract: nft.native.contract,
+        uri: nft.uri,
+        owner: account,
+        collectionIdent: nft.collectionIdent,
+        metaData: {
+            whitelisted,
+            image: (0, _1.setupURI)(data.displayUri),
+            imageFormat: yield (0, helpers_1.getAssetFormat)((0, _1.setupURI)(data.displayUri)),
+            attributes: data === null || data === void 0 ? void 0 : data.attributes,
+            description: data === null || data === void 0 ? void 0 : data.description,
+            name: data === null || data === void 0 ? void 0 : data.name,
+            collectionName: data === null || data === void 0 ? void 0 : data.type,
+        },
+    };
+    return parsed;
+});
 const tezosParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native: { contract, tokenId, chainId }, uri, } = nft;
     let parsed;
@@ -59,6 +84,9 @@ const tezosParser = (collectionIdent, nft, account, whitelisted) => __awaiter(vo
 });
 exports.tezosParser = tezosParser;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!nft.native.meta) {
+        return yield getMetadata(nft, account, whitelisted).catch(() => nft);
+    }
     const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { displayUri, image, description, attributes, name, symbol, formats, }, }, }, }, } = nft;
     const mimeType = Array.isArray(formats) ? formats[0].mimeType : formats;
     const format = mimeType === null || mimeType === void 0 ? void 0 : mimeType.slice(mimeType.lastIndexOf("/") + 1);
@@ -85,7 +113,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
 exports.Default = Default;
 // ! "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA"
 const TributeTezoTrooperz = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { description, attributes, formats, image, name, symbol, }, }, }, }, } = nft;
+    const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { description, attributes, formats, image, name, symbol }, }, }, }, } = nft;
     const mimeType = formats[0].mimeType;
     const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
     const parsed = {
