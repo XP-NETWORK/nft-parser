@@ -113,6 +113,12 @@ export const tezosParser = async (
       parsed = await Rarible(nft, account, whitelisted);
       break;
 
+    case "KT1RCzrLhBpdKXkyasKGpDTCcdbBTipUk77x":
+      parsed = nft.native.meta
+        ? await Default(nft, account, whitelisted)
+        : await RocketMonsters(nft, account, whitelisted);
+      break;
+
     default:
       parsed = await Default(nft, account, whitelisted);
       break;
@@ -175,6 +181,44 @@ export const Default = async (
   };
   return parsed;
 };
+
+export const RocketMonsters = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    collectionIdent,
+    uri,
+    native,
+    native: { tokenId, chainId, contract },
+  } = nft;
+
+  const res = await axios(proxy + setupURI(uri));
+  const { data } = res;
+
+  const parsed: NFT = {
+    native,
+    chainId,
+    tokenId,
+    contract,
+    uri: nft.uri,
+    owner: account,
+    collectionIdent: nft.collectionIdent,
+    metaData: {
+      whitelisted,
+      image: setupURI(data.displayUri),
+      imageFormat: "png",
+      attributes: data?.attributes,
+      description: data?.description,
+      name: data?.name,
+      collectionName: data?.collectionName,
+      symbol: data?.symbol,
+    },
+  };
+  return parsed;
+};
+
 // ! "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA"
 export const TributeTezoTrooperz = async (
   nft: any,

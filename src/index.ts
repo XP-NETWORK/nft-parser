@@ -24,6 +24,8 @@ export const proxy = isNode
   ? ""
   : "https://sheltered-crag-76748.herokuapp.com/";
 
+console.log("");
+
 axios.defaults.timeout = isNode ? 2500 : axios.defaults.timeout;
 axios.interceptors.request.use(
   function (config) {
