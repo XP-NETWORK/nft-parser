@@ -61,6 +61,7 @@ if (typeof process === "object") {
 exports.proxy = isNode
     ? ""
     : "https://sheltered-crag-76748.herokuapp.com/";
+console.log("");
 axios_1.default.defaults.timeout = isNode ? 2500 : axios_1.default.defaults.timeout;
 axios_1.default.interceptors.request.use(function (config) {
     // Do something before request is sent

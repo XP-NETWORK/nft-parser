@@ -14,8 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Alchemon = exports.WarriorCroc = exports.LikeD00dles = exports.Default = exports.algorandParser = void 0;
 const axios_1 = __importDefault(require("axios"));
+const __1 = require("..");
 const _1 = require(".");
-const proxy = "https://sheltered-crag-76748.herokuapp.com/";
+const __2 = require("..");
 const algorandParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     switch (true) {
         case collectionIdent.includes("D00dles"):
@@ -121,13 +122,12 @@ exports.algorandParser = algorandParser;
 // ! Default
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const baseUrl = uri;
-    const url = `${proxy}${(0, _1.setupURI)(uri)}`;
+    const url = `${__2.proxy}${(0, _1.setupURI)(uri)}`;
+    console.log(url, "url");
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${proxy}${(0, _1.setupURI)(data.image)}`);
-        const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
+        const format = yield (0, __1.getAssetFormat)(uri);
         const nft = {
             native,
             chainId,
@@ -157,7 +157,7 @@ exports.Default = Default;
 // ! "D00dles"
 const LikeD00dles = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const url = `${proxy}${(0, _1.setupURI)(uri)}`;
+    const url = `${__2.proxy}${(0, _1.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data, headers } = response;
@@ -192,7 +192,7 @@ exports.LikeD00dles = LikeD00dles;
 const WarriorCroc = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     // debugger;
-    const url = `${proxy}${(0, _1.setupURI)(uri)}`;
+    const url = `${__2.proxy}${(0, _1.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
@@ -227,7 +227,7 @@ exports.WarriorCroc = WarriorCroc;
 const Alchemon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${proxy}${(0, _1.setupURI)(uri)}`;
+    const url = `${__2.proxy}${(0, _1.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
         const { data, headers } = response;

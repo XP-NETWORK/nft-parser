@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Rarible = exports.TributeTezoTrooperz = exports.Default = exports.tezosParser = exports.checkEmptyFromTezos = void 0;
+exports.Rarible = exports.TributeTezoTrooperz = exports.RocketMonsters = exports.Default = exports.tezosParser = exports.checkEmptyFromTezos = void 0;
 const _1 = require(".");
 const utils_1 = require("@taquito/utils");
 const taquito_1 = require("@taquito/taquito");
@@ -76,6 +76,11 @@ const tezosParser = (collectionIdent, nft, account, whitelisted) => __awaiter(vo
         case "KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS":
             parsed = yield (0, exports.Rarible)(nft, account, whitelisted);
             break;
+        case "KT1RCzrLhBpdKXkyasKGpDTCcdbBTipUk77x":
+            parsed = nft.native.meta
+                ? yield (0, exports.Default)(nft, account, whitelisted)
+                : yield (0, exports.RocketMonsters)(nft, account, whitelisted);
+            break;
         default:
             parsed = yield (0, exports.Default)(nft, account, whitelisted);
             break;
@@ -111,6 +116,32 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     return parsed;
 });
 exports.Default = Default;
+const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { collectionIdent, uri, native, native: { tokenId, chainId, contract }, } = nft;
+    const res = yield (0, axios_1.default)(__1.proxy + (0, _1.setupURI)(uri));
+    const { data } = res;
+    const parsed = {
+        native,
+        chainId,
+        tokenId,
+        contract,
+        uri: nft.uri,
+        owner: account,
+        collectionIdent: nft.collectionIdent,
+        metaData: {
+            whitelisted,
+            image: (0, _1.setupURI)(data.displayUri),
+            imageFormat: "png",
+            attributes: data === null || data === void 0 ? void 0 : data.attributes,
+            description: data === null || data === void 0 ? void 0 : data.description,
+            name: data === null || data === void 0 ? void 0 : data.name,
+            collectionName: data === null || data === void 0 ? void 0 : data.collectionName,
+            symbol: data === null || data === void 0 ? void 0 : data.symbol,
+        },
+    };
+    return parsed;
+});
+exports.RocketMonsters = RocketMonsters;
 // ! "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA"
 const TributeTezoTrooperz = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { description, attributes, formats, image, name, symbol }, }, }, }, } = nft;

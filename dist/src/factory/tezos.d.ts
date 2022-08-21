@@ -23,6 +23,7 @@ interface NFT {
 export declare const checkEmptyFromTezos: (data: any) => Promise<any>;
 export declare const tezosParser: (collectionIdent: string, nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const Default: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
+export declare const RocketMonsters: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const TributeTezoTrooperz: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const Rarible: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export {};
