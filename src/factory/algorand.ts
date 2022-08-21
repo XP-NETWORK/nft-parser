@@ -151,7 +151,7 @@ export const Default = async (
     const response = await axios(url);
     const { data } = response;
 
-    const format = await getAssetFormat(uri);
+    const format = await getAssetFormat(setupURI(data.image));
 
     const nft: NFT = {
       native,
