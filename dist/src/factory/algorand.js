@@ -127,7 +127,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     try {
         const response = yield (0, axios_1.default)(url);
         const { data } = response;
-        const format = yield (0, __1.getAssetFormat)(uri);
+        const format = yield (0, __1.getAssetFormat)((0, _1.setupURI)(data.image));
         const nft = {
             native,
             chainId,
