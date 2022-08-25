@@ -25,4 +25,5 @@ export declare const Default: (nft: any, account: string, whitelisted: boolean) 
 export declare const LikeD00dles: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const WarriorCroc: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const Alchemon: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
+export declare const SMC: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export {};
