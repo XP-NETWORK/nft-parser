@@ -69,6 +69,7 @@ export const Default = async (
     collectionIdent,
     uri,
   } = nft;
+
   const baseUrl = setupURI(uri);
 
   if (!baseUrl && tokenId) {

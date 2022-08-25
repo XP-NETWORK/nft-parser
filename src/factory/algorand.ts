@@ -72,6 +72,9 @@ export const algorandParser = async (
     case collectionIdent.includes("Alchemon"):
       collectionIdent = "Alchemon";
       break;
+    case collectionIdent.includes("SMC"):
+      collectionIdent = "SMC";
+      break;
     default:
       break;
   }
@@ -124,6 +127,9 @@ export const algorandParser = async (
       break;
     case "Alchemon":
       parsed = await Alchemon(nft, account, whitelisted);
+      break;
+    case "SMC":
+      parsed = await SMC(nft, account, whitelisted);
       break;
     default:
       parsed = await Default(nft, account, whitelisted);
@@ -302,6 +308,44 @@ export const Alchemon = async (
         attributes: data.attributes,
         description: data.description,
         name: data.name,
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+    return nft;
+  }
+};
+
+export const SMC = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId, name },
+    collectionIdent,
+    uri,
+  } = nft;
+  console.log("here");
+  //const baseUrl = uri;
+  //const url = `${proxy}${setupURI(uri)}`;
+  try {
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      wrapped: null,
+      metaData: {
+        whitelisted,
+        image: setupURI(uri),
+        imageFormat: await getAssetFormat(setupURI(uri)),
+        name,
       },
     };
     return nft;
