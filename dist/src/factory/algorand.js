@@ -282,8 +282,8 @@ const SMC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fun
             tokenId,
             owner: account,
             uri,
-            contract,
-            collectionIdent: "SMC",
+            contract: "SMC",
+            collectionIdent,
             wrapped: null,
             metaData: {
                 whitelisted,
@@ -310,8 +310,8 @@ const CBCG = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             tokenId,
             owner: account,
             uri,
-            contract,
-            collectionIdent: "C.B.C.G",
+            contract: "C.B.C.G",
+            collectionIdent,
             wrapped: null,
             metaData: {
                 whitelisted,
