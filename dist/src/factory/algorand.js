@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SMC = exports.Alchemon = exports.WarriorCroc = exports.LikeD00dles = exports.Default = exports.algorandParser = void 0;
+exports.CBCG = exports.SMC = exports.Alchemon = exports.WarriorCroc = exports.LikeD00dles = exports.Default = exports.algorandParser = void 0;
 const axios_1 = __importDefault(require("axios"));
 const __1 = require("..");
 const _1 = require(".");
@@ -61,6 +61,10 @@ const algorandParser = (collectionIdent, nft, account, whitelisted) => __awaiter
         case collectionIdent.includes("SMC"):
             collectionIdent = "SMC";
             break;
+        case collectionIdent.includes("C.B.C.G"):
+            collectionIdent = "C.B.C.G";
+            break;
+        //C.B.C.G
         default:
             break;
     }
@@ -116,6 +120,9 @@ const algorandParser = (collectionIdent, nft, account, whitelisted) => __awaiter
             break;
         case "SMC":
             parsed = yield (0, exports.SMC)(nft, account, whitelisted);
+            break;
+        case "C.B.C.G":
+            parsed = yield (0, exports.CBCG)(nft, account, whitelisted);
             break;
         default:
             parsed = yield (0, exports.Default)(nft, account, whitelisted);
@@ -268,9 +275,6 @@ const Alchemon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
 exports.Alchemon = Alchemon;
 const SMC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
-    console.log("here");
-    //const baseUrl = uri;
-    //const url = `${proxy}${setupURI(uri)}`;
     try {
         const nft = {
             native,
@@ -279,13 +283,14 @@ const SMC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fun
             owner: account,
             uri,
             contract,
-            collectionIdent,
+            collectionIdent: "SMC",
             wrapped: null,
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(uri),
                 imageFormat: yield (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
                 name,
+                symbol: "SMC",
             },
         };
         return nft;
@@ -296,3 +301,31 @@ const SMC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.SMC = SMC;
+const CBCG = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
+    try {
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent: "C.B.C.G",
+            wrapped: null,
+            metaData: {
+                whitelisted,
+                image: (0, _1.setupURI)(uri),
+                imageFormat: yield (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
+                name,
+                symbol: "C.B.C.G",
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+exports.CBCG = CBCG;
