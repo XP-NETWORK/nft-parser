@@ -344,8 +344,8 @@ export const SMC = async (
       tokenId,
       owner: account,
       uri,
-      contract,
-      collectionIdent: "SMC",
+      contract: "SMC",
+      collectionIdent,
       wrapped: null,
       metaData: {
         whitelisted,
@@ -381,8 +381,8 @@ export const CBCG = async (
       tokenId,
       owner: account,
       uri,
-      contract,
-      collectionIdent: "C.B.C.G",
+      contract: "C.B.C.G",
+      collectionIdent,
       wrapped: null,
       metaData: {
         whitelisted,
