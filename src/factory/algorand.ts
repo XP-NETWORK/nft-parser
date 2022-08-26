@@ -75,6 +75,10 @@ export const algorandParser = async (
     case collectionIdent.includes("SMC"):
       collectionIdent = "SMC";
       break;
+    case collectionIdent.includes("C.B.C.G"):
+      collectionIdent = "C.B.C.G";
+      break;
+    //C.B.C.G
     default:
       break;
   }
@@ -131,6 +135,10 @@ export const algorandParser = async (
     case "SMC":
       parsed = await SMC(nft, account, whitelisted);
       break;
+    case "C.B.C.G":
+      parsed = await CBCG(nft, account, whitelisted);
+      break;
+
     default:
       parsed = await Default(nft, account, whitelisted);
       break;
@@ -328,9 +336,7 @@ export const SMC = async (
     collectionIdent,
     uri,
   } = nft;
-  console.log("here");
-  //const baseUrl = uri;
-  //const url = `${proxy}${setupURI(uri)}`;
+
   try {
     const nft: NFT = {
       native,
@@ -339,13 +345,51 @@ export const SMC = async (
       owner: account,
       uri,
       contract,
-      collectionIdent,
+      collectionIdent: "SMC",
       wrapped: null,
       metaData: {
         whitelisted,
         image: setupURI(uri),
         imageFormat: await getAssetFormat(setupURI(uri)),
         name,
+        symbol: "SMC",
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+    return nft;
+  }
+};
+
+export const CBCG = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId, name },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent: "C.B.C.G",
+      wrapped: null,
+      metaData: {
+        whitelisted,
+        image: setupURI(uri),
+        imageFormat: await getAssetFormat(setupURI(uri)),
+        name,
+        symbol: "C.B.C.G",
       },
     };
     return nft;
