@@ -18,6 +18,7 @@ interface NFT {
         attributes?: any;
         description?: string;
         contractType?: string;
+        collectionName?: string;
     };
 }
 export declare const algorandParser: (collectionIdent: string, nft: any, account: any, whitelisted: boolean) => Promise<NFT>;

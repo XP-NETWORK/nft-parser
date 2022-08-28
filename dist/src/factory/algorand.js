@@ -275,6 +275,11 @@ const Alchemon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
 exports.Alchemon = Alchemon;
 const SMC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
+    const [attrs, foramt] = yield Promise.all([
+        (0, axios_1.default)(__2.proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+        (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
+    ]);
+    const { data } = attrs;
     try {
         const nft = {
             native,
@@ -282,15 +287,17 @@ const SMC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fun
             tokenId,
             owner: account,
             uri,
-            contract: "SMC",
+            contract,
             collectionIdent,
             wrapped: null,
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(uri),
-                imageFormat: yield (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
+                imageFormat: foramt,
                 name,
                 symbol: "SMC",
+                collectionName: "SMC",
+                attributes: data === null || data === void 0 ? void 0 : data.attributes,
             },
         };
         return nft;
@@ -303,6 +310,14 @@ const SMC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fun
 exports.SMC = SMC;
 const CBCG = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
+    /* const attrs = await axios(
+      proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`
+    );*/
+    const [attrs, foramt] = yield Promise.all([
+        (0, axios_1.default)(__2.proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+        (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
+    ]);
+    const { data } = attrs;
     try {
         const nft = {
             native,
@@ -310,15 +325,17 @@ const CBCG = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             tokenId,
             owner: account,
             uri,
-            contract: "C.B.C.G",
+            contract,
             collectionIdent,
             wrapped: null,
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(uri),
-                imageFormat: yield (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
+                imageFormat: foramt,
                 name,
                 symbol: "C.B.C.G",
+                collectionName: "C.B.C.G",
+                attributes: data === null || data === void 0 ? void 0 : data.attributes,
             },
         };
         return nft;

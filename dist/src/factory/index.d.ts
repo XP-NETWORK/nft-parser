@@ -44,6 +44,7 @@ export declare const BoredGUtterCats: (nft: any, account: string, whitelisted: b
 export declare const IDoDirtPolygon: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const ArsenalGame: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const Mate: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
+export declare const CoolPig: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const ABCBears: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const TragicMonsters: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const SuperFatAcademy: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;

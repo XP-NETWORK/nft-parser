@@ -276,6 +276,11 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
             parsed = yield evm.Weed(nft, account, whitelisted);
             break;
         }
+        case "0x09D9D1AFf7b40916236966cdE92023af770e78bB": {
+            parsed = yield evm.CoolPig(nft, account, whitelisted);
+            break;
+        }
+        //0x09D9D1AFf7b40916236966cdE92023af770e78bB
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
             break;
