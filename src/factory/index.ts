@@ -92,7 +92,7 @@ export const Default = async (
       tokenId,
       owner: account,
       uri,
-      contract,
+      contract: contract || collectionIdent,
       collectionIdent,
       wrapped: data && data.wrapped,
       metaData: {
@@ -1011,6 +1011,47 @@ export const Mate = async (
     return nft;
   } catch (error) {
     console.error(error);
+    return nft;
+  }
+};
+
+export const CoolPig = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+  const url = `${proxy}${setupURI(uri)}`;
+  try {
+    const { data } = await axios(url);
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      wrapped: data && data.wrapped,
+      metaData: {
+        whitelisted,
+        image: `https://img.tofunft.com/v2/1666600000/0x09d9d1aff7b40916236966cde92023af770e78bb/${tokenId}/280/image.jpg`,
+        imageFormat: "jpg",
+        attributes: data.attributes,
+        description: data.description,
+        name: data.name,
+        collectionName: "Cool Pigs NFT",
+      },
+    };
+    return nft;
+  } catch (error: any) {
+    console.error(error.code);
     return nft;
   }
 };

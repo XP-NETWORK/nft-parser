@@ -22,6 +22,7 @@ interface NFT {
     attributes?: any;
     description?: string;
     contractType?: string;
+    collectionName?: string;
   };
 }
 import { proxy } from "..";
@@ -337,6 +338,13 @@ export const SMC = async (
     uri,
   } = nft;
 
+  const [attrs, foramt] = await Promise.all([
+    axios(proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+    getAssetFormat(setupURI(uri)),
+  ]);
+
+  const { data } = attrs;
+
   try {
     const nft: NFT = {
       native,
@@ -344,15 +352,17 @@ export const SMC = async (
       tokenId,
       owner: account,
       uri,
-      contract: "SMC",
+      contract,
       collectionIdent,
       wrapped: null,
       metaData: {
         whitelisted,
         image: setupURI(uri),
-        imageFormat: await getAssetFormat(setupURI(uri)),
+        imageFormat: foramt,
         name,
         symbol: "SMC",
+        collectionName: "SMC",
+        attributes: data?.attributes,
       },
     };
     return nft;
@@ -374,6 +384,17 @@ export const CBCG = async (
     uri,
   } = nft;
 
+  /* const attrs = await axios(
+    proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`
+  );*/
+
+  const [attrs, foramt] = await Promise.all([
+    axios(proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+    getAssetFormat(setupURI(uri)),
+  ]);
+
+  const { data } = attrs;
+
   try {
     const nft: NFT = {
       native,
@@ -381,15 +402,17 @@ export const CBCG = async (
       tokenId,
       owner: account,
       uri,
-      contract: "C.B.C.G",
+      contract,
       collectionIdent,
       wrapped: null,
       metaData: {
         whitelisted,
         image: setupURI(uri),
-        imageFormat: await getAssetFormat(setupURI(uri)),
+        imageFormat: foramt,
         name,
         symbol: "C.B.C.G",
+        collectionName: "C.B.C.G",
+        attributes: data?.attributes,
       },
     };
     return nft;
