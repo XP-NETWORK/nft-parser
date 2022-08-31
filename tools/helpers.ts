@@ -67,6 +67,8 @@ export const getAssetFormat = async (imageUri: string): Promise<string> => {
           stream?.data?.on("data", async (chunk: ArrayBuffer) => {
             const res = await fromBuffer(chunk).catch((e) => reject(e));
             stream?.data?.destroy();
+
+            if (res?.ext === "heic") return reject("heic format");
             resolve(res?.ext || "");
           });
         });

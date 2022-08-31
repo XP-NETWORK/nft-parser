@@ -543,22 +543,24 @@ export const TreatNFT = async (
     collectionIdent,
     uri,
   } = nft;
-  const baseUrl = uri;
+
   const newUrl = `${proxy}https://treatdao.com/api/nft/${tokenId}`;
   try {
     const response = await axios(newUrl);
     const { data } = response;
-    const imgResp = await axios(setupURI(data.image));
-    const mimeType = imgResp.headers["content-type"];
-    const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
+    // const imgResp = await axios(setupURI(data.image));
+    // const mimeType = imgResp.headers["content-type"];
+    // const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
+
+    const format = await getAssetFormat(setupURI(data.image));
     const nft: NFT = {
       native,
       chainId,
       tokenId,
-      collectionIdent,
+      collectionIdent: "0x36F8f51f65Fe200311F709b797baF4E193DD0b0D",
       owner: account,
       uri: newUrl,
-      contract,
+      contract: "0x36F8f51f65Fe200311F709b797baF4E193DD0b0D",
       wrapped: data && data.wrapped,
       metaData: {
         whitelisted,
@@ -566,11 +568,15 @@ export const TreatNFT = async (
         imageFormat: format,
         name: data.name,
         attributes: data.attributes,
+        contractType: "ERC1155",
+        collectionName: "Treat NFT",
+        description: data.description,
       },
     };
     return nft;
-  } catch (error) {
-    console.error(error);
+  } catch (error: any) {
+    console.log(error.code);
+    // if (error.code === "ERR_BAD_REQUEST") throw error.code;
     return nft;
   }
 };

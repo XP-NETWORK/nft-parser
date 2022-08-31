@@ -234,7 +234,10 @@ const evmParser = async (
     case "0x36f8f51f65fe200311f709b797baf4e193dd0b0d":
       parsed = await evm.TreatNFT(nft, account, whitelisted);
       break;
-
+    case "0x36F8f51f65Fe200311F709b797baF4E193DD0b0D": {
+      parsed = await evm.TreatNFT(nft, account, whitelisted);
+      break;
+    }
     case "0x2C83EAf6E460C673d92477a7c49eb4ECd04e1216":
       parsed = await evm.DirtyLife(nft, account, whitelisted);
       break;
