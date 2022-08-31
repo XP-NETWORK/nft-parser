@@ -68,6 +68,8 @@ const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, function*
                         var _d;
                         const res = yield (0, file_type_1.fromBuffer)(chunk).catch((e) => reject(e));
                         (_d = stream === null || stream === void 0 ? void 0 : stream.data) === null || _d === void 0 ? void 0 : _d.destroy();
+                        if ((res === null || res === void 0 ? void 0 : res.ext) === "heic")
+                            return reject("heic format");
                         resolve((res === null || res === void 0 ? void 0 : res.ext) || "");
                     }));
                 }));

@@ -431,22 +431,22 @@ exports.CartelPunks = CartelPunks;
 // ! 0x36f8f51f65fe200311f709b797baf4e193dd0b0d
 const TreatNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const baseUrl = uri;
     const newUrl = `${__1.proxy}https://treatdao.com/api/nft/${tokenId}`;
     try {
         const response = yield (0, axios_1.default)(newUrl);
         const { data } = response;
-        const imgResp = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
-        const mimeType = imgResp.headers["content-type"];
-        const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
+        // const imgResp = await axios(setupURI(data.image));
+        // const mimeType = imgResp.headers["content-type"];
+        // const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
+        const format = yield (0, helpers_1.getAssetFormat)((0, exports.setupURI)(data.image));
         const nft = {
             native,
             chainId,
             tokenId,
-            collectionIdent,
+            collectionIdent: "0x36F8f51f65Fe200311F709b797baF4E193DD0b0D",
             owner: account,
             uri: newUrl,
-            contract,
+            contract: "0x36F8f51f65Fe200311F709b797baF4E193DD0b0D",
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
@@ -454,12 +454,16 @@ const TreatNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
                 imageFormat: format,
                 name: data.name,
                 attributes: data.attributes,
+                contractType: "ERC1155",
+                collectionName: "Treat NFT",
+                description: data.description,
             },
         };
         return nft;
     }
     catch (error) {
-        console.error(error);
+        console.log(error.code);
+        // if (error.code === "ERR_BAD_REQUEST") throw error.code;
         return nft;
     }
 });
