@@ -132,9 +132,11 @@ const nftGeneralParser = (nft, account, whitelisted, factory) => __awaiter(void 
             break;
         case "24":
             parsed = yield secret.secretParser(collectionIdent, nft, account, whitelisted);
+        case "30":
+            parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
             break;
         default:
-            return nft;
+            return yield evmParser(collectionIdent, nft, account, whitelisted);
     }
     return parsed;
 });
