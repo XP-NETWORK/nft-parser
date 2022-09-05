@@ -178,9 +178,11 @@ export const nftGeneralParser = async (
         account,
         whitelisted
       );
+    case "30":
+      parsed = await evmParser(collectionIdent, nft, account, whitelisted);
       break;
     default:
-      return nft as ParsedNFT;
+      return await evmParser(collectionIdent, nft, account, whitelisted);
   }
   return parsed;
 };
