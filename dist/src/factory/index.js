@@ -1319,7 +1319,9 @@ exports.DirtyLife = DirtyLife;
 const MachineFi = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
+        console.log("here");
         const data = JSON.parse(uri);
+        console.log(data);
         const nft = {
             native,
             chainId,

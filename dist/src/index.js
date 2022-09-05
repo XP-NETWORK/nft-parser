@@ -247,6 +247,10 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
         case "0x0c5ab026d74c451376a4798342a685a0e99a5bee":
             parsed = yield evm.MachineFi(nft, account, whitelisted);
             break;
+        case "0x0c5AB026d74C451376A4798342a685a0e99a5bEe": {
+            parsed = yield evm.MachineFi(nft, account, whitelisted);
+            break;
+        }
         case "0xc254a8d4ef5f825fd31561bdc69551ed2b8db134":
             parsed = yield evm.WrappedXPNET(nft, account, whitelisted);
             break;
