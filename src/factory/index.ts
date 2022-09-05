@@ -1685,7 +1685,10 @@ export const MachineFi = async (
   } = nft;
 
   try {
+    console.log("here");
     const data = JSON.parse(uri);
+
+    console.log(data);
 
     const nft: NFT = {
       native,

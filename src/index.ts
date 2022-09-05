@@ -302,6 +302,10 @@ const evmParser = async (
     case "0x0c5ab026d74c451376a4798342a685a0e99a5bee":
       parsed = await evm.MachineFi(nft, account, whitelisted);
       break;
+    case "0x0c5AB026d74C451376A4798342a685a0e99a5bEe": {
+      parsed = await evm.MachineFi(nft, account, whitelisted);
+      break;
+    }
     case "0xc254a8d4ef5f825fd31561bdc69551ed2b8db134":
       parsed = await evm.WrappedXPNET(nft, account, whitelisted);
       break;
