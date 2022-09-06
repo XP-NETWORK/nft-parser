@@ -428,7 +428,9 @@ const evmParser = async (
             parsed = await evm.CoolPig(nft, account, whitelisted);
             break;
         }
-
+        case "0x34933A5958378e7141AA2305Cdb5cDf514896035":
+            parsed = await evm.abeyChainUserMinter(nft, account, whitelisted);
+            break;
         //0x09D9D1AFf7b40916236966cdE92023af770e78bB
 
         default:
