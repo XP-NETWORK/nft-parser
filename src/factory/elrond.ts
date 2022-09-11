@@ -1,6 +1,6 @@
 import BigNumber from "bignumber.js";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { nftGeneralParser } from "..";
+import { getAssetFormat, nftGeneralParser } from "..";
 import { setupURI } from ".";
 import { url } from "inspector";
 
@@ -29,6 +29,81 @@ interface NFT {
   };
 }
 
+export const elrondParser = async (
+  collectionIdent: string,
+  nft: any,
+  account: string,
+  whitelisted: boolean
+) => {
+  let parsed;
+
+  switch (collectionIdent) {
+    case "AERMES-ac9886": {
+      parsed = await AERMES(nft, account, whitelisted);
+      break;
+    }
+    case "DRIFTERS-efd96c": {
+      parsed = await DRIFTERS(nft, account, whitelisted);
+      break;
+    }
+
+    case "NIFTYREX-d8c812": {
+      parsed = await DRIFTERS(nft, account, whitelisted);
+      break;
+    }
+
+    case "INNOVATOR-fca3a7": {
+      parsed = await INNOVATOR(nft, account, whitelisted);
+      break;
+    }
+
+    case "CGPASS-73ac68": {
+      parsed = await MEDUSA(nft, account, whitelisted);
+      break;
+    }
+
+    case "ORC-ef544d": {
+      parsed = await ORC(nft, account, whitelisted);
+      break;
+    }
+
+    case "STRAYCATS-b079a7": {
+      parsed = await WrappedXPNET(nft, account, whitelisted);
+      break;
+    }
+
+    case "PMONC-4032bc": {
+      parsed = await WrappedXPNET(nft, account, whitelisted);
+      break;
+    }
+
+    case "TAKANNE-3db244": {
+      parsed = await APOPHIS(nft, account, whitelisted);
+      break;
+    }
+
+    case "KINGSGUARD-8e5d07": {
+      parsed = await KINGSGUARD(nft, account, whitelisted);
+      break;
+    }
+
+    case "ALIEN-a499ab": {
+      parsed = await ALIEN(nft, account, whitelisted);
+      break;
+    }
+
+    case "HOKIZUKI-2fe117": {
+      parsed = await HOKI(nft, account, whitelisted);
+      break;
+    }
+
+    default:
+      parsed = await DEFAULT(nft, account, whitelisted);
+      break;
+  }
+  return parsed;
+};
+
 export const DEFAULT = async (
   nft: any,
   account: string,
@@ -42,13 +117,14 @@ export const DEFAULT = async (
   } = nft;
 
   try {
-    console.log("doritos");
-    const { data } = await axios(uri);
-    const headers = data.headers;
+    const format = await getAssetFormat(setupURI(uri));
 
-    const format = headers["content-type"].slice(
-      headers["content-type"].lastIndexOf("/") + 1
-    );
+    //const { data } = await axios(uri);
+    //const headers = data.headers;
+
+    // const format = headers["content-type"].slice(
+    // headers["content-type"].lastIndexOf("/") + 1
+    //);
 
     const nft: NFT = {
       native,
@@ -58,7 +134,7 @@ export const DEFAULT = async (
       uri,
       contract,
       collectionIdent,
-      wrapped: data.wrapped,
+      //wrapped: data.wrapped,
       metaData: {
         whitelisted,
         image: format.includes("json")

@@ -7,6 +7,7 @@ import * as veChain from "./factory/veChain";
 import * as fantom from "./factory/fantom";
 import * as aurora from "./factory/auora";
 import * as secret from "./factory/secret";
+import { elrondParser } from "./factory/elrond";
 import { tronParser } from "./factory/tron";
 import { Minter__factory, UserNftMinter__factory } from "xpnet-web3-contracts";
 import Evm from "../tools/evm";
@@ -23,8 +24,6 @@ if (typeof process === "object") {
 export const proxy = isNode
   ? ""
   : "https://sheltered-crag-76748.herokuapp.com/";
-
-console.log("");
 
 axios.defaults.timeout = isNode ? 2500 : axios.defaults.timeout;
 axios.interceptors.request.use(
@@ -363,81 +362,5 @@ const evmParser = async (
       break;
   }
 
-  return parsed;
-};
-
-const elrondParser = async (
-  collectionIdent: string,
-  nft: any,
-  account: string,
-  whitelisted: boolean
-) => {
-  let parsed;
-  switch (collectionIdent) {
-    case "AERMES-ac9886": {
-      parsed = await elrd.AERMES(nft, account, whitelisted);
-      break;
-    }
-    case "DRIFTERS-efd96c": {
-      parsed = await elrd.DRIFTERS(nft, account, whitelisted);
-      break;
-    }
-
-    case "NIFTYREX-d8c812": {
-      parsed = await elrd.DRIFTERS(nft, account, whitelisted);
-      break;
-    }
-
-    case "INNOVATOR-fca3a7": {
-      parsed = await elrd.INNOVATOR(nft, account, whitelisted);
-      break;
-    }
-
-    case "CGPASS-73ac68": {
-      parsed = await elrd.MEDUSA(nft, account, whitelisted);
-      break;
-    }
-
-    case "ORC-ef544d": {
-      parsed = await elrd.ORC(nft, account, whitelisted);
-      break;
-    }
-
-    case "STRAYCATS-b079a7": {
-      parsed = await elrd.WrappedXPNET(nft, account, whitelisted);
-      break;
-    }
-
-    case "PMONC-4032bc": {
-      parsed = await elrd.WrappedXPNET(nft, account, whitelisted);
-      break;
-    }
-
-    case "TAKANNE-3db244": {
-      parsed = await elrd.APOPHIS(nft, account, whitelisted);
-      break;
-    }
-
-    case "KINGSGUARD-8e5d07": {
-      parsed = await elrd.KINGSGUARD(nft, account, whitelisted);
-      break;
-    }
-
-    case "ALIEN-a499ab": {
-      parsed = await elrd.ALIEN(nft, account, whitelisted);
-      break;
-    }
-
-    case "HOKIZUKI-2fe117": {
-      parsed = await elrd.HOKI(nft, account, whitelisted);
-      break;
-    }
-
-    //HOKIZUKI-2fe117
-
-    default:
-      parsed = await elrd.Default(nft, account, whitelisted);
-      break;
-  }
   return parsed;
 };
