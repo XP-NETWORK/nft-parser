@@ -574,7 +574,7 @@ export const TreatNFT = async (
       },
     };
     return nft;
-  } catch (error: any) {
+  } catch (error) {
     console.log(error.code);
     // if (error.code === "ERR_BAD_REQUEST") throw error.code;
     return nft;
@@ -2065,6 +2065,47 @@ export const WrappedXPNET = async (
       metaData: {
         whitelisted,
         image: data && setupURI(data.image),
+        imageFormat: "png",
+        description: data && data?.description,
+        name: data && data?.name,
+        attributes: data && data?.attributes,
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+
+    return nft;
+  }
+};
+//!0x34933A5958378e7141AA2305Cdb5cDf514896035
+export const abeyChainUserMinter = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const { data } = await axios(`${proxy}${setupURI(uri)}`).catch(() => ({
+      data: null,
+    }));
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: setupURI(data.image),
         imageFormat: "png",
         description: data && data?.description,
         name: data && data?.name,
