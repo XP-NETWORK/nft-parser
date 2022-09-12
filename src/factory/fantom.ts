@@ -14,12 +14,13 @@ export const fantomParser = async (
   chainId?: string
 ) => {
   let parsed;
+  console.log("ds");
   switch (collectionIdent) {
     case "0xb3bd794bd00e1711c55ceb5c452d74c0d8be292d":
       parsed = await Falacy(nft, account, whitelisted);
       break;
 
-    case "0xcfa4d04d1ccbe4dda0635dedb61601b50b13ad8e":
+    case "0xcFa4d04d1CCbE4dda0635DEDB61601B50B13AD8e":
       parsed = await Runner(nft, account, whitelisted);
       break;
 
@@ -66,7 +67,7 @@ const Runner = async (nft: any, account: string, whitelisted: boolean) => {
     };
     return nft;
   } catch (error) {
-    console.error(error);
+    console.log(error);
 
     return nft;
   }
