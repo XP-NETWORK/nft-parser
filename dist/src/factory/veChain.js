@@ -138,7 +138,7 @@ const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             uri,
             contract,
             collectionIdent,
-            wrapped: metadata.wrapped,
+            wrapped: metadata === null || metadata === void 0 ? void 0 : metadata.wrapped,
             metaData: {
                 whitelisted,
                 image: src,
@@ -172,7 +172,7 @@ const Anon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data === null || data === void 0 ? void 0 : data.wrapped,
             metaData: {
                 whitelisted,
                 image: `https://blackv2.mypinata.cloud/ipfs/QmNrySrtR9E9VfnNGoJqohTvZh4K6Bo79L3eonRVk3xwUs/${tokenId}.png`,
@@ -208,7 +208,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data === null || data === void 0 ? void 0 : data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),
@@ -244,7 +244,7 @@ const Forest = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            wrapped: data === null || data === void 0 ? void 0 : data.wrapped,
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),
