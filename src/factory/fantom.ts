@@ -19,12 +19,57 @@ export const fantomParser = async (
       parsed = await Falacy(nft, account, whitelisted);
       break;
 
+    case "0xcfa4d04d1ccbe4dda0635dedb61601b50b13ad8e":
+      parsed = await Runner(nft, account, whitelisted);
+      break;
+
     default:
       parsed = await WrappedXPNET(nft, account, whitelisted);
       break;
   }
 
   return parsed;
+};
+
+const Runner = async (nft: any, account: string, whitelisted: boolean) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const res = await axios(
+      `${proxy}${uri.replace("ipfs.moralis.io:2053", "ipfs.io")}`
+    );
+
+    const { data } = res;
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      wrapped: data?.wrapped,
+      metaData: {
+        whitelisted,
+        image: setupURI(data?.image),
+        imageFormat: "png",
+        description: data?.description,
+        name: data?.name,
+        attributes: data?.attributes,
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+
+    return nft;
+  }
 };
 
 const Falacy = async (nft: any, account: string, whitelisted: boolean) => {
