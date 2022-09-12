@@ -42,12 +42,12 @@ exports.nftGeneralParser = exports.proxy = void 0;
 const axios_1 = __importDefault(require("axios"));
 const evm = __importStar(require("./factory"));
 const algorand_1 = require("./factory/algorand");
-const elrd = __importStar(require("./factory/elrond"));
 const tezos = __importStar(require("./factory/tezos"));
 const veChain = __importStar(require("./factory/veChain"));
 const fantom = __importStar(require("./factory/fantom"));
 const aurora = __importStar(require("./factory/auora"));
 const secret = __importStar(require("./factory/secret"));
+const elrond_1 = require("./factory/elrond");
 const tron_1 = require("./factory/tron");
 const evm_1 = __importDefault(require("../tools/evm"));
 var isNode = false;
@@ -61,7 +61,6 @@ if (typeof process === "object") {
 exports.proxy = isNode
     ? ""
     : "https://sheltered-crag-76748.herokuapp.com/";
-console.log("");
 axios_1.default.defaults.timeout = isNode ? 2500 : axios_1.default.defaults.timeout;
 axios_1.default.interceptors.request.use(function (config) {
     // Do something before request is sent
@@ -119,7 +118,7 @@ const nftGeneralParser = (nft, account, whitelisted, factory) => __awaiter(void 
             parsed = yield veChain.veChainParser(collectionIdent, nft, account, whitelisted);
             break;
         case "2":
-            parsed = yield elrondParser(collectionIdent, nft, account, whitelisted);
+            parsed = yield (0, elrond_1.elrondParser)(collectionIdent, nft, account, whitelisted);
             break;
         case "15":
             parsed = yield (0, algorand_1.algorandParser)(collectionIdent, nft, account, whitelisted);
@@ -293,67 +292,12 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
             parsed = yield evm.CoolPig(nft, account, whitelisted);
             break;
         }
+        case "0x34933A5958378e7141AA2305Cdb5cDf514896035":
+            parsed = yield evm.abeyChainUserMinter(nft, account, whitelisted);
+            break;
         //0x09D9D1AFf7b40916236966cdE92023af770e78bB
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
-            break;
-    }
-    return parsed;
-});
-const elrondParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    let parsed;
-    switch (collectionIdent) {
-        case "AERMES-ac9886": {
-            parsed = yield elrd.AERMES(nft, account, whitelisted);
-            break;
-        }
-        case "DRIFTERS-efd96c": {
-            parsed = yield elrd.DRIFTERS(nft, account, whitelisted);
-            break;
-        }
-        case "NIFTYREX-d8c812": {
-            parsed = yield elrd.DRIFTERS(nft, account, whitelisted);
-            break;
-        }
-        case "INNOVATOR-fca3a7": {
-            parsed = yield elrd.INNOVATOR(nft, account, whitelisted);
-            break;
-        }
-        case "CGPASS-73ac68": {
-            parsed = yield elrd.MEDUSA(nft, account, whitelisted);
-            break;
-        }
-        case "ORC-ef544d": {
-            parsed = yield elrd.ORC(nft, account, whitelisted);
-            break;
-        }
-        case "STRAYCATS-b079a7": {
-            parsed = yield elrd.WrappedXPNET(nft, account, whitelisted);
-            break;
-        }
-        case "PMONC-4032bc": {
-            parsed = yield elrd.WrappedXPNET(nft, account, whitelisted);
-            break;
-        }
-        case "TAKANNE-3db244": {
-            parsed = yield elrd.APOPHIS(nft, account, whitelisted);
-            break;
-        }
-        case "KINGSGUARD-8e5d07": {
-            parsed = yield elrd.KINGSGUARD(nft, account, whitelisted);
-            break;
-        }
-        case "ALIEN-a499ab": {
-            parsed = yield elrd.ALIEN(nft, account, whitelisted);
-            break;
-        }
-        case "HOKIZUKI-2fe117": {
-            parsed = yield elrd.HOKI(nft, account, whitelisted);
-            break;
-        }
-        //HOKIZUKI-2fe117
-        default:
-            parsed = yield elrd.Default(nft, account, whitelisted);
             break;
     }
     return parsed;

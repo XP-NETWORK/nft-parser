@@ -20,6 +20,7 @@ interface NFT {
         contractType?: string;
     };
 }
+export declare const elrondParser: (collectionIdent: string, nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const DEFAULT: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const AERMES: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const DRIFTERS: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;

@@ -12,18 +12,79 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Default = exports.HOKI = exports.WrappedXPNET = exports.ALIEN = exports.KINGSGUARD = exports.ORC = exports.MEDUSA = exports.INNOVATOR = exports.APOPHIS = exports.DRIFTERS = exports.AERMES = exports.DEFAULT = void 0;
+exports.Default = exports.HOKI = exports.WrappedXPNET = exports.ALIEN = exports.KINGSGUARD = exports.ORC = exports.MEDUSA = exports.INNOVATOR = exports.APOPHIS = exports.DRIFTERS = exports.AERMES = exports.DEFAULT = exports.elrondParser = void 0;
 const axios_1 = __importDefault(require("axios"));
-const _1 = require(".");
 const __1 = require("..");
+const _1 = require(".");
+const __2 = require("..");
+const elrondParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    let parsed;
+    switch (collectionIdent) {
+        case "AERMES-ac9886": {
+            parsed = yield (0, exports.AERMES)(nft, account, whitelisted);
+            break;
+        }
+        case "DRIFTERS-efd96c": {
+            parsed = yield (0, exports.DRIFTERS)(nft, account, whitelisted);
+            break;
+        }
+        case "NIFTYREX-d8c812": {
+            parsed = yield (0, exports.DRIFTERS)(nft, account, whitelisted);
+            break;
+        }
+        case "INNOVATOR-fca3a7": {
+            parsed = yield (0, exports.INNOVATOR)(nft, account, whitelisted);
+            break;
+        }
+        case "CGPASS-73ac68": {
+            parsed = yield (0, exports.MEDUSA)(nft, account, whitelisted);
+            break;
+        }
+        case "ORC-ef544d": {
+            parsed = yield (0, exports.ORC)(nft, account, whitelisted);
+            break;
+        }
+        case "STRAYCATS-b079a7": {
+            parsed = yield (0, exports.WrappedXPNET)(nft, account, whitelisted);
+            break;
+        }
+        case "PMONC-4032bc": {
+            parsed = yield (0, exports.WrappedXPNET)(nft, account, whitelisted);
+            break;
+        }
+        case "TAKANNE-3db244": {
+            parsed = yield (0, exports.APOPHIS)(nft, account, whitelisted);
+            break;
+        }
+        case "KINGSGUARD-8e5d07": {
+            parsed = yield (0, exports.KINGSGUARD)(nft, account, whitelisted);
+            break;
+        }
+        case "ALIEN-a499ab": {
+            parsed = yield (0, exports.ALIEN)(nft, account, whitelisted);
+            break;
+        }
+        case "HOKIZUKI-2fe117": {
+            parsed = yield (0, exports.HOKI)(nft, account, whitelisted);
+            break;
+        }
+        default:
+            parsed = yield (0, exports.DEFAULT)(nft, account, whitelisted);
+            break;
+    }
+    return parsed;
+});
+exports.elrondParser = elrondParser;
 const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        console.log("doritos");
-        const { data } = yield (0, axios_1.default)(uri);
-        const headers = data.headers;
-        const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
+        const format = yield (0, __1.getAssetFormat)((0, _1.setupURI)(uri));
+        //const { data } = await axios(uri);
+        //const headers = data.headers;
+        // const format = headers["content-type"].slice(
+        // headers["content-type"].lastIndexOf("/") + 1
+        //);
         const nft = {
             native,
             chainId,
@@ -32,7 +93,7 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             uri,
             contract,
             collectionIdent,
-            wrapped: data.wrapped,
+            //wrapped: data.wrapped,
             metaData: {
                 whitelisted,
                 image: format.includes("json")
@@ -199,7 +260,7 @@ exports.MEDUSA = MEDUSA;
 const ORC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const { data } = yield (0, axios_1.default)(__1.proxy + uri);
+        const { data } = yield (0, axios_1.default)(__2.proxy + uri);
         const nft = {
             native,
             chainId,
@@ -259,7 +320,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
     var _c, _d, _e, _f;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const { data } = yield (0, axios_1.default)(__1.proxy + uri);
+        const { data } = yield (0, axios_1.default)(__2.proxy + uri);
         const nft = {
             native,
             chainId,
@@ -287,7 +348,7 @@ const HOKI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
     var _g, _h, _j, _k;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const { data } = yield (0, axios_1.default)(__1.proxy + uri);
+        const { data } = yield (0, axios_1.default)(__2.proxy + uri);
         const nft = {
             native,
             chainId,
@@ -321,7 +382,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             };
         }
         else {
-            const res = yield (0, axios_1.default)(__1.proxy + uri);
+            const res = yield (0, axios_1.default)(__2.proxy + uri);
             data = res.data;
         }
         const nft = {
