@@ -48,7 +48,7 @@ const Falacy = async (nft: any, account: string, whitelisted: boolean) => {
       uri,
       contract,
       collectionIdent,
-      wrapped: data.wrapped,
+      wrapped: data?.wrapped,
       metaData: {
         whitelisted,
         image: `https://ipfs.moralis.io:2053/ipfs/${data.image.replace(
@@ -56,9 +56,9 @@ const Falacy = async (nft: any, account: string, whitelisted: boolean) => {
           ""
         )}`,
         imageFormat: "png",
-        description: data.description,
-        name: data.name,
-        attributes: data.attributes,
+        description: data?.description,
+        name: data?.name,
+        attributes: data?.attributes,
       },
     };
     return nft;
@@ -98,16 +98,16 @@ const WrappedXPNET = async (
       uri,
       contract,
       collectionIdent,
-      wrapped: data.wrapped,
+      wrapped: data?.wrapped,
       metaData: {
         whitelisted,
-        image: setupURI(data.image),
+        image: setupURI(data?.image),
         imageFormat: "png",
-        description: data.description,
-        name: data.name,
-        symbol: data.symbol,
-        attributes: data.attributes,
-        contractType: data.type,
+        description: data?.description,
+        name: data?.name,
+        symbol: data?.symbol,
+        attributes: data?.attributes,
+        contractType: data?.type,
       },
     };
     return nft;

@@ -176,14 +176,14 @@ export const Default = async (
       uri,
       contract,
       collectionIdent,
-      wrapped: data.wrapped,
+      wrapped: data?.wrapped,
       metaData: {
         whitelisted,
-        image: setupURI(data.image),
+        image: setupURI(data?.image),
         imageFormat: format,
-        attributes: data.attributes,
-        description: data.description,
-        name: data.name,
+        attributes: data?.attributes,
+        description: data?.description,
+        name: data?.name,
       },
     };
     return nft;

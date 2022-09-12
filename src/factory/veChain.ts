@@ -148,7 +148,7 @@ const WOVY = async (nft: any, account: string, whitelisted: boolean) => {
       uri,
       contract,
       collectionIdent,
-      wrapped: metadata.wrapped,
+      wrapped: metadata?.wrapped,
       metaData: {
         whitelisted,
         image: src,
@@ -194,7 +194,7 @@ const Anon = async (nft: any, account: string, whitelisted: boolean) => {
       uri,
       contract,
       collectionIdent,
-      wrapped: data.wrapped,
+      wrapped: data?.wrapped,
       metaData: {
         whitelisted,
         image: `https://blackv2.mypinata.cloud/ipfs/QmNrySrtR9E9VfnNGoJqohTvZh4K6Bo79L3eonRVk3xwUs/${tokenId}.png`,
@@ -243,7 +243,7 @@ const WrappedXPNET = async (
       uri,
       contract,
       collectionIdent,
-      wrapped: data.wrapped,
+      wrapped: data?.wrapped,
       metaData: {
         whitelisted,
         image: setupURI(data.image),
@@ -291,7 +291,7 @@ const Forest = async (nft: any, account: string, whitelisted: boolean) => {
       uri,
       contract,
       collectionIdent,
-      wrapped: data.wrapped,
+      wrapped: data?.wrapped,
       metaData: {
         whitelisted,
         image: setupURI(data.image),
