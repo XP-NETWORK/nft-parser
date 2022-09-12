@@ -23,6 +23,9 @@ const fantomParser = (collectionIdent, nft, account, whitelisted, chainId) => __
         case "0xb3bd794bd00e1711c55ceb5c452d74c0d8be292d":
             parsed = yield Falacy(nft, account, whitelisted);
             break;
+        case "0xcfa4d04d1ccbe4dda0635dedb61601b50b13ad8e":
+            parsed = yield Runner(nft, account, whitelisted);
+            break;
         default:
             parsed = yield WrappedXPNET(nft, account, whitelisted);
             break;
@@ -30,6 +33,36 @@ const fantomParser = (collectionIdent, nft, account, whitelisted, chainId) => __
     return parsed;
 });
 exports.fantomParser = fantomParser;
+const Runner = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    try {
+        const res = yield (0, axios_1.default)(`${__1.proxy}${uri.replace("ipfs.moralis.io:2053", "ipfs.io")}`);
+        const { data } = res;
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            wrapped: data === null || data === void 0 ? void 0 : data.wrapped,
+            metaData: {
+                whitelisted,
+                image: (0, _1.setupURI)(data === null || data === void 0 ? void 0 : data.image),
+                imageFormat: "png",
+                description: data === null || data === void 0 ? void 0 : data.description,
+                name: data === null || data === void 0 ? void 0 : data.name,
+                attributes: data === null || data === void 0 ? void 0 : data.attributes,
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
 const Falacy = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
