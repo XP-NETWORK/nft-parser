@@ -574,7 +574,7 @@ export const TreatNFT = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.log(error.code);
     // if (error.code === "ERR_BAD_REQUEST") throw error.code;
     return nft;
