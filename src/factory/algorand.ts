@@ -140,6 +140,10 @@ export const algorandParser = async (
       parsed = await CBCG(nft, account, whitelisted);
       break;
 
+    case "Bozeman Mountaineers JMFL":
+      parsed = await Bozeman(nft, account, whitelisted);
+      break;
+
     default:
       parsed = await Default(nft, account, whitelisted);
       break;
@@ -412,6 +416,56 @@ export const CBCG = async (
         name,
         symbol: "C.B.C.G",
         collectionName: "C.B.C.G",
+        attributes: data?.attributes,
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+    return nft;
+  }
+};
+
+export const Bozeman = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId, name },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  /* const attrs = await axios(
+    proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`
+  );*/
+
+  const [attrs, foramt] = await Promise.all([
+    axios(proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+    getAssetFormat(setupURI(uri)),
+  ]);
+
+  const { data } = attrs;
+
+  try {
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      wrapped: null,
+      metaData: {
+        whitelisted,
+        image: setupURI(uri),
+        imageFormat: foramt,
+        name,
+        //symbol: "Bozeman Mountaineers JMFL",
+        collectionName: "Bozeman Mountaineers JMFL",
         attributes: data?.attributes,
       },
     };
