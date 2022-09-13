@@ -28,4 +28,5 @@ export declare const WarriorCroc: (nft: any, account: string, whitelisted: boole
 export declare const Alchemon: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const SMC: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const CBCG: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
+export declare const Bozeman: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export {};

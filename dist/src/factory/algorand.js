@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CBCG = exports.SMC = exports.Alchemon = exports.WarriorCroc = exports.LikeD00dles = exports.Default = exports.algorandParser = void 0;
+exports.Bozeman = exports.CBCG = exports.SMC = exports.Alchemon = exports.WarriorCroc = exports.LikeD00dles = exports.Default = exports.algorandParser = void 0;
 const axios_1 = __importDefault(require("axios"));
 const __1 = require("..");
 const _1 = require(".");
@@ -123,6 +123,9 @@ const algorandParser = (collectionIdent, nft, account, whitelisted) => __awaiter
             break;
         case "C.B.C.G":
             parsed = yield (0, exports.CBCG)(nft, account, whitelisted);
+            break;
+        case "Bozeman Mountaineers JMFL":
+            parsed = yield (0, exports.Bozeman)(nft, account, whitelisted);
             break;
         default:
             parsed = yield (0, exports.Default)(nft, account, whitelisted);
@@ -346,3 +349,41 @@ const CBCG = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.CBCG = CBCG;
+const Bozeman = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
+    /* const attrs = await axios(
+      proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`
+    );*/
+    const [attrs, foramt] = yield Promise.all([
+        (0, axios_1.default)(__2.proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+        (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
+    ]);
+    const { data } = attrs;
+    try {
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            wrapped: null,
+            metaData: {
+                whitelisted,
+                image: (0, _1.setupURI)(uri),
+                imageFormat: foramt,
+                name,
+                //symbol: "Bozeman Mountaineers JMFL",
+                collectionName: "Bozeman Mountaineers JMFL",
+                attributes: data === null || data === void 0 ? void 0 : data.attributes,
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+exports.Bozeman = Bozeman;
