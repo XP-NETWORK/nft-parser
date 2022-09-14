@@ -137,37 +137,31 @@ exports.algorandParser = algorandParser;
 // ! COLLECTIONS
 // ! Default
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const url = `${__2.proxy}${(0, _1.setupURI)(uri)}`;
-    console.log(url, "url");
-    try {
-        const response = yield (0, axios_1.default)(url);
-        const { data } = response;
-        const format = yield (0, __1.getAssetFormat)((0, _1.setupURI)(data.image));
-        const nft = {
-            native,
-            chainId,
-            tokenId,
-            owner: account,
-            uri,
-            contract,
-            collectionIdent,
-            wrapped: data === null || data === void 0 ? void 0 : data.wrapped,
-            metaData: {
-                whitelisted,
-                image: (0, _1.setupURI)(data === null || data === void 0 ? void 0 : data.image),
-                imageFormat: format,
-                attributes: data === null || data === void 0 ? void 0 : data.attributes,
-                description: data === null || data === void 0 ? void 0 : data.description,
-                name: data === null || data === void 0 ? void 0 : data.name,
-            },
-        };
-        return nft;
-    }
-    catch (error) {
-        console.error(error);
-        return nft;
-    }
+    const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
+    const [attrs, foramt] = yield Promise.all([
+        (0, axios_1.default)(__2.proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+        (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
+    ]);
+    const { data } = attrs;
+    return {
+        native,
+        chainId,
+        tokenId,
+        owner: account,
+        uri,
+        contract,
+        collectionIdent,
+        wrapped: null,
+        metaData: {
+            whitelisted,
+            image: (0, _1.setupURI)(uri),
+            imageFormat: foramt,
+            name,
+            //symbol: "Bozeman Mountaineers JMFL",
+            collectionName: name.split("#")[0].trim(),
+            attributes: data === null || data === void 0 ? void 0 : data.attributes,
+        },
+    };
 });
 exports.Default = Default;
 // ! "D00dles"
