@@ -159,42 +159,37 @@ export const Default = async (
 ): Promise<NFT> => {
   const {
     native,
-    native: { contract, tokenId, chainId },
+    native: { contract, tokenId, chainId, name },
     collectionIdent,
     uri,
   } = nft;
 
-  const url = `${proxy}${setupURI(uri)}`;
-  console.log(url, "url");
-  try {
-    const response = await axios(url);
-    const { data } = response;
+  const [attrs, foramt] = await Promise.all([
+    axios(proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+    getAssetFormat(setupURI(uri)),
+  ]);
 
-    const format = await getAssetFormat(setupURI(data.image));
+  const { data } = attrs;
 
-    const nft: NFT = {
-      native,
-      chainId,
-      tokenId,
-      owner: account,
-      uri,
-      contract,
-      collectionIdent,
-      wrapped: data?.wrapped,
-      metaData: {
-        whitelisted,
-        image: setupURI(data?.image),
-        imageFormat: format,
-        attributes: data?.attributes,
-        description: data?.description,
-        name: data?.name,
-      },
-    };
-    return nft;
-  } catch (error) {
-    console.error(error);
-    return nft;
-  }
+  return {
+    native,
+    chainId,
+    tokenId,
+    owner: account,
+    uri,
+    contract,
+    collectionIdent,
+    wrapped: null,
+    metaData: {
+      whitelisted,
+      image: setupURI(uri),
+      imageFormat: foramt,
+      name,
+      //symbol: "Bozeman Mountaineers JMFL",
+      collectionName: name.split("#")[0].trim(),
+      attributes: data?.attributes,
+    },
+  };
 };
 // ! "D00dles"
 export const LikeD00dles = async (
