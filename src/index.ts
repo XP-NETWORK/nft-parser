@@ -25,6 +25,10 @@ export const proxy = isNode
   ? ""
   : "https://sheltered-crag-76748.herokuapp.com/";
 
+export const apenftKey = "rV9UjZwMSK4zqkKEWOUnUXXY2zNgPJ8i";
+export const apenftSign =
+  "7c9caa14981ff714f92fe16322bcf13803cd3c0d219ef008eb0e5ebf352814ca.7625.1663231473";
+
 axios.defaults.timeout = isNode ? 2500 : axios.defaults.timeout;
 axios.interceptors.request.use(
   function (config) {
