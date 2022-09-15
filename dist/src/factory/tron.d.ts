@@ -21,5 +21,6 @@ interface NFT {
     };
 }
 export declare const tronParser: (collectionIdent: string, nft: any, account: any, whitelisted: boolean) => Promise<NFT>;
+export declare const SpaceClub: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const Default: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export {};
