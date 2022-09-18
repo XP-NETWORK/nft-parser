@@ -38,9 +38,11 @@ const setupURI = (uri) => {
         else if (uri[0] === "Q") {
             return `https://ipfs.io/ipfs/${uri}`;
         }
-        else {
+        else if (uri.includes("http://")) {
             return uri.replace("http://", "https://");
         }
+        else
+            throw new Error("unknown uri format");
     }
     else {
         return uri;
