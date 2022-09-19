@@ -7,6 +7,7 @@ interface NFT {
     collectionIdent: string;
     native: any;
     wrapped?: any;
+    errorStatus?: number;
     metaData: {
         whitelisted: boolean;
         image: string;
@@ -18,6 +19,7 @@ interface NFT {
         attributes?: any;
         description?: string;
         contractType?: string;
+        collectionName?: string;
     };
 }
 export declare const elrondParser: (collectionIdent: string, nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
@@ -30,6 +32,7 @@ export declare const MEDUSA: (nft: any, account: string, whitelisted: boolean) =
 export declare const ORC: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const KINGSGUARD: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const ALIEN: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
+export declare const NBERGS: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const WrappedXPNET: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const HOKI: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const Default: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;

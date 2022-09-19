@@ -137,31 +137,37 @@ exports.algorandParser = algorandParser;
 // ! COLLECTIONS
 // ! Default
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
-    const [attrs, foramt] = yield Promise.all([
-        (0, axios_1.default)(__2.proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
-        (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
-    ]);
-    const { data } = attrs;
-    return {
-        native,
-        chainId,
-        tokenId,
-        owner: account,
-        uri,
-        contract,
-        collectionIdent,
-        wrapped: null,
-        metaData: {
-            whitelisted,
-            image: (0, _1.setupURI)(uri),
-            imageFormat: foramt,
-            name,
-            //symbol: "Bozeman Mountaineers JMFL",
-            collectionName: name.split("#")[0].trim(),
-            attributes: data === null || data === void 0 ? void 0 : data.attributes,
-        },
-    };
+    try {
+        const [attrs, foramt] = yield Promise.all([
+            (0, axios_1.default)(__2.proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+            (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
+        ]);
+        const { data } = attrs;
+        return {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            wrapped: null,
+            metaData: {
+                whitelisted,
+                image: (0, _1.setupURI)(uri),
+                imageFormat: foramt,
+                name,
+                //symbol: "Bozeman Mountaineers JMFL",
+                collectionName: name.split("#")[0].trim(),
+                attributes: data === null || data === void 0 ? void 0 : data.attributes,
+            },
+        };
+    }
+    catch (error) {
+        return Object.assign(Object.assign({}, nft), (((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) === 404 ? { errorStatus: 404 } : {}));
+    }
 });
 exports.Default = Default;
 // ! "D00dles"

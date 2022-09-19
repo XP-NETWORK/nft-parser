@@ -95,6 +95,7 @@ const Falacy = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
     }
 });
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
@@ -125,7 +126,6 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
         return nft;
     }
     catch (error) {
-        console.error(error);
-        return nft;
+        return Object.assign(Object.assign({}, nft), (((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });

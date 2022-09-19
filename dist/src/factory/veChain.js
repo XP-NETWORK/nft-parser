@@ -70,7 +70,7 @@ const veChainParser = (collectionIdent, nft, account, whitelisted, chainId) => _
 });
 exports.veChainParser = veChainParser;
 const Planet = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a, _b, _c;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const gqlQuery = (tokenId) => ({
         query: "\n    \n    fragment CollectionFields on TokenMarketplaceDTO {\n        collection {\n            collectionId\n            blockchainId\n            smartContractAddress\n            stakingContractAddresses\n            creatorAddress\n            name\n            customUrl\n            thumbnailImageUrl\n            placeholderImageUrl\n            isVerified\n            isVisible\n            isRevealed\n            type\n            importedAt\n            config\n        }\n    }\n\n    \n    fragment CreatorFields on TokenMarketplaceDTO {\n        creator {\n            address\n            name\n            customUrl\n            ipfsFileHash\n            profileImageUrl\n            blacklisted\n            verified\n            verifiedLevel\n        }\n    }\n\n    \n    fragment MediaFields on TokenMarketplaceDTO {\n        media {\n            url\n            mimeType\n            sizeType\n        }\n    }\n\n\n    query GetToken(\n        $tokenId: String!\n        $smartContractAddress: String!\n    ) {\n        token: getToken(\n            tokenId: $tokenId\n            smartContractAddress: $smartContractAddress\n        ) {\n            \ntokenId\nsmartContractAddress\nname\ndescription\ncreatorAddress\neditionsCount\nroyalty\nfileType\nfileUrl\nmetadataUrl\nmintedAt\nattributes\nscore\nrank\n...CollectionFields\n...CreatorFields\n...MediaFields\n\n        }\n    }\n",
@@ -115,11 +115,11 @@ const Planet = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
     }
     catch (error) {
         console.error(error);
-        return nft;
+        return Object.assign(Object.assign({}, nft), (((_c = error.response) === null || _c === void 0 ? void 0 : _c.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _c, _d, _e;
+    var _d, _e, _f, _g;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
@@ -128,7 +128,7 @@ const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
         const $ = cheerio.load(response.data);
         const script = $("#__NEXT_DATA__");
         const json = JSON.parse(script.get()[0].children[0].data);
-        const metadata = (_e = (_d = (_c = json === null || json === void 0 ? void 0 : json.props) === null || _c === void 0 ? void 0 : _c.pageProps) === null || _d === void 0 ? void 0 : _d.token) === null || _e === void 0 ? void 0 : _e.token;
+        const metadata = (_f = (_e = (_d = json === null || json === void 0 ? void 0 : json.props) === null || _d === void 0 ? void 0 : _d.pageProps) === null || _e === void 0 ? void 0 : _e.token) === null || _f === void 0 ? void 0 : _f.token;
         const src = (0, _1.setupURI)(metadata.fileUrl);
         const nft = {
             native,
@@ -153,10 +153,11 @@ const WOVY = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
     }
     catch (error) {
         console.error(error);
-        return nft;
+        return Object.assign(Object.assign({}, nft), (((_g = error.response) === null || _g === void 0 ? void 0 : _g.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 const Anon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _h;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = yield (0, axios_1.default)(`${__1.proxy}${`https://blackv2.mypinata.cloud/ipfs/QmNrySrtR9E9VfnNGoJqohTvZh4K6Bo79L3eonRVk3xwUs/${tokenId}.json`}`).catch(() => ({
@@ -188,11 +189,11 @@ const Anon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
     }
     catch (error) {
         console.error(error);
-        return nft;
+        return Object.assign(Object.assign({}, nft), (((_h = error.response) === null || _h === void 0 ? void 0 : _h.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _f, _g;
+    var _j, _k, _l;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = yield (0, axios_1.default)(`${__1.proxy}${(0, _1.setupURI)(uri)}`).catch(() => ({
@@ -212,7 +213,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),
-                imageFormat: (_g = (_f = data.image) === null || _f === void 0 ? void 0 : _f.match(/\.([^.]*)$/)) === null || _g === void 0 ? void 0 : _g.at(1),
+                imageFormat: (_k = (_j = data.image) === null || _j === void 0 ? void 0 : _j.match(/\.([^.]*)$/)) === null || _k === void 0 ? void 0 : _k.at(1),
                 description: data.description,
                 name: data.name,
                 symbol: data.symbol,
@@ -224,11 +225,11 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
     }
     catch (error) {
         console.error(error);
-        return nft;
+        return Object.assign(Object.assign({}, nft), (((_l = error.response) === null || _l === void 0 ? void 0 : _l.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 const Forest = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _h, _j;
+    var _m, _o, _p;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = __1.proxy
@@ -248,7 +249,7 @@ const Forest = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),
-                imageFormat: (_j = (_h = data.image) === null || _h === void 0 ? void 0 : _h.match(/\.([^.]*)$/)) === null || _j === void 0 ? void 0 : _j.at(1),
+                imageFormat: (_o = (_m = data.image) === null || _m === void 0 ? void 0 : _m.match(/\.([^.]*)$/)) === null || _o === void 0 ? void 0 : _o.at(1),
                 description: data.description,
                 name: data === null || data === void 0 ? void 0 : data.name,
                 symbol: data.symbol,
@@ -261,7 +262,7 @@ const Forest = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
     }
     catch (error) {
         console.log(error.message || "parse timeout forest");
-        return nft;
+        return Object.assign(Object.assign({}, nft), (((_p = error.response) === null || _p === void 0 ? void 0 : _p.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 /**

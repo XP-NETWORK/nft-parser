@@ -84,6 +84,7 @@ const SpaceClub = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
 });
 exports.SpaceClub = SpaceClub;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _e;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
     const url = `${__1.proxy}${(0, _1.setupURI)(uri)}`;
@@ -113,7 +114,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     }
     catch (error) {
         console.error(error);
-        return nft;
+        return Object.assign(Object.assign({}, nft), (((_e = error.response) === null || _e === void 0 ? void 0 : _e.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.Default = Default;

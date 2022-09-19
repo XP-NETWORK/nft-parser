@@ -10,6 +10,7 @@ interface ParsedNFT {
     collectionIdent: string;
     native: any;
     wrapped?: any;
+    errorStatus?: number;
     metaData: {
         image: string;
         imageFormat: string;
