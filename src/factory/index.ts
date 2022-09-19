@@ -415,6 +415,9 @@ export const RocketMonsters = async (
     return nft;
   }
 };
+
+//0xc97e56Cd5777b46015F88BBB047f90cf556f520b
+
 // ! 0xDcAA2b071c1851D8Da43f85a34a5A57d4Fa93A1A
 export const TheBlackMagic = async (
   nft: any,
@@ -2110,6 +2113,43 @@ export const abeyChainUserMinter = async (
         description: data && data?.description,
         name: data && data?.name,
         attributes: data && data?.attributes,
+      },
+    };
+    return nft;
+  } catch (error) {
+    console.error(error);
+
+    return nft;
+  }
+};
+
+export const RCM = async (nft: any, account: string, whitelisted: boolean) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const { data } = await axios(`${proxy}${setupURI(uri)}`).catch(() => ({
+      data: null,
+    }));
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: data?.image,
+        imageFormat: "png",
+        description: data?.description,
+        name: data?.name,
+        attributes: data?.attributes,
       },
     };
     return nft;

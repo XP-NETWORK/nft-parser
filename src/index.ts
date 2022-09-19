@@ -365,6 +365,9 @@ const evmParser = async (
       parsed = await evm.abeyChainUserMinter(nft, account, whitelisted);
       break;
     //0x09D9D1AFf7b40916236966cdE92023af770e78bB
+    case "0xc97e56Cd5777b46015F88BBB047f90cf556f520b":
+      parsed = await evm.RCM(nft, account, whitelisted);
+      break;
 
     default:
       parsed = await evm.Default(nft, account, whitelisted);
