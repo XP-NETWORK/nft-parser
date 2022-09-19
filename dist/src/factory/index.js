@@ -41,8 +41,12 @@ const setupURI = (uri) => {
         else if (uri.includes("http://")) {
             return uri.replace("http://", "https://");
         }
-        else
+        else if (/^https\:\/\//.test(uri)) {
+            return uri;
+        }
+        else {
             throw new Error("unknown uri format");
+        }
     }
     else {
         return uri;

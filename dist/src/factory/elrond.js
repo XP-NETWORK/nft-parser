@@ -121,7 +121,7 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         return nft;
     }
     catch (error) {
-        console.error((_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.status);
+        console.error(((_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.status) || error);
         return Object.assign(Object.assign({}, nft), (((_b = error.response) === null || _b === void 0 ? void 0 : _b.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
@@ -414,6 +414,7 @@ exports.HOKI = HOKI;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _p, _q, _r, _s, _t;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    console.log("ds");
     try {
         let data;
         if (/(png|jpe?g)/.test(uri)) {
@@ -443,7 +444,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         return nft;
     }
     catch (error) {
-        console.error((_t = error === null || error === void 0 ? void 0 : error.response) === null || _t === void 0 ? void 0 : _t.status);
+        console.error(((_t = error === null || error === void 0 ? void 0 : error.response) === null || _t === void 0 ? void 0 : _t.status) || error);
         return nft;
     }
 });
