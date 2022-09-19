@@ -107,7 +107,10 @@ export const Default = async (
     return nft;
   } catch (error: any) {
     console.error("error in default parser: ", error.message);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 
@@ -151,9 +154,13 @@ export const ART_NFT_MATIC = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0xa8a079ea48dc846899bdb542f3728dbc6758fdfa
@@ -191,9 +198,13 @@ export const EtherHead = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0x6e1ecc59f4005d0f2707ab7a0a8cecbaba41c11e
@@ -231,9 +242,13 @@ export const AngelOfAether = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0xe5b3903ffb3a00e91c75e25a4bd6616d3171e45e
@@ -275,9 +290,13 @@ export const Legend = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0xee6d7e31ea2095df9b2f89ec15111d3de5cd39af
@@ -321,9 +340,13 @@ export const AlphaBettyDoodle = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 
@@ -363,9 +386,13 @@ export const Mabstronauts = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 
@@ -410,9 +437,13 @@ export const RocketMonsters = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 
@@ -485,9 +516,13 @@ export const TheBlackMagic = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0x4c1900270dbf0c1e6a9c984aef9a18a7cb9ab1cc
@@ -529,9 +564,13 @@ export const CartelPunks = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0x36f8f51f65fe200311f709b797baf4e193dd0b0d
@@ -580,7 +619,11 @@ export const TreatNFT = async (
   } catch (error: any) {
     console.log(error.code);
     // if (error.code === "ERR_BAD_REQUEST") throw error.code;
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 //0x2c83eaf6e460c673d92477a7c49eb4ecd04e1216
@@ -623,9 +666,13 @@ export const IdoDirt = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0x691bd0f2f5a145fcf297cf4be79095b66f002cbc
@@ -667,9 +714,13 @@ export const Awokensages = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0x7f3495cf2d05db6e9e52cdf989bced71e786725c
@@ -711,9 +762,13 @@ export const Technomaniacs = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0xe7f8ccda432239dcb418e94d625bc2fe6350f6bb
@@ -752,9 +807,13 @@ export const ArcadeEdition = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0x56d93767467c54bd86578666904087c4f16cdb7f
@@ -794,9 +853,13 @@ export const Founders_Cabinet = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0x2d317ed6c2e3eb5c54ca7518ef19deee96c15c85
@@ -838,9 +901,13 @@ export const TTAV = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0x7a7ca3b27760b52428d7a9d0a9f369ff31a2de94
@@ -880,9 +947,13 @@ export const BoredGUtterCats = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0x2FeEE2Cc7fB32bD48AB22080e2C680f5390Ef426
@@ -924,9 +995,13 @@ export const IDoDirtPolygon = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0x2953399124f0cbb46d2cbacd8a89cf0599974963
@@ -975,9 +1050,13 @@ export const ArsenalGame = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 // ! 0xc69ecd37122a9b5fd7e62bc229d478bb83063c9d
@@ -1018,9 +1097,13 @@ export const Mate = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 
@@ -1111,7 +1194,7 @@ export const ABCBears = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     return nft;
   }
@@ -1161,7 +1244,7 @@ export const TragicMonsters = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     return nft;
   }
@@ -1211,7 +1294,7 @@ export const SuperFatAcademy = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     return nft;
   }
@@ -1261,7 +1344,7 @@ export const ForgottenRunesComic = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     return nft;
   }
@@ -1307,7 +1390,7 @@ export const LilDickie = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     return nft;
   }
@@ -1353,7 +1436,7 @@ export const TheCheeks = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     return nft;
   }
@@ -1395,7 +1478,7 @@ export const InterestingCPeople = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
     return nft;
   }
@@ -1486,7 +1569,7 @@ export const OpenSEA = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
     return nft;
@@ -1534,7 +1617,7 @@ export const ChainCaders = async (
     };
 
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
     return nft;
@@ -1581,7 +1664,7 @@ export const OPENSTORE = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
     return nft;
@@ -1624,7 +1707,7 @@ export const COZYCOSM = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
     return nft;
@@ -1668,7 +1751,7 @@ export const DirtyLife = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
     return nft;
@@ -1711,7 +1794,7 @@ export const MachineFi = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
     return nft;
@@ -1753,7 +1836,7 @@ export const TRSRNFT = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
     return nft;
@@ -1839,7 +1922,7 @@ export const PACK = async (nft: any, account: string, whitelisted: boolean) => {
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
     return nft;
@@ -1885,10 +1968,14 @@ export const VelasOgPunks = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 
@@ -2075,7 +2162,7 @@ export const WrappedXPNET = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
     return nft;
@@ -2116,7 +2203,7 @@ export const abeyChainUserMinter = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
     return nft;
@@ -2153,7 +2240,7 @@ export const RCM = async (nft: any, account: string, whitelisted: boolean) => {
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
     return nft;

@@ -110,10 +110,13 @@ const Planet = async (nft: any, account: string, whitelisted: boolean) => {
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 
@@ -160,10 +163,13 @@ const WOVY = async (nft: any, account: string, whitelisted: boolean) => {
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 
@@ -207,10 +213,13 @@ const Anon = async (nft: any, account: string, whitelisted: boolean) => {
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 
@@ -256,10 +265,13 @@ const WrappedXPNET = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
 
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 
@@ -307,7 +319,10 @@ const Forest = async (nft: any, account: string, whitelisted: boolean) => {
     return nft;
   } catch (error: any) {
     console.log(error.message || "parse timeout forest");
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 

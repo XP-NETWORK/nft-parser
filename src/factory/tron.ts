@@ -156,8 +156,11 @@ export const Default = async (
       },
     };
     return nft;
-  } catch (error) {
+  } catch (error: any) {
     console.error(error);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };

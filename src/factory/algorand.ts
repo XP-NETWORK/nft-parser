@@ -164,32 +164,39 @@ export const Default = async (
     uri,
   } = nft;
 
-  const [attrs, foramt] = await Promise.all([
-    axios(proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
-    getAssetFormat(setupURI(uri)),
-  ]);
+  try {
+    const [attrs, foramt] = await Promise.all([
+      axios(proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+      getAssetFormat(setupURI(uri)),
+    ]);
 
-  const { data } = attrs;
+    const { data } = attrs;
 
-  return {
-    native,
-    chainId,
-    tokenId,
-    owner: account,
-    uri,
-    contract,
-    collectionIdent,
-    wrapped: null,
-    metaData: {
-      whitelisted,
-      image: setupURI(uri),
-      imageFormat: foramt,
-      name,
-      //symbol: "Bozeman Mountaineers JMFL",
-      collectionName: name.split("#")[0].trim(),
-      attributes: data?.attributes,
-    },
-  };
+    return {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      wrapped: null,
+      metaData: {
+        whitelisted,
+        image: setupURI(uri),
+        imageFormat: foramt,
+        name,
+        //symbol: "Bozeman Mountaineers JMFL",
+        collectionName: name.split("#")[0].trim(),
+        attributes: data?.attributes,
+      },
+    };
+  } catch (error: any) {
+    return {
+      ...nft,
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
+  }
 };
 // ! "D00dles"
 export const LikeD00dles = async (

@@ -157,9 +157,10 @@ const WrappedXPNET = async (
       },
     };
     return nft;
-  } catch (error) {
-    console.error(error);
-
-    return nft;
+  } catch (error: any) {
+    return {
+      ...nft,
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };

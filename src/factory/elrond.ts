@@ -5,6 +5,7 @@ import { setupURI } from ".";
 import { url } from "inspector";
 
 import { proxy } from "..";
+import { symbolName } from "typescript";
 
 interface NFT {
   chainId: string;
@@ -15,6 +16,7 @@ interface NFT {
   collectionIdent: string;
   native: any;
   wrapped?: any;
+  errorStatus?: number;
   metaData: {
     whitelisted: boolean;
     image: string;
@@ -26,6 +28,7 @@ interface NFT {
     attributes?: any;
     description?: string;
     contractType?: string;
+    collectionName?: string;
   };
 }
 
@@ -97,6 +100,11 @@ export const elrondParser = async (
       break;
     }
 
+    case "NBERGS-139351": {
+      parsed = await NBERGS(nft, account, whitelisted);
+      break;
+    }
+
     default:
       parsed = await DEFAULT(nft, account, whitelisted);
       break;
@@ -160,7 +168,10 @@ export const DEFAULT = async (
     return nft;
   } catch (error: any) {
     console.error(error?.response?.status);
-    return nft;
+    return {
+      ...nft,
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 
@@ -435,6 +446,57 @@ export const KINGSGUARD = async (
 //KINGSGUARD
 
 export const ALIEN = ORC;
+
+///https://ipfs.io/ipfs/QmcnUiaXw3Gjy1cXDnXTnhWahW2h4kqJiXp88wya9yJYj9/5437.json
+
+export const NBERGS = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+  console.log("dora");
+  try {
+    const { data } = await axios(proxy + uri);
+
+    console.log(data);
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      wrapped: data?.wrapped,
+      metaData: {
+        whitelisted,
+        image: `https://ipfs.io/ipfs/QmcnUiaXw3Gjy1cXDnXTnhWahW2h4kqJiXp88wya9yJYj9/${uri
+          .match(/\d+(?=\.json)/)
+          ?.at(0)}.png`,
+        imageFormat: "png",
+        name: data?.name,
+        attributes: data?.attributes,
+        description: data?.description,
+        collectionName: "Nicebergs NFT",
+      },
+    };
+
+    return nft;
+  } catch (error: any) {
+    console.log(error);
+    return {
+      ...nft,
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
+  }
+};
 
 export const WrappedXPNET = async (
   nft: any,
