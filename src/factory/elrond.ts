@@ -167,7 +167,7 @@ export const DEFAULT = async (
 
     return nft;
   } catch (error: any) {
-    console.error(error?.response?.status);
+    console.error(error?.response?.status || error);
     return {
       ...nft,
       ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
@@ -615,6 +615,8 @@ export const Default = async (
     uri,
   } = nft;
 
+  console.log("ds");
+
   try {
     let data;
 
@@ -656,7 +658,7 @@ export const Default = async (
 
     return nft;
   } catch (error: any) {
-    console.error(error?.response?.status);
+    console.error(error?.response?.status || error);
     return nft;
   }
 };

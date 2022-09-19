@@ -52,7 +52,11 @@ export const setupURI = (uri: string): string => {
       return `https://ipfs.io/ipfs/${uri}`;
     } else if (uri.includes("http://")) {
       return uri.replace("http://", "https://");
-    } else throw new Error("unknown uri format");
+    } else if (/^https\:\/\//.test(uri)) {
+      return uri;
+    } else {
+      throw new Error("unknown uri format");
+    }
   } else {
     return uri;
   }
