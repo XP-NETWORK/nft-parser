@@ -13,6 +13,7 @@ import { elrondParser } from "./factory/elrond";
 import { tronParser } from "./factory/tron";
 import { Minter__factory, UserNftMinter__factory } from "xpnet-web3-contracts";
 import Evm from "../tools/evm";
+import { ChainFactory, ChainParams } from "xp.network";
 
 var isNode = false;
 if (typeof process === "object") {
@@ -231,7 +232,7 @@ const evmParser = async (
 ) => {
   let parsed;
 
-  if (!nft.uri) {
+  if (!nft.uri || nft.uri === 'Invalid uri') {
     nft = await evmHelper.getUri(nft, collectionIdent);
   }
 
@@ -409,6 +410,8 @@ app.listen(port, async () => {
   app.post('/nft', async (req: any, res: any) => {
     try {
       const { nft } = req.body
+      console.log(nft);
+
       const data = await nftGeneralParser(nft, "", true)
       res.status(200).send(data)
     } catch (err) {

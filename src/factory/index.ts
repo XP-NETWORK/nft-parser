@@ -2167,7 +2167,9 @@ export const WrappedXPNET = async (
     };
     return nft;
   } catch (error: any) {
-    console.error(error);
+    console.error(error.message);
+    console.log({ uri });
+    console.log("Here!!!!!!!!!!!!!");
 
     return nft;
   }

@@ -5,7 +5,10 @@ class EvmContract {
   chainPrams: any;
 
   async getUri(nft: any, collectionIdent: string) {
+  
+    
     if (this.chainPrams && nft.native?.chainId && nft.native?.tokenId) {
+      console.log("GOT HERE_____________________");
       try {
         const provider = this.providers[nft.native.chainId]
           ? this.providers[nft.native.chainId]
