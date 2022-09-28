@@ -1,4 +1,6 @@
 import axios from "axios";
+import express from 'express';
+import cors from "cors";
 import * as evm from "./factory";
 import { algorandParser } from "./factory/algorand";
 import * as elrd from "./factory/elrond";
@@ -20,6 +22,30 @@ if (typeof process === "object") {
     }
   }
 }
+
+const app = express();
+const port = 3000;
+
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: '50mb'
+  })
+);
+app.use(express.json({ limit: 100000000 }));
+app.use(express.urlencoded({ limit: 100000000, extended: true, parameterLimit: 100000000 }));
+app.use(
+  cors({
+    credentials: true,
+    origin: true /*function(origin, callback) {
+      if (whitelist.some((route) => origin?.includes(route))) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    }*/,
+  })
+);
 
 export const proxy = isNode
   ? ""
@@ -377,3 +403,19 @@ const evmParser = async (
 
   return parsed;
 };
+
+app.listen(port, async () => {
+
+  app.post('/nft', async (req: any, res: any) => {
+    try {
+      const { nft } = req.body
+      const data = await nftGeneralParser(nft, "", true)
+      res.status(200).send(data)
+    } catch (err) {
+      console.log(err);
+      res.status(400);
+    }
+  });
+
+  return console.log(`Express is listening at http://localhost:${port}`);
+});
