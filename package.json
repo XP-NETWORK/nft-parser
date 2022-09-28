@@ -21,7 +21,8 @@
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
     "typescript": "^4.7.2",
-    "xpnet-web3-contracts": "git+https://github.com/XP-NETWORK/XP.network-HECO-Migration.git#dist-erc1155"
+    "xpnet-web3-contracts": "git+https://github.com/XP-NETWORK/XP.network-HECO-Migration.git#dist-erc1155",
+    "xp.network": "git+https://github.com/xp-network/xpjs#master-dist"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
