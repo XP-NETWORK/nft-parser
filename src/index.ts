@@ -13,13 +13,7 @@ import { elrondParser } from "./factory/elrond";
 import { tronParser } from "./factory/tron";
 import { Minter__factory, UserNftMinter__factory } from "xpnet-web3-contracts";
 import Evm from "../tools/evm";
-import {
-  ChainFactoryConfigs,
-  ChainFactory,
-  AppConfigs,
-  ChainParams,
-
-} from "xp.network";
+import { ChainFactoryConfigs, ChainFactory, AppConfigs } from "xp.network";
 
 var isNode = false;
 if (typeof process === "object") {
@@ -33,41 +27,17 @@ if (typeof process === "object") {
 const app = express();
 const port = 3000;
 
-app.use(
-  express.urlencoded({
-    extended: true,
-    limit: '50mb'
-  })
-);
 app.use(express.json({ limit: 100000000 }));
 app.use(express.urlencoded({ limit: 100000000, extended: true, parameterLimit: 100000000 }));
-app.use(
-  cors({
-    credentials: true,
-    origin: true /*function(origin, callback) {
-      if (whitelist.some((route) => origin?.includes(route))) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    }*/,
-  })
-);
+app.use(cors({ credentials: true, origin: true }));
 
-export const proxy = isNode
-  ? ""
-  : "https://sheltered-crag-76748.herokuapp.com/";
-
+export const proxy = isNode ? "" : "https://sheltered-crag-76748.herokuapp.com/";
 export const apenftKey = "rV9UjZwMSK4zqkKEWOUnUXXY2zNgPJ8i";
-export const apenftSign =
-  "7c9caa14981ff714f92fe16322bcf13803cd3c0d219ef008eb0e5ebf352814ca.7625.1663231473";
+export const apenftSign = "7c9caa14981ff714f92fe16322bcf13803cd3c0d219ef008eb0e5ebf352814ca.7625.1663231473";
 
 axios.defaults.timeout = isNode ? 5000 : axios.defaults.timeout;
 axios.interceptors.request.use(
-  function (config) {
-    // Do something before request is sent
-    return config;
-  },
+  function (config) { return config; },
   function (error: any) {
     if (error.code === "ECONNABORTED") {
       return Promise.reject("parse timeout");
@@ -240,7 +210,7 @@ const evmParser = async (
 
   if (!nft.uri || nft.uri === 'Invalid uri') {
     const mainnetConfig = await ChainFactoryConfigs.MainNet();
-    const mainnetFactory =  ChainFactory(AppConfigs.MainNet(), mainnetConfig);
+    const mainnetFactory = ChainFactory(AppConfigs.MainNet(), mainnetConfig);
     await evmHelper.init(mainnetFactory);
     nft = await evmHelper.getUri(nft, collectionIdent);
   }
@@ -422,7 +392,7 @@ app.listen(port, async () => {
 
       const data = await nftGeneralParser(nft, "", true)
       res.status(200).send(data)
-    } catch (err:any) {
+    } catch (err: any) {
       console.log(err.message);
       res.status(400);
     }
