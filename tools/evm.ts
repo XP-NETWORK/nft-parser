@@ -1,4 +1,5 @@
 import { UserNftMinter__factory } from "xpnet-web3-contracts";
+import { Base64 } from "js-base64";
 
 class EvmContract {
   providers: any = {};
@@ -12,18 +13,11 @@ class EvmContract {
 
         this.providers[nft.native.chainId] = provider;
         const erc = UserNftMinter__factory.connect(collectionIdent, provider);
-        const resp = await erc.tokenURI(nft.native?.tokenId)
+        let resp: string | Array<string> = await erc.tokenURI(nft.native?.tokenId)
 
         let uri
-        console.log(resp);
-        // switch (resp) {
-        //   case value:
-
-        //     break;
-
-        //   default:
-        //     break;
-        // }
+        resp = resp.split(",")
+        uri = JSON.parse(Base64.decode(resp[1])).image;
 
         return {
           ...nft,
