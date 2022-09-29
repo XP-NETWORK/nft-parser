@@ -490,7 +490,7 @@ export const NBERGS = async (
 
     return nft;
   } catch (error: any) {
-    console.log(error);
+    console.log(error?.message);
     return {
       ...nft,
       ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),

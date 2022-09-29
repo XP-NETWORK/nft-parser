@@ -1102,7 +1102,7 @@ export const Mate = async (
     };
     return nft;
   } catch (error: any) {
-    console.error(error);
+    console.error(error?.message);
     return {
       ...nft,
       ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),

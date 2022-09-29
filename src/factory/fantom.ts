@@ -66,8 +66,8 @@ const Runner = async (nft: any, account: string, whitelisted: boolean) => {
       },
     };
     return nft;
-  } catch (error) {
-    console.log(error);
+  } catch (error:any) {
+    console.log(error?.message);
 
     return nft;
   }

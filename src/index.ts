@@ -13,7 +13,13 @@ import { elrondParser } from "./factory/elrond";
 import { tronParser } from "./factory/tron";
 import { Minter__factory, UserNftMinter__factory } from "xpnet-web3-contracts";
 import Evm from "../tools/evm";
-import { ChainFactory, ChainParams } from "xp.network";
+import {
+  ChainFactoryConfigs,
+  ChainFactory,
+  AppConfigs,
+  ChainParams,
+
+} from "xp.network";
 
 var isNode = false;
 if (typeof process === "object") {
@@ -56,7 +62,7 @@ export const apenftKey = "rV9UjZwMSK4zqkKEWOUnUXXY2zNgPJ8i";
 export const apenftSign =
   "7c9caa14981ff714f92fe16322bcf13803cd3c0d219ef008eb0e5ebf352814ca.7625.1663231473";
 
-axios.defaults.timeout = isNode ? 2500 : axios.defaults.timeout;
+axios.defaults.timeout = isNode ? 5000 : axios.defaults.timeout;
 axios.interceptors.request.use(
   function (config) {
     // Do something before request is sent
@@ -233,6 +239,9 @@ const evmParser = async (
   let parsed;
 
   if (!nft.uri || nft.uri === 'Invalid uri') {
+    const mainnetConfig = await ChainFactoryConfigs.MainNet();
+    const mainnetFactory =  ChainFactory(AppConfigs.MainNet(), mainnetConfig);
+    await evmHelper.init(mainnetFactory);
     nft = await evmHelper.getUri(nft, collectionIdent);
   }
 
@@ -410,12 +419,11 @@ app.listen(port, async () => {
   app.post('/nft', async (req: any, res: any) => {
     try {
       const { nft } = req.body
-      console.log(nft);
 
       const data = await nftGeneralParser(nft, "", true)
       res.status(200).send(data)
-    } catch (err) {
-      console.log(err);
+    } catch (err:any) {
+      console.log(err.message);
       res.status(400);
     }
   });
