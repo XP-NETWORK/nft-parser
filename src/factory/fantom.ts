@@ -6,6 +6,8 @@ import { checkEmptyFromTezos } from "./tezos";
 
 import { proxy } from "..";
 
+import { Default } from "./index";
+
 export const fantomParser = async (
   collectionIdent: string,
   nft: any,
@@ -14,7 +16,7 @@ export const fantomParser = async (
   chainId?: string
 ) => {
   let parsed;
-  console.log("ds");
+
   switch (collectionIdent) {
     case "0xb3bd794bd00e1711c55ceb5c452d74c0d8be292d":
       parsed = await Falacy(nft, account, whitelisted);
@@ -25,7 +27,7 @@ export const fantomParser = async (
       break;
 
     default:
-      parsed = await WrappedXPNET(nft, account, whitelisted);
+      parsed = await Default(nft, account, whitelisted);
       break;
   }
 

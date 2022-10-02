@@ -85,10 +85,14 @@ export const Default = async (
     const response = await axios(url);
 
     let { data } = response;
+    console.log(data);
+    if ((data = "Post ID not found")) {
+      throw new Error("404");
+    }
 
     data = await checkEmptyFromTezos(data);
 
-    let format = await getAssetFormat(data.image);
+    let format = await getAssetFormat(data.image).catch((e) => "");
 
     const nft: NFT = {
       native,
