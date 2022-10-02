@@ -13,11 +13,7 @@ class EvmContract {
 
         this.providers[nft.native.chainId] = provider;
         const erc = UserNftMinter__factory.connect(collectionIdent, provider);
-        let resp: string | Array<string> = await erc.tokenURI(nft.native?.tokenId)
-
-        let uri
-        resp = resp.split(",")
-        uri = JSON.parse(Base64.decode(resp[1])).image;
+        let uri: string | Array<string> = await erc.tokenURI(nft.native?.tokenId)
 
         return {
           ...nft,
