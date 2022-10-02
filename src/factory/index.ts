@@ -37,6 +37,8 @@ export interface NFT {
 
 export const setupURI = (uri: string): string => {
   if (uri) {
+    uri = uri.replace(/(?!\.json)\d+$/gm, "");
+
     if (uri.includes("https://ipfs.io")) {
       return uri;
     } else if (/^ipfs:\/\//.test(uri)) {
@@ -81,12 +83,13 @@ export const Default = async (
   }
 
   const url = `${proxy}${setupURI(baseUrl)}`;
+
   try {
     const response = await axios(url);
 
     let { data } = response;
-    console.log(data);
-    if ((data = "Post ID not found")) {
+
+    if (data === "Post ID not found") {
       throw new Error("404");
     }
 
