@@ -63,6 +63,7 @@ const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, function*
                     const stream = yield axios_1.default
                         .get(`${src_1.proxy}${(0, factory_1.setupURI)(imageUri)}`, {
                         responseType: "stream",
+                        timeout: 3000,
                     })
                         .catch((e) => {
                         reject(e);

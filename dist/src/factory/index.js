@@ -22,6 +22,7 @@ const pool = (0, requestPool_1.default)(3000);
 const cheerio = require("cherio");
 const setupURI = (uri) => {
     if (uri) {
+        uri = uri.replace(/(?!\.json)\d+$/gm, "");
         if (uri.includes("https://ipfs.io")) {
             return uri;
         }
@@ -64,8 +65,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     try {
         const response = yield (0, axios_1.default)(url);
         let { data } = response;
-        console.log(data);
-        if ((data = "Post ID not found")) {
+        if (data === "Post ID not found") {
             throw new Error("404");
         }
         data = yield (0, tezos_1.checkEmptyFromTezos)(data);
