@@ -17,9 +17,9 @@ const axios_1 = __importDefault(require("axios"));
 const _1 = require(".");
 const tezos_1 = require("./tezos");
 const __1 = require("..");
+const index_1 = require("./index");
 const fantomParser = (collectionIdent, nft, account, whitelisted, chainId) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
-    console.log("ds");
     switch (collectionIdent) {
         case "0xb3bd794bd00e1711c55ceb5c452d74c0d8be292d":
             parsed = yield Falacy(nft, account, whitelisted);
@@ -28,7 +28,7 @@ const fantomParser = (collectionIdent, nft, account, whitelisted, chainId) => __
             parsed = yield Runner(nft, account, whitelisted);
             break;
         default:
-            parsed = yield WrappedXPNET(nft, account, whitelisted);
+            parsed = yield (0, index_1.Default)(nft, account, whitelisted);
             break;
     }
     return parsed;

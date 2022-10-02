@@ -63,7 +63,7 @@ exports.proxy = isNode
     : "https://sheltered-crag-76748.herokuapp.com/";
 exports.apenftKey = "rV9UjZwMSK4zqkKEWOUnUXXY2zNgPJ8i";
 exports.apenftSign = "7c9caa14981ff714f92fe16322bcf13803cd3c0d219ef008eb0e5ebf352814ca.7625.1663231473";
-axios_1.default.defaults.timeout = isNode ? 2500 : axios_1.default.defaults.timeout;
+axios_1.default.defaults.timeout = isNode ? 3000 : axios_1.default.defaults.timeout;
 axios_1.default.interceptors.request.use(function (config) {
     // Do something before request is sent
     return config;

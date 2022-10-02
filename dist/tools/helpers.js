@@ -44,6 +44,9 @@ const getWrappedNft = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
 exports.getWrappedNft = getWrappedNft;
 const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
+    if (!imageUri) {
+        throw new Error("no url:");
+    }
     let format = "";
     try {
         if (/(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$)/.test(imageUri)) {
