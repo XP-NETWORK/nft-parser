@@ -37,6 +37,8 @@ export interface NFT {
 
 export const setupURI = (uri: string): string => {
   if (uri) {
+    uri = uri.replace(/(?!\.json)\d+$/gm, "");
+
     if (uri.includes("https://ipfs.io")) {
       return uri;
     } else if (/^ipfs:\/\//.test(uri)) {
@@ -81,14 +83,19 @@ export const Default = async (
   }
 
   const url = `${proxy}${setupURI(baseUrl)}`;
+
   try {
     const response = await axios(url);
 
     let { data } = response;
 
+    if (data === "Post ID not found") {
+      throw new Error("404");
+    }
+
     data = await checkEmptyFromTezos(data);
 
-    let format = await getAssetFormat(data.image);
+    let format = await getAssetFormat(data.image).catch((e) => "");
 
     const nft: NFT = {
       native,

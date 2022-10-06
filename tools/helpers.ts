@@ -43,6 +43,9 @@ export const getWrappedNft = async (
 };
 
 export const getAssetFormat = async (imageUri: string): Promise<string> => {
+  if (!imageUri) {
+    throw new Error("no url:");
+  }
   let format = "";
   try {
     if (/(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$)/.test(imageUri)) {
@@ -59,6 +62,7 @@ export const getAssetFormat = async (imageUri: string): Promise<string> => {
           const stream = await axios
             .get(`${proxy}${setupURI(imageUri)}`, {
               responseType: "stream",
+              timeout: 3000,
             })
             .catch((e: any) => {
               reject(e);
