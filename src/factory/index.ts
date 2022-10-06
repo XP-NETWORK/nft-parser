@@ -4,7 +4,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { checkEmptyFromTezos } from "./tezos";
 import requestPool from "../../tools/requestPool";
 import { getWrappedNft, getAssetFormat } from "../../tools/helpers";
-
+import { sendTelegramMessage } from "../../tools/telegram"
 import { proxy } from "..";
 
 const pool = requestPool(3000);
@@ -111,6 +111,7 @@ export const Default = async (
     return nft;
   } catch (error: any) {
     console.error("error in default parser: ", error.message);
+    await sendTelegramMessage(nft)
     return {
       ...nft,
       ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
