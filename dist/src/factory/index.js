@@ -17,6 +17,7 @@ const axios_1 = __importDefault(require("axios"));
 const tezos_1 = require("./tezos");
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
 const helpers_1 = require("../../tools/helpers");
+const telegram_1 = require("../../tools/telegram");
 const __1 = require("..");
 const pool = (0, requestPool_1.default)(3000);
 const cheerio = require("cherio");
@@ -92,6 +93,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     }
     catch (error) {
         console.error("error in default parser: ", error.message);
+        yield (0, telegram_1.sendTelegramMessage)(nft);
         return Object.assign(Object.assign({}, nft), (((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });

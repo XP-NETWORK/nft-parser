@@ -16,6 +16,7 @@ exports.Default = exports.HOKI = exports.WrappedXPNET = exports.NBERGS = exports
 const axios_1 = __importDefault(require("axios"));
 const __1 = require("..");
 const _1 = require(".");
+const telegram_1 = require("../../tools/telegram");
 const __2 = require("..");
 const elrondParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
@@ -122,6 +123,7 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     }
     catch (error) {
         console.error(((_a = error === null || error === void 0 ? void 0 : error.response) === null || _a === void 0 ? void 0 : _a.status) || error);
+        yield (0, telegram_1.sendTelegramMessage)(nft);
         return Object.assign(Object.assign({}, nft), (((_b = error.response) === null || _b === void 0 ? void 0 : _b.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
