@@ -43,10 +43,7 @@ export const setupURI = (uri: string): string => {
       return "https://ipfs.io/ipfs/" + uri.split("://")[1];
     } else if (/^https\:\/\/ipfs.io/.test(uri)) {
       return uri;
-    } else if (
-      uri.includes("data:image/") ||
-      uri.includes("data:application/")
-    ) {
+    } else if (uri.includes("data:image/") || uri.includes("data:application/")) {
       return uri;
     } else if (uri[0] === "Q") {
       return `https://ipfs.io/ipfs/${uri}`;
@@ -67,13 +64,8 @@ export const Default = async (
   account: string,
   whitelisted: boolean
 ): Promise<NFT> => {
-  const {
-    native,
-    native: { contract, tokenId, chainId },
-    collectionIdent,
-    uri,
-  } = nft;
 
+  const { native, native: { contract, tokenId, chainId }, collectionIdent, uri } = nft;
   const baseUrl = setupURI(uri);
 
   if (!baseUrl && tokenId) {
@@ -81,13 +73,11 @@ export const Default = async (
   }
 
   const url = `${proxy}${setupURI(baseUrl)}`;
+
   try {
     const response = await axios(url);
-
     let { data } = response;
-
     data = await checkEmptyFromTezos(data);
-
     let format = await getAssetFormat(data.image);
 
     const nft: NFT = {
