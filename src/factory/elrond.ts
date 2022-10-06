@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { getAssetFormat, nftGeneralParser } from "..";
 import { setupURI } from ".";
 import { url } from "inspector";
-
+import { sendTelegramMessage } from "../../tools/telegram"
 import { proxy } from "..";
 import { symbolName } from "typescript";
 
@@ -168,6 +168,7 @@ export const DEFAULT = async (
     return nft;
   } catch (error: any) {
     console.error(error?.response?.status || error);
+    await sendTelegramMessage(nft)
     return {
       ...nft,
       ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),

@@ -4,7 +4,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { checkEmptyFromTezos } from "./tezos";
 import requestPool from "../../tools/requestPool";
 import { getWrappedNft, getAssetFormat } from "../../tools/helpers";
-
+import { sendTelegramMessage } from "../../tools/telegram"
 import { proxy } from "..";
 
 const pool = requestPool(3000);
@@ -37,6 +37,8 @@ export interface NFT {
 
 export const setupURI = (uri: string): string => {
   if (uri) {
+    uri = uri.replace(/(?!\.json)\d+$/gm, "");
+
     if (uri.includes("https://ipfs.io")) {
       return uri;
     } else if (/^ipfs:\/\//.test(uri)) {
@@ -77,8 +79,14 @@ export const Default = async (
   try {
     const response = await axios(url);
     let { data } = response;
+
+    if (data === "Post ID not found") {
+      throw new Error("404");
+    }
+
     data = await checkEmptyFromTezos(data);
-    let format = await getAssetFormat(data.image);
+
+    let format = await getAssetFormat(data.image).catch((e) => "");
 
     const nft: NFT = {
       native,
@@ -101,6 +109,7 @@ export const Default = async (
     return nft;
   } catch (error: any) {
     console.error("error in default parser: ", error.message);
+    await sendTelegramMessage(nft)
     return {
       ...nft,
       ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
