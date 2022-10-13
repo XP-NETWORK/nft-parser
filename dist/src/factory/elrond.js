@@ -100,12 +100,12 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: imageFormats.includes(format.toUpperCase()) ? img : "",
-                imageFormat: imageFormats.includes(format.toUpperCase()) ? format : "",
-                animation_url: videoFormats.includes(format.toUpperCase())
+                image: imageFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase()) ? img : "",
+                imageFormat: imageFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase()) ? format : "",
+                animation_url: videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
                     ? img
                     : undefined,
-                animation_url_format: videoFormats.includes(format.toUpperCase())
+                animation_url_format: videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
                     ? format
                     : undefined,
                 attributes: ((_b = data === null || data === void 0 ? void 0 : data.metadata) === null || _b === void 0 ? void 0 : _b.attributes) || (data === null || data === void 0 ? void 0 : data.attributes),
