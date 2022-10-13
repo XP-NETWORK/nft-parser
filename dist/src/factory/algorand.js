@@ -137,14 +137,14 @@ exports.algorandParser = algorandParser;
 // ! COLLECTIONS
 // ! Default
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
     const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
     try {
-        const [attrs, foramt] = yield Promise.all([
-            (0, axios_1.default)(__2.proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+        const [json, foramt] = yield Promise.all([
+            (0, axios_1.default)(__2.proxy + `https://api.algoxnft.com/v1/assets/${tokenId}`),
             (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
         ]);
-        const { data } = attrs;
+        const { data } = json;
         return {
             native,
             chainId,
@@ -158,15 +158,15 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
                 whitelisted,
                 image: (0, _1.setupURI)(uri),
                 imageFormat: foramt,
-                name,
-                //symbol: "Bozeman Mountaineers JMFL",
-                collectionName: name.split("#")[0].trim(),
-                attributes: data === null || data === void 0 ? void 0 : data.attributes,
+                name: (data === null || data === void 0 ? void 0 : data.name) || name,
+                collectionName: (data === null || data === void 0 ? void 0 : data.collection_name) || name.split("#")[0].trim(),
+                attributes: (_a = data === null || data === void 0 ? void 0 : data.arc69_data) === null || _a === void 0 ? void 0 : _a.attributes,
+                description: data === null || data === void 0 ? void 0 : data.collection_description
             },
         };
     }
     catch (error) {
-        return Object.assign(Object.assign({}, nft), (((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign({}, nft), (((_b = error.response) === null || _b === void 0 ? void 0 : _b.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.Default = Default;

@@ -18,6 +18,8 @@ const _1 = require(".");
 const telegram_1 = require("../../tools/telegram");
 const __1 = require("..");
 const js_base64_1 = require("js-base64");
+const videoFormats = ["MP4", "MOV", "WMV", "AVI", "MKV", "FLV", "WEBM", "OGG"];
+const imageFormats = ["JPG", "JPEG", "GIF", "PNG"];
 const elrondParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
     switch (collectionIdent) {
@@ -87,7 +89,7 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         const res = yield (0, axios_1.default)(`https://api.elrond.com/nfts/${tokenId}`).catch((e) => ({ data: null }));
         const { data } = res;
         const img = ((_a = data === null || data === void 0 ? void 0 : data.metadata) === null || _a === void 0 ? void 0 : _a.image) || js_base64_1.Base64.decode((data === null || data === void 0 ? void 0 : data.uris[1]) || (data === null || data === void 0 ? void 0 : data.uris[0]));
-        const format = img.match(/\.[0-9a-z]+$/i)[0];
+        const format = img.match(/\.[0-9a-z]+$/i)[0].replace(".", "");
         const nft = {
             native,
             chainId,
@@ -98,8 +100,14 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: img,
-                imageFormat: format,
+                image: imageFormats.includes(format.toUpperCase()) ? img : "",
+                imageFormat: imageFormats.includes(format.toUpperCase()) ? format : "",
+                animation_url: videoFormats.includes(format.toUpperCase())
+                    ? img
+                    : undefined,
+                animation_url_format: videoFormats.includes(format.toUpperCase())
+                    ? format
+                    : undefined,
                 attributes: ((_b = data === null || data === void 0 ? void 0 : data.metadata) === null || _b === void 0 ? void 0 : _b.attributes) || (data === null || data === void 0 ? void 0 : data.attributes),
                 name: ((_c = data === null || data === void 0 ? void 0 : data.metadata) === null || _c === void 0 ? void 0 : _c.name) || (data === null || data === void 0 ? void 0 : data.name),
                 description: (_d = data === null || data === void 0 ? void 0 : data.metadata) === null || _d === void 0 ? void 0 : _d.description,
