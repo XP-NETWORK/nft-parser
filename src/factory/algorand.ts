@@ -165,12 +165,12 @@ export const Default = async (
   } = nft;
 
   try {
-    const [attrs, foramt] = await Promise.all([
-      axios(proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+    const [json, foramt] = await Promise.all([
+      axios(proxy + `https://api.algoxnft.com/v1/assets/${tokenId}`),
       getAssetFormat(setupURI(uri)),
     ]);
 
-    const { data } = attrs;
+    const { data } = json;
 
     return {
       native,
@@ -185,10 +185,10 @@ export const Default = async (
         whitelisted,
         image: setupURI(uri),
         imageFormat: foramt,
-        name,
-        //symbol: "Bozeman Mountaineers JMFL",
-        collectionName: name.split("#")[0].trim(),
-        attributes: data?.attributes,
+        name: data?.name || name,
+        collectionName: data?.collection_name || name.split("#")[0].trim(),
+        attributes: data?.arc69_data?.attributes,
+        description: data?.collection_description
       },
     };
   } catch (error: any) {

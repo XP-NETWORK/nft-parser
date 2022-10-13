@@ -8,6 +8,9 @@ import { proxy } from "..";
 import { symbolName } from "typescript";
 import { Base64 } from "js-base64";
 
+const videoFormats = ["MP4", "MOV", "WMV", "AVI", "MKV", "FLV", "WEBM", "OGG"];
+const imageFormats = ["JPG", "JPEG", "GIF", "PNG"];
+
 interface NFT {
   chainId: string;
   tokenId: string;
@@ -134,7 +137,7 @@ export const DEFAULT = async (
 
     const img =
       data?.metadata?.image || Base64.decode(data?.uris[1] || data?.uris[0]);
-    const format = img.match(/\.[0-9a-z]+$/i)[0];
+    const format: string = img.match(/\.[0-9a-z]+$/i)[0].replace(".", "");
 
     const nft: NFT = {
       native,
@@ -146,8 +149,14 @@ export const DEFAULT = async (
       collectionIdent,
       metaData: {
         whitelisted,
-        image: img,
-        imageFormat: format,
+        image: imageFormats.includes(format.toUpperCase()) ? img : "",
+        imageFormat: imageFormats.includes(format.toUpperCase()) ? format : "",
+        animation_url: videoFormats.includes(format.toUpperCase())
+          ? img
+          : undefined,
+        animation_url_format: videoFormats.includes(format.toUpperCase())
+          ? format
+          : undefined,
         attributes: data?.metadata?.attributes || data?.attributes,
         name: data?.metadata?.name || data?.name,
         description: data?.metadata?.description,
