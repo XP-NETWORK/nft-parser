@@ -149,12 +149,12 @@ export const DEFAULT = async (
       collectionIdent,
       metaData: {
         whitelisted,
-        image: imageFormats.includes(format.toUpperCase()) ? img : "",
-        imageFormat: imageFormats.includes(format.toUpperCase()) ? format : "",
-        animation_url: videoFormats.includes(format.toUpperCase())
+        image: imageFormats.includes(format?.toUpperCase()) ? img : "",
+        imageFormat: imageFormats.includes(format?.toUpperCase()) ? format : "",
+        animation_url: videoFormats.includes(format?.toUpperCase())
           ? img
           : undefined,
-        animation_url_format: videoFormats.includes(format.toUpperCase())
+        animation_url_format: videoFormats.includes(format?.toUpperCase())
           ? format
           : undefined,
         attributes: data?.metadata?.attributes || data?.attributes,
