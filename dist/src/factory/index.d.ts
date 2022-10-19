@@ -70,3 +70,4 @@ export declare const Mountains: (nft: any, account: string, whitelisted: boolean
 export declare const WrappedXPNET: (nft: any, account: string, whitelisted: boolean) => Promise<any>;
 export declare const abeyChainUserMinter: (nft: any, account: string, whitelisted: boolean) => Promise<any>;
 export declare const RCM: (nft: any, account: string, whitelisted: boolean) => Promise<any>;
+export declare const AbeyDefault: (nft: any, account: string, whitelisted: boolean) => Promise<any>;

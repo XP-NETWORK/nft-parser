@@ -301,6 +301,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
         case "0xc97e56Cd5777b46015F88BBB047f90cf556f520b":
             parsed = yield evm.RCM(nft, account, whitelisted);
             break;
+        case "0x422d7d54A8608bF2b71cDd62FA943892E4A91Fcf":
+            parsed = yield evm.AbeyDefault(nft, account, whitelisted);
+            break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
             break;
