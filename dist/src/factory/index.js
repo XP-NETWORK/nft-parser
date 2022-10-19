@@ -1727,6 +1727,7 @@ const AbeyDefault = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
         const { data } = yield (0, axios_1.default)(`${__1.proxy}${newURI}`).catch(() => ({
             data: null,
         }));
+        console.log({ data });
         const nft = {
             native,
             chainId,
