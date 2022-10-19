@@ -2277,7 +2277,6 @@ export const AbeyDefault = async (
         const { data } = await axios(`${proxy}${newURI}`).catch(() => ({
             data: null,
         }));
-        const obj = JSON.parse(data);
 
         const nft: NFT = {
             native,
@@ -2289,11 +2288,11 @@ export const AbeyDefault = async (
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: obj?.image,
+                image: data?.image,
                 imageFormat: "jpg",
-                description: obj?.description,
-                name: obj?.name,
-                attributes: obj?.attributes,
+                description: data?.description,
+                name: data?.name,
+                attributes: data?.attributes,
             },
         };
         return nft;
