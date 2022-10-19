@@ -1722,7 +1722,7 @@ const RCM = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fun
 exports.RCM = RCM;
 const AbeyDefault = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const newURI = `https://metadata.fantase.io/${collectionIdent}/metadata/json/${tokenId}.json`;
+    const newURI = `https://metadata.fantase.io/${collectionIdent.toLowerCase()}/metadata/json/${tokenId}.json`;
     try {
         const { data } = yield (0, axios_1.default)(`${__1.proxy}${newURI}`).catch(() => ({
             data: null,
