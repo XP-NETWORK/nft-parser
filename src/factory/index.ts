@@ -2277,6 +2277,8 @@ export const AbeyDefault = async (
         const { data } = await axios(`${proxy}${newURI}`).catch(() => ({
             data: null,
         }));
+        console.log({ data });
+
         const nft: NFT = {
             native,
             chainId,
