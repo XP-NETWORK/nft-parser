@@ -1727,7 +1727,6 @@ const AbeyDefault = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
         const { data } = yield (0, axios_1.default)(`${__1.proxy}${newURI}`).catch(() => ({
             data: null,
         }));
-        const obj = JSON.parse(data);
         const nft = {
             native,
             chainId,
@@ -1738,11 +1737,11 @@ const AbeyDefault = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: obj === null || obj === void 0 ? void 0 : obj.image,
+                image: data === null || data === void 0 ? void 0 : data.image,
                 imageFormat: "jpg",
-                description: obj === null || obj === void 0 ? void 0 : obj.description,
-                name: obj === null || obj === void 0 ? void 0 : obj.name,
-                attributes: obj === null || obj === void 0 ? void 0 : obj.attributes,
+                description: data === null || data === void 0 ? void 0 : data.description,
+                name: data === null || data === void 0 ? void 0 : data.name,
+                attributes: data === null || data === void 0 ? void 0 : data.attributes,
             },
         };
         return nft;
