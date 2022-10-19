@@ -2272,7 +2272,7 @@ export const AbeyDefault = async (
         collectionIdent,
         uri,
     } = nft;
-    const newURI = `https://metadata.fantase.io/${collectionIdent}/metadata/json/${tokenId}.json`;
+    const newURI = `https://metadata.fantase.io/${collectionIdent.toLowerCase()}/metadata/json/${tokenId}.json`;
     try {
         const { data } = await axios(`${proxy}${newURI}`).catch(() => ({
             data: null,
