@@ -136,6 +136,9 @@ const nftGeneralParser = (nft, account, whitelisted, factory) => __awaiter(void 
         case "30":
             parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
             break;
+        case "32":
+            parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
+            break;
         case "33":
             parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
             break;
@@ -303,6 +306,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
             break;
         case "0x422d7d54A8608bF2b71cDd62FA943892E4A91Fcf":
             parsed = yield evm.AbeyDefault(nft, account, whitelisted);
+            break;
+        case "0x691A98fB3B5b9bdfc240ec3aada3D97eb867483c":
+            parsed = yield evm.moonbeamDefault(nft, account, whitelisted);
             break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
