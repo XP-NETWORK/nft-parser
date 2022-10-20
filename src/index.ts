@@ -250,6 +250,14 @@ export const nftGeneralParser = async (
                 whitelisted
             );
             break;
+        case "32":
+            parsed = await evmParser(
+                collectionIdent,
+                nft,
+                account,
+                whitelisted
+            );
+            break;
         case "33":
             parsed = await evmParser(
                 collectionIdent,
@@ -441,6 +449,9 @@ const evmParser = async (
             break;
         case "0x422d7d54A8608bF2b71cDd62FA943892E4A91Fcf":
             parsed = await evm.AbeyDefault(nft, account, whitelisted);
+            break;
+        case "0x691A98fB3B5b9bdfc240ec3aada3D97eb867483c":
+            parsed = await evm.moonbeamDefault(nft, account, whitelisted);
             break;
         default:
             parsed = await evm.Default(nft, account, whitelisted);

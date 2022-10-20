@@ -2303,4 +2303,46 @@ export const AbeyDefault = async (
     }
 };
 
+export const moonbeamDefault = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+) => {
+    const {
+        native,
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+        uri,
+    } = nft;
+
+    try {
+        const { data } = await axios(`${proxy}${uri}`).catch(() => ({
+            data: null,
+        }));
+
+        const nft: NFT = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image: data?.image,
+                imageFormat: "jpg",
+                description: data?.description,
+                name: data?.name,
+                attributes: data?.attributes,
+            },
+        };
+        return nft;
+    } catch (error: any) {
+        console.error(error);
+
+        return nft;
+    }
+};
+
 //"{"name": "MachineFi NFT", "description": "The MachineFi NFT.", "image": "https://machinefi.com/nft/image/6505"}"
