@@ -57,15 +57,17 @@ const setupURI = (uri) => {
 exports.setupURI = setupURI;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri } = nft;
     const baseUrl = (0, exports.setupURI)(uri);
     if (!baseUrl && tokenId) {
         return yield (0, helpers_1.getWrappedNft)(nft, account, whitelisted);
     }
     const url = `${__1.proxy}${(0, exports.setupURI)(baseUrl)}`;
+    console.log({ url });
     try {
         const response = yield (0, axios_1.default)(url);
         let { data } = response;
+        console.log(data);
         if (data === "Post ID not found") {
             throw new Error("404");
         }
@@ -92,12 +94,45 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         return nft;
     }
     catch (error) {
+        const res = yield tryBasic(uri);
+        if (res) {
+            let format = yield (0, helpers_1.getAssetFormat)(res.image).catch((e) => "");
+            const nft = {
+                native,
+                chainId,
+                tokenId,
+                owner: account,
+                uri,
+                contract: contract || collectionIdent,
+                collectionIdent,
+                wrapped: res && res.wrapped,
+                metaData: {
+                    whitelisted,
+                    image: (0, exports.setupURI)(res.image),
+                    imageFormat: format,
+                    attributes: res.attributes,
+                    description: res.description,
+                    name: res.name,
+                },
+            };
+            return nft;
+        }
         console.error("error in default parser: ", error.message);
         yield (0, telegram_1.sendTelegramMessage)(nft);
         return Object.assign(Object.assign({}, nft), (((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.Default = Default;
+const tryBasic = (url) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const response = yield (0, axios_1.default)(url);
+        console.log(response.data.image);
+        return response.data.image;
+    }
+    catch (error) {
+        return undefined;
+    }
+});
 // ! 0x0271c6853d4b2bdccd53aaf9edb66993e14d4cba
 // ! 0x4508af04de4073b10a53ac416eb311f4a2ab9569
 const ART_NFT_MATIC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
