@@ -48,7 +48,7 @@ export const getAssetFormat = async (imageUri: string): Promise<string> => {
   }
   let format = "";
   try {
-    if (/(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$)/.test(imageUri)) {
+    if (/(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$|\.svg$)/.test(imageUri)) {
       format = imageUri.match(/(?:\.([^.]+))?$/)?.at(1) || "";
     } else {
       if (proxy) {
