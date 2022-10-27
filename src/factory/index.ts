@@ -113,7 +113,7 @@ export const Default = async (
     return nft;
   } catch (error: any) {
     const resp = await tryBasic(uri)
-    if (resp){
+    if (resp) {
       let format = await getAssetFormat(resp.image).catch((e) => "");
       const nft: NFT = {
         native,
@@ -134,10 +134,10 @@ export const Default = async (
         },
       };
       console.log(nft);
-      
+
       return nft;
     }
-      console.error("error in default parser: ", error.message);
+    console.error("error in default parser: ", error.message);
     await sendTelegramMessage(nft)
     return {
       ...nft,
@@ -149,7 +149,7 @@ export const Default = async (
 const tryBasic = async (url: string) => {
   try {
     const response = await axios(url);
-    console.log(response.data.image);
+    console.log(response.data);
     return response.data
   } catch (error) {
     return undefined
