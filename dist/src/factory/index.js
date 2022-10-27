@@ -94,9 +94,9 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         return nft;
     }
     catch (error) {
-        const res = yield tryBasic(uri);
-        if (res) {
-            let format = yield (0, helpers_1.getAssetFormat)(res.image).catch((e) => "");
+        const resp = yield tryBasic(uri);
+        if (resp) {
+            let format = yield (0, helpers_1.getAssetFormat)(resp.image).catch((e) => "");
             const nft = {
                 native,
                 chainId,
@@ -105,16 +105,17 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
                 uri,
                 contract: contract || collectionIdent,
                 collectionIdent,
-                wrapped: res && res.wrapped,
+                wrapped: resp && resp.wrapped,
                 metaData: {
                     whitelisted,
-                    image: (0, exports.setupURI)(res.image),
+                    image: resp.image,
                     imageFormat: format,
-                    attributes: res.attributes,
-                    description: res.description,
-                    name: res.name,
+                    attributes: resp.attributes,
+                    description: resp.description,
+                    name: resp.name,
                 },
             };
+            console.log(nft);
             return nft;
         }
         console.error("error in default parser: ", error.message);
@@ -126,8 +127,8 @@ exports.Default = Default;
 const tryBasic = (url) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const response = yield (0, axios_1.default)(url);
-        console.log(response.data.image);
-        return response.data.image;
+        console.log(response.data);
+        return response.data;
     }
     catch (error) {
         return undefined;
