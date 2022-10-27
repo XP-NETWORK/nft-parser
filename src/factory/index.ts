@@ -112,9 +112,9 @@ export const Default = async (
     };
     return nft;
   } catch (error: any) {
-    const res = await tryBasic(uri)
-    if (res){
-      let format = await getAssetFormat(res.image).catch((e) => "");
+    const resp = await tryBasic(uri)
+    if (resp){
+      let format = await getAssetFormat(resp.image).catch((e) => "");
       const nft: NFT = {
         native,
         chainId,
@@ -123,16 +123,18 @@ export const Default = async (
         uri,
         contract: contract || collectionIdent,
         collectionIdent,
-        wrapped: res && res.wrapped,
+        wrapped: resp && resp.wrapped,
         metaData: {
           whitelisted,
-          image: setupURI(res.image),
+          image: resp.image,
           imageFormat: format,
-          attributes: res.attributes,
-          description: res.description,
-          name: res.name,
+          attributes: resp.attributes,
+          description: resp.description,
+          name: resp.name,
         },
       };
+      console.log(nft);
+      
       return nft;
     }
       console.error("error in default parser: ", error.message);
@@ -148,7 +150,7 @@ const tryBasic = async (url: string) => {
   try {
     const response = await axios(url);
     console.log(response.data.image);
-    return response.data.image
+    return response.data
   } catch (error) {
     return undefined
   }
