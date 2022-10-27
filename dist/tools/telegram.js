@@ -17,7 +17,7 @@ const axios_1 = __importDefault(require("axios"));
 require("dotenv/config");
 const sendTelegramMessage = (msg) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        yield axios_1.default.get(`https://api.telegram.org/bot5649872974:AAHye96JTkXxrMfkg8FnM4hI30Z4q3xAt00/sendMessage?chat_id=-850284174&text=${msg}`);
+        yield axios_1.default.get(`https://api.telegram.org/bot5649872974:AAHye96JTkXxrMfkg8FnM4hI30Z4q3xAt00/sendMessage?chat_id=-850284174&text=${JSON.stringify(msg)}`);
     }
     catch (err) {
         console.log(err.message);
