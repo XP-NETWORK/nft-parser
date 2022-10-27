@@ -1,5 +1,5 @@
 import axios from "axios";
-import "dotenv/config";
+// import "dotenv/config";
 
 export const sendTelegramMessage = async (msg:any) => {
     try {

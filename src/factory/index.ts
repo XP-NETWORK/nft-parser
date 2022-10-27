@@ -75,10 +75,14 @@ export const Default = async (
   }
 
   const url = `${proxy}${setupURI(baseUrl)}`;
+  console.log({ url });
 
   try {
     const response = await axios(url);
+
     let { data } = response;
+    console.log(data);
+
 
     if (data === "Post ID not found") {
       throw new Error("404");
@@ -108,7 +112,30 @@ export const Default = async (
     };
     return nft;
   } catch (error: any) {
-    console.error("error in default parser: ", error.message);
+    const res = await tryBasic(uri)
+    if (res){
+      let format = await getAssetFormat(res.image).catch((e) => "");
+      const nft: NFT = {
+        native,
+        chainId,
+        tokenId,
+        owner: account,
+        uri,
+        contract: contract || collectionIdent,
+        collectionIdent,
+        wrapped: res && res.wrapped,
+        metaData: {
+          whitelisted,
+          image: setupURI(res.image),
+          imageFormat: format,
+          attributes: res.attributes,
+          description: res.description,
+          name: res.name,
+        },
+      };
+      return nft;
+    }
+      console.error("error in default parser: ", error.message);
     await sendTelegramMessage(nft)
     return {
       ...nft,
@@ -116,6 +143,16 @@ export const Default = async (
     };
   }
 };
+
+const tryBasic = async (url: string) => {
+  try {
+    const response = await axios(url);
+    console.log(response.data.image);
+    return response.data.image
+  } catch (error) {
+    return undefined
+  }
+}
 
 // ! 0x0271c6853d4b2bdccd53aaf9edb66993e14d4cba
 // ! 0x4508af04de4073b10a53ac416eb311f4a2ab9569
