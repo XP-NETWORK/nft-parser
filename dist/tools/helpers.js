@@ -49,7 +49,7 @@ const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, function*
     }
     let format = "";
     try {
-        if (/(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$)/.test(imageUri)) {
+        if (/(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$|\.svg$)/.test(imageUri)) {
             format = ((_b = imageUri.match(/(?:\.([^.]+))?$/)) === null || _b === void 0 ? void 0 : _b.at(1)) || "";
         }
         else {
