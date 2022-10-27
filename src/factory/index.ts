@@ -65,66 +65,97 @@ export const setupURI = (uri: string): string => {
 };
 
 export const Default = async (
-    nft: any,
-    account: string,
-    whitelisted: boolean
+  nft: any,
+  account: string,
+  whitelisted: boolean
 ): Promise<NFT> => {
-    const {
+
+  const { native, native: { contract, tokenId, chainId }, collectionIdent, uri } = nft;
+  const baseUrl = setupURI(uri);
+
+  if (!baseUrl && tokenId) {
+    return await getWrappedNft(nft, account, whitelisted);
+  }
+
+  const url = `${proxy}${setupURI(baseUrl)}`;
+  console.log({ url });
+
+  try {
+    const response = await axios(url);
+
+    let { data } = response;
+    console.log(data);
+
+
+    if (data === "Post ID not found") {
+      throw new Error("404");
+    }
+
+    data = await checkEmptyFromTezos(data);
+
+    let format = await getAssetFormat(data.image).catch((e) => "");
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract: contract || collectionIdent,
+      collectionIdent,
+      wrapped: data && data.wrapped,
+      metaData: {
+        whitelisted,
+        image: setupURI(data.image),
+        imageFormat: format,
+        attributes: data.attributes,
+        description: data.description,
+        name: data.name,
+      },
+    };
+    return nft;
+  } catch (error: any) {
+    const res = await tryBasic(uri)
+    if (res){
+      let format = await getAssetFormat(res.image).catch((e) => "");
+      const nft: NFT = {
         native,
-        native: { contract, tokenId, chainId },
-        collectionIdent,
+        chainId,
+        tokenId,
+        owner: account,
         uri,
-    } = nft;
-
-    const baseUrl = setupURI(uri);
-
-    if (!baseUrl && tokenId) {
-        return await getWrappedNft(nft, account, whitelisted);
+        contract: contract || collectionIdent,
+        collectionIdent,
+        wrapped: res && res.wrapped,
+        metaData: {
+          whitelisted,
+          image: setupURI(res.image),
+          imageFormat: format,
+          attributes: res.attributes,
+          description: res.description,
+          name: res.name,
+        },
+      };
+      return nft;
     }
-
-    const url = `${proxy}${setupURI(baseUrl)}`;
-
-    try {
-        const response = await axios(url);
-
-        let { data } = response;
-
-        if (data === "Post ID not found") {
-            throw new Error("404");
-        }
-
-        data = await checkEmptyFromTezos(data);
-
-        let format = await getAssetFormat(data.image).catch((e) => "");
-
-        const nft: NFT = {
-            native,
-            chainId,
-            tokenId,
-            owner: account,
-            uri,
-            contract: contract || collectionIdent,
-            collectionIdent,
-            wrapped: data && data.wrapped,
-            metaData: {
-                whitelisted,
-                image: setupURI(data.image),
-                imageFormat: format,
-                attributes: data.attributes,
-                description: data.description,
-                name: data.name,
-            },
-        };
-        return nft;
-    } catch (error: any) {
-        console.error("error in default parser: ", error.message);
-        await sendTelegramMessage(nft);
-        return {
-            ...nft,
-            ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
-        };
-    }
+      console.error("error in default parser: ", error.message);
+    await sendTelegramMessage(nft)
+    return {
+      ...nft,
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
+  }
 };
+
+const tryBasic = async (url: string) => {
+  try {
+    const response = await axios(url);
+    console.log(response.data.image);
+    return response.data.image
+  } catch (error) {
+    return undefined
+  }
+}
 
 // ! 0x0271c6853d4b2bdccd53aaf9edb66993e14d4cba
 // ! 0x4508af04de4073b10a53ac416eb311f4a2ab9569
