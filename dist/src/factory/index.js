@@ -19,6 +19,8 @@ const requestPool_1 = __importDefault(require("../../tools/requestPool"));
 const helpers_1 = require("../../tools/helpers");
 const telegram_1 = require("../../tools/telegram");
 const __1 = require("..");
+const moralis_1 = __importDefault(require("moralis"));
+const evm_utils_1 = require("@moralisweb3/evm-utils");
 const pool = (0, requestPool_1.default)(3000);
 const cheerio = require("cherio");
 const setupURI = (uri) => {
@@ -65,7 +67,15 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     const url = `${__1.proxy}${(0, exports.setupURI)(baseUrl)}`;
     console.log({ url });
     try {
-        const response = yield (0, axios_1.default)(url);
+        let response;
+        if (url.includes("moralis")) {
+            response = yield moralis(contract, tokenId);
+            console.log(response);
+            response = { data: response };
+        }
+        if (!response) {
+            response = yield (0, axios_1.default)(url);
+        }
         let { data } = response;
         console.log(data);
         if (data === "Post ID not found") {
@@ -108,7 +118,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
                 wrapped: resp && resp.wrapped,
                 metaData: {
                     whitelisted,
-                    image: resp.image,
+                    image: (0, exports.setupURI)(resp.image),
                     imageFormat: format,
                     attributes: resp.attributes,
                     description: resp.description,
@@ -131,6 +141,26 @@ const tryBasic = (url) => __awaiter(void 0, void 0, void 0, function* () {
         return response.data;
     }
     catch (error) {
+        return undefined;
+    }
+});
+const moralis = (address, tokenId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const chain = evm_utils_1.EvmChain.POLYGON;
+        yield moralis_1.default.start({
+            apiKey: 'NT2aMb8xO5y2IcPxYSd4RvchrzV8wKnzCSHoIdMVF3Y0dTOw4x0AVQ9wrCJpIoBB',
+        });
+        const response = yield moralis_1.default.EvmApi.nft.getNFTMetadata({
+            address,
+            chain,
+            tokenId,
+        });
+        //@ts-ignore
+        // console.log(JSON.parse(response.data.metadata));
+        return JSON.parse(response.data.metadata);
+    }
+    catch (error) {
+        console.log("error in moralis");
         return undefined;
     }
 });
