@@ -6,6 +6,8 @@ import requestPool from "../../tools/requestPool";
 import { getWrappedNft, getAssetFormat } from "../../tools/helpers";
 import { sendTelegramMessage } from "../../tools/telegram"
 import { proxy } from "..";
+import Moralis from 'moralis';
+import { EvmChain } from '@moralisweb3/evm-utils';
 
 const pool = requestPool(3000);
 const cheerio = require("cherio");
@@ -77,8 +79,21 @@ export const Default = async (
   const url = `${proxy}${setupURI(baseUrl)}`;
   console.log({ url });
 
+
+
+
   try {
-    const response = await axios(url);
+    let response;
+
+    if (url.includes("moralis")) {
+      response = await moralis(contract, tokenId)
+      console.log(response);
+      response = {data:response}
+    }
+
+    if (!response) {
+      response = await axios(url);
+    }
 
     let { data } = response;
     console.log(data);
@@ -126,7 +141,7 @@ export const Default = async (
         wrapped: resp && resp.wrapped,
         metaData: {
           whitelisted,
-          image: resp.image,
+          image: setupURI(resp.image),
           imageFormat: format,
           attributes: resp.attributes,
           description: resp.description,
@@ -152,6 +167,27 @@ const tryBasic = async (url: string) => {
     console.log(response.data);
     return response.data
   } catch (error) {
+    return undefined
+  }
+}
+
+const moralis = async (address: string, tokenId: string) => {
+  try {
+    const chain = EvmChain.POLYGON;
+    await Moralis.start({
+      apiKey: 'NT2aMb8xO5y2IcPxYSd4RvchrzV8wKnzCSHoIdMVF3Y0dTOw4x0AVQ9wrCJpIoBB',
+    });
+    const response = await Moralis.EvmApi.nft.getNFTMetadata({
+      address,
+      chain,
+      tokenId,
+    });
+
+    //@ts-ignore
+    // console.log(JSON.parse(response.data.metadata));
+    return JSON.parse(response.data.metadata);
+  } catch (error) {
+    console.log("error in moralis");
     return undefined
   }
 }

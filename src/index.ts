@@ -98,7 +98,6 @@ export const nftGeneralParser = async (
     } = nft;
 
     evmHelper.init(factory);
-    console.log(chainId);
 
     let parsed;
     switch (chainId) {
@@ -215,7 +214,6 @@ const evmParser = async (
         await evmHelper.init(mainnetFactory);
         nft = await evmHelper.getUri(nft, collectionIdent);
     }
-console.log({collectionIdent});
 
     switch (collectionIdent) {
         case "0x0271c6853d4b2bdccd53aaf9edb66993e14d4cba":
@@ -379,6 +377,8 @@ console.log({collectionIdent});
             break;
 
         default:
+            console.log("got to evm.Default");
+            
             parsed = await evm.Default(nft, account, whitelisted);
             break;
     }

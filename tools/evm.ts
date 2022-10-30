@@ -32,3 +32,4 @@ class EvmContract {
 }
 
 export default () => new EvmContract();
+
