@@ -29,14 +29,16 @@ const setupURI = (uri) => {
         if (uri.includes("https://ipfs.io") || uri.includes("moralis")) {
             return uri;
         }
+        else if (uri.substring(0, 12).includes("ipfs://ipfs/")) {
+            return "https://ipfs.io/ipfs/" + uri.split("//ipfs/")[1];
+        }
         else if (/^ipfs:\/\//.test(uri)) {
             return "https://ipfs.io/ipfs/" + uri.split("://")[1];
         }
         else if (/^https\:\/\/ipfs.io/.test(uri)) {
             return uri;
         }
-        else if (uri.includes("data:image/") ||
-            uri.includes("data:application/")) {
+        else if (uri.includes("data:image/") || uri.includes("data:application/")) {
             return uri;
         }
         else if (uri[0] === "Q") {
