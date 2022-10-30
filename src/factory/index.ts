@@ -39,28 +39,21 @@ export interface NFT {
 
 export const setupURI = (uri: string): string => {
   if (uri) {
-    uri = uri.replace(/(?!\.json)\d+$/gm, "");
-
+    if(uri.includes(".json")){
+      uri = uri.replace(/(?!\.json)\d+$/gm, "");
+    }
     if (uri.includes("https://ipfs.io") || uri.includes("moralis")) {
       return uri;
-    } else if (uri.substring(0,12).includes("ipfs://ipfs/")) {
-      return "https://ipfs.io/ipfs/" + uri.split("//ipfs/")[1];
     } else if (/^ipfs:\/\//.test(uri)) {
       return "https://ipfs.io/ipfs/" + uri.split("://")[1];
-      
     } else if (/^https\:\/\/ipfs.io/.test(uri)) {
       return uri;
     } else if (uri.includes("data:image/") || uri.includes("data:application/")) {
       return uri;
-    
-    
     } else if (uri[0] === "Q") {
       return `https://ipfs.io/ipfs/${uri}`;
-
     } else if (uri.includes("http://")) {
       return uri.replace("http://", "https://");
-
-
     } else if (/^https\:\/\//.test(uri)) {
       return uri;
     } else {
