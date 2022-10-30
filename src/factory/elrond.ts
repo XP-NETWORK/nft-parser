@@ -3,9 +3,13 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { getAssetFormat, nftGeneralParser } from "..";
 import { setupURI } from ".";
 import { url } from "inspector";
-import { sendTelegramMessage } from "../../tools/telegram"
+import { sendTelegramMessage } from "../../tools/telegram";
 import { proxy } from "..";
 import { symbolName } from "typescript";
+import { Base64 } from "js-base64";
+
+const videoFormats = ["MP4", "MOV", "WMV", "AVI", "MKV", "FLV", "WEBM", "OGG"];
+const imageFormats = ["JPG", "JPEG", "GIF", "PNG"];
 
 interface NFT {
   chainId: string;
@@ -125,14 +129,15 @@ export const DEFAULT = async (
   } = nft;
 
   try {
-    const format = await getAssetFormat(setupURI(uri));
+    const res = await axios(`https://api.elrond.com/nfts/${tokenId}`).catch(
+      (e) => ({ data: null })
+    );
 
-    //const { data } = await axios(uri);
-    //const headers = data.headers;
+    const { data } = res;
 
-    // const format = headers["content-type"].slice(
-    // headers["content-type"].lastIndexOf("/") + 1
-    //);
+    const img =
+      data?.metadata?.image || Base64.decode(data?.uris[1] || data?.uris[0]);
+    const format: string = img.match(/\.[0-9a-z]+$/i)[0].replace(".", "");
 
     const nft: NFT = {
       native,
@@ -142,33 +147,26 @@ export const DEFAULT = async (
       uri,
       contract,
       collectionIdent,
-      //wrapped: data.wrapped,
       metaData: {
         whitelisted,
-        image: format.includes("json")
-          ? uri.replace(".json", ".png")
-          : format.includes("png")
-          ? uri
-          : format.includes("mp4")
-          ? ""
-          : "",
-        imageFormat: "png",
-        animation_url: format.includes("png")
-          ? ""
-          : format.includes("json")
-          ? uri.replace(".json", ".mp4")
-          : format.includes("mp4")
-          ? uri
-          : "",
-
-        animation_url_format: "mp4",
+        image: imageFormats.includes(format?.toUpperCase()) ? img : "",
+        imageFormat: imageFormats.includes(format?.toUpperCase()) ? format : "",
+        animation_url: videoFormats.includes(format?.toUpperCase())
+          ? img
+          : undefined,
+        animation_url_format: videoFormats.includes(format?.toUpperCase())
+          ? format
+          : undefined,
+        attributes: data?.metadata?.attributes || data?.attributes,
+        name: data?.metadata?.name || data?.name,
+        description: data?.metadata?.description,
       },
     };
 
     return nft;
   } catch (error: any) {
     console.error(error?.response?.status || error);
-    await sendTelegramMessage(nft)
+    await sendTelegramMessage(nft);
     return {
       ...nft,
       ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),

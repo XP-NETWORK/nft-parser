@@ -4,7 +4,7 @@ import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { checkEmptyFromTezos } from "./tezos";
 import requestPool from "../../tools/requestPool";
 import { getWrappedNft, getAssetFormat } from "../../tools/helpers";
-import { sendTelegramMessage } from "../../tools/telegram"
+import { sendTelegramMessage } from "../../tools/telegram";
 import { proxy } from "..";
 import Moralis from 'moralis';
 import { EvmChain } from '@moralisweb3/evm-utils';
@@ -41,7 +41,7 @@ export const setupURI = (uri: string): string => {
   if (uri) {
     uri = uri.replace(/(?!\.json)\d+$/gm, "");
 
-    if (uri.includes("https://ipfs.io")) {
+    if (uri.includes("https://ipfs.io") || uri.includes("moralis")) {
       return uri;
     } else if (/^ipfs:\/\//.test(uri)) {
       return "https://ipfs.io/ipfs/" + uri.split("://")[1];
@@ -83,9 +83,37 @@ export const Default = async (
     let response;
 
     if (url.includes("moralis")) {
-      response = await moralis(contract, tokenId)
-      console.log(response);
-      response = {data:response}
+      let chain
+      switch (String(chainId)) {
+        case "7":
+          chain = EvmChain.POLYGON;
+          response = await moralis(contract, tokenId, chain)
+          response = { data: response }
+          break;
+        case "5":
+          chain = EvmChain.ETHEREUM;
+          response = await moralis(contract, tokenId, chain)
+          response = { data: response }
+          break;
+        case "4":
+          chain = EvmChain.BSC;
+          response = await moralis(contract, tokenId, chain)
+          response = { data: response }
+          break;
+        case "6":
+          chain = EvmChain.AVALANCHE;
+          response = await moralis(contract, tokenId, chain)
+          response = { data: response }
+          break;
+        case "8":
+          chain = EvmChain.FANTOM;
+          response = await moralis(contract, tokenId, chain)
+          response = { data: response }
+          break;
+        default:
+          response = undefined
+          break;
+      }
     }
 
     if (!response) {
@@ -168,12 +196,12 @@ const tryBasic = async (url: string) => {
   }
 }
 
-const moralis = async (address: string, tokenId: string) => {
+const moralis = async (address: string, tokenId: string, chain: any) => {
   try {
-    const chain = EvmChain.POLYGON;
     await Moralis.start({
       apiKey: 'NT2aMb8xO5y2IcPxYSd4RvchrzV8wKnzCSHoIdMVF3Y0dTOw4x0AVQ9wrCJpIoBB',
     });
+
     const response = await Moralis.EvmApi.nft.getNFTMetadata({
       address,
       chain,
@@ -181,8 +209,7 @@ const moralis = async (address: string, tokenId: string) => {
     });
 
     //@ts-ignore
-    // console.log(JSON.parse(response.data.metadata));
-    return JSON.parse(response.data.metadata);
+    return JSON.parse(response?.data?.metadata);
   } catch (error) {
     console.log("error in moralis");
     return undefined
@@ -1621,7 +1648,9 @@ export const OpenSEA = async (
   } = nft;
 
   try {
-    const response = await axios(`${proxy}${uri.replace("0x{id}", tokenId)}`);
+    const response = await axios(
+      `${proxy}${uri.replace("0x{id}", tokenId)}`
+    );
 
     const { data } = response;
     const nft: NFT = {
@@ -2311,6 +2340,90 @@ export const RCM = async (nft: any, account: string, whitelisted: boolean) => {
         whitelisted,
         image: data?.image,
         imageFormat: "png",
+        description: data?.description,
+        name: data?.name,
+        attributes: data?.attributes,
+      },
+    };
+    return nft;
+  } catch (error: any) {
+    console.error(error);
+
+    return nft;
+  }
+};
+
+export const AbeyDefault = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+  const newURI = `https://metadata.fantase.io/${collectionIdent.toLowerCase()}/metadata/json/${tokenId}.json`;
+  try {
+    const { data } = await axios(`${proxy}${newURI}`).catch(() => ({
+      data: null,
+    }));
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri: newURI,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: data?.image,
+        imageFormat: "jpg",
+        description: data?.description,
+        name: data?.name,
+        attributes: data?.attributes,
+      },
+    };
+    return nft;
+  } catch (error: any) {
+    console.error(error);
+
+    return nft;
+  }
+};
+
+export const moonbeamDefault = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+) => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const { data } = await axios(`${proxy}${uri}`).catch(() => ({
+      data: null,
+    }));
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: data?.image,
+        imageFormat: "jpg",
         description: data?.description,
         name: data?.name,
         attributes: data?.attributes,
