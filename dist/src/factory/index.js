@@ -26,7 +26,7 @@ const cheerio = require("cherio");
 const setupURI = (uri) => {
     if (uri) {
         uri = uri.replace(/(?!\.json)\d+$/gm, "");
-        if (uri.includes("https://ipfs.io")) {
+        if (uri.includes("https://ipfs.io") || uri.includes("moralis")) {
             return uri;
         }
         else if (/^ipfs:\/\//.test(uri)) {
@@ -69,9 +69,37 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     try {
         let response;
         if (url.includes("moralis")) {
-            response = yield moralis(contract, tokenId);
-            console.log(response);
-            response = { data: response };
+            let chain;
+            switch (String(chainId)) {
+                case "7":
+                    chain = evm_utils_1.EvmChain.POLYGON;
+                    response = yield moralis(contract, tokenId, chain);
+                    response = { data: response };
+                    break;
+                case "5":
+                    chain = evm_utils_1.EvmChain.ETHEREUM;
+                    response = yield moralis(contract, tokenId, chain);
+                    response = { data: response };
+                    break;
+                case "4":
+                    chain = evm_utils_1.EvmChain.BSC;
+                    response = yield moralis(contract, tokenId, chain);
+                    response = { data: response };
+                    break;
+                case "6":
+                    chain = evm_utils_1.EvmChain.AVALANCHE;
+                    response = yield moralis(contract, tokenId, chain);
+                    response = { data: response };
+                    break;
+                case "8":
+                    chain = evm_utils_1.EvmChain.FANTOM;
+                    response = yield moralis(contract, tokenId, chain);
+                    response = { data: response };
+                    break;
+                default:
+                    response = undefined;
+                    break;
+            }
         }
         if (!response) {
             response = yield (0, axios_1.default)(url);
@@ -144,9 +172,9 @@ const tryBasic = (url) => __awaiter(void 0, void 0, void 0, function* () {
         return undefined;
     }
 });
-const moralis = (address, tokenId) => __awaiter(void 0, void 0, void 0, function* () {
+const moralis = (address, tokenId, chain) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
     try {
-        const chain = evm_utils_1.EvmChain.POLYGON;
         yield moralis_1.default.start({
             apiKey: 'NT2aMb8xO5y2IcPxYSd4RvchrzV8wKnzCSHoIdMVF3Y0dTOw4x0AVQ9wrCJpIoBB',
         });
@@ -156,8 +184,7 @@ const moralis = (address, tokenId) => __awaiter(void 0, void 0, void 0, function
             tokenId,
         });
         //@ts-ignore
-        // console.log(JSON.parse(response.data.metadata));
-        return JSON.parse(response.data.metadata);
+        return JSON.parse((_b = response === null || response === void 0 ? void 0 : response.data) === null || _b === void 0 ? void 0 : _b.metadata);
     }
     catch (error) {
         console.log("error in moralis");
@@ -167,7 +194,7 @@ const moralis = (address, tokenId) => __awaiter(void 0, void 0, void 0, function
 // ! 0x0271c6853d4b2bdccd53aaf9edb66993e14d4cba
 // ! 0x4508af04de4073b10a53ac416eb311f4a2ab9569
 const ART_NFT_MATIC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b, _c;
+    var _c, _d;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
     const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
@@ -197,13 +224,13 @@ const ART_NFT_MATIC = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_b = error.response) === null || _b === void 0 ? void 0 : _b.status) === 429 ? { errorStatus: 429 } : {})), (((_c = error.response) === null || _c === void 0 ? void 0 : _c.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_c = error.response) === null || _c === void 0 ? void 0 : _c.status) === 429 ? { errorStatus: 429 } : {})), (((_d = error.response) === null || _d === void 0 ? void 0 : _d.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.ART_NFT_MATIC = ART_NFT_MATIC;
 // ! 0xa8a079ea48dc846899bdb542f3728dbc6758fdfa
 const EtherHead = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _d, _e;
+    var _e, _f;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
     const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
@@ -231,13 +258,13 @@ const EtherHead = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_d = error.response) === null || _d === void 0 ? void 0 : _d.status) === 429 ? { errorStatus: 429 } : {})), (((_e = error.response) === null || _e === void 0 ? void 0 : _e.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_e = error.response) === null || _e === void 0 ? void 0 : _e.status) === 429 ? { errorStatus: 429 } : {})), (((_f = error.response) === null || _f === void 0 ? void 0 : _f.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.EtherHead = EtherHead;
 // ! 0x6e1ecc59f4005d0f2707ab7a0a8cecbaba41c11e
 const AngelOfAether = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _f, _g;
+    var _g, _h;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
     const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
@@ -265,13 +292,13 @@ const AngelOfAether = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_f = error.response) === null || _f === void 0 ? void 0 : _f.status) === 429 ? { errorStatus: 429 } : {})), (((_g = error.response) === null || _g === void 0 ? void 0 : _g.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_g = error.response) === null || _g === void 0 ? void 0 : _g.status) === 429 ? { errorStatus: 429 } : {})), (((_h = error.response) === null || _h === void 0 ? void 0 : _h.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.AngelOfAether = AngelOfAether;
 // ! 0xe5b3903ffb3a00e91c75e25a4bd6616d3171e45e
 const Legend = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _h, _j;
+    var _j, _k;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
     const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
@@ -301,14 +328,14 @@ const Legend = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_h = error.response) === null || _h === void 0 ? void 0 : _h.status) === 429 ? { errorStatus: 429 } : {})), (((_j = error.response) === null || _j === void 0 ? void 0 : _j.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_j = error.response) === null || _j === void 0 ? void 0 : _j.status) === 429 ? { errorStatus: 429 } : {})), (((_k = error.response) === null || _k === void 0 ? void 0 : _k.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.Legend = Legend;
 // ! 0xee6d7e31ea2095df9b2f89ec15111d3de5cd39af
 // ! AlphaBettyDoodle
 const AlphaBettyDoodle = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _k, _l;
+    var _l, _m;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
     const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
@@ -339,12 +366,12 @@ const AlphaBettyDoodle = (nft, account, whitelisted) => __awaiter(void 0, void 0
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_k = error.response) === null || _k === void 0 ? void 0 : _k.status) === 429 ? { errorStatus: 429 } : {})), (((_l = error.response) === null || _l === void 0 ? void 0 : _l.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_l = error.response) === null || _l === void 0 ? void 0 : _l.status) === 429 ? { errorStatus: 429 } : {})), (((_m = error.response) === null || _m === void 0 ? void 0 : _m.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.AlphaBettyDoodle = AlphaBettyDoodle;
 const Mabstronauts = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _m, _o;
+    var _o, _p;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
     const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
@@ -374,13 +401,13 @@ const Mabstronauts = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_m = error.response) === null || _m === void 0 ? void 0 : _m.status) === 429 ? { errorStatus: 429 } : {})), (((_o = error.response) === null || _o === void 0 ? void 0 : _o.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_o = error.response) === null || _o === void 0 ? void 0 : _o.status) === 429 ? { errorStatus: 429 } : {})), (((_p = error.response) === null || _p === void 0 ? void 0 : _p.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.Mabstronauts = Mabstronauts;
 // ! 0x0D41c70E20587c2ec1cea9c4A3d394eC63C4bfbe
 const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _p, _q;
+    var _q, _r;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
     const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
@@ -412,14 +439,14 @@ const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_p = error.response) === null || _p === void 0 ? void 0 : _p.status) === 429 ? { errorStatus: 429 } : {})), (((_q = error.response) === null || _q === void 0 ? void 0 : _q.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_q = error.response) === null || _q === void 0 ? void 0 : _q.status) === 429 ? { errorStatus: 429 } : {})), (((_r = error.response) === null || _r === void 0 ? void 0 : _r.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.RocketMonsters = RocketMonsters;
 //0xc97e56Cd5777b46015F88BBB047f90cf556f520b
 // ! 0xDcAA2b071c1851D8Da43f85a34a5A57d4Fa93A1A
 const TheBlackMagic = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _r, _s;
+    var _s, _t;
     // debugger;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
@@ -476,13 +503,13 @@ const TheBlackMagic = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_r = error.response) === null || _r === void 0 ? void 0 : _r.status) === 429 ? { errorStatus: 429 } : {})), (((_s = error.response) === null || _s === void 0 ? void 0 : _s.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_s = error.response) === null || _s === void 0 ? void 0 : _s.status) === 429 ? { errorStatus: 429 } : {})), (((_t = error.response) === null || _t === void 0 ? void 0 : _t.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.TheBlackMagic = TheBlackMagic;
 // ! 0x4c1900270dbf0c1e6a9c984aef9a18a7cb9ab1cc
 const CartelPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _t, _u;
+    var _u, _v;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
     const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
@@ -513,13 +540,13 @@ const CartelPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_t = error.response) === null || _t === void 0 ? void 0 : _t.status) === 429 ? { errorStatus: 429 } : {})), (((_u = error.response) === null || _u === void 0 ? void 0 : _u.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_u = error.response) === null || _u === void 0 ? void 0 : _u.status) === 429 ? { errorStatus: 429 } : {})), (((_v = error.response) === null || _v === void 0 ? void 0 : _v.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.CartelPunks = CartelPunks;
 // ! 0x36f8f51f65fe200311f709b797baf4e193dd0b0d
 const TreatNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _v, _w;
+    var _w, _x;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const newUrl = `${__1.proxy}https://treatdao.com/api/nft/${tokenId}`;
     try {
@@ -554,7 +581,7 @@ const TreatNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
     catch (error) {
         console.log(error.code);
         // if (error.code === "ERR_BAD_REQUEST") throw error.code;
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_v = error.response) === null || _v === void 0 ? void 0 : _v.status) === 429 ? { errorStatus: 429 } : {})), (((_w = error.response) === null || _w === void 0 ? void 0 : _w.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_w = error.response) === null || _w === void 0 ? void 0 : _w.status) === 429 ? { errorStatus: 429 } : {})), (((_x = error.response) === null || _x === void 0 ? void 0 : _x.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.TreatNFT = TreatNFT;
@@ -562,7 +589,7 @@ exports.TreatNFT = TreatNFT;
 //c
 // ! 0x2c83eaf6e460c673d92477a7c49eb4ecd04e1216
 const IdoDirt = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _x, _y;
+    var _y, _z;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
     const newUrl = `${__1.proxy}https://treatdao.com/api/nft/${tokenId}`;
@@ -593,13 +620,13 @@ const IdoDirt = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_x = error.response) === null || _x === void 0 ? void 0 : _x.status) === 429 ? { errorStatus: 429 } : {})), (((_y = error.response) === null || _y === void 0 ? void 0 : _y.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_y = error.response) === null || _y === void 0 ? void 0 : _y.status) === 429 ? { errorStatus: 429 } : {})), (((_z = error.response) === null || _z === void 0 ? void 0 : _z.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.IdoDirt = IdoDirt;
 // ! 0x691bd0f2f5a145fcf297cf4be79095b66f002cbc
 const Awokensages = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _z, _0;
+    var _0, _1;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const newUri = `https://api.crosspunks.com/cars/meta/2/${tokenId}`;
     const baseUrl = uri;
@@ -631,13 +658,13 @@ const Awokensages = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_z = error.response) === null || _z === void 0 ? void 0 : _z.status) === 429 ? { errorStatus: 429 } : {})), (((_0 = error.response) === null || _0 === void 0 ? void 0 : _0.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_0 = error.response) === null || _0 === void 0 ? void 0 : _0.status) === 429 ? { errorStatus: 429 } : {})), (((_1 = error.response) === null || _1 === void 0 ? void 0 : _1.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.Awokensages = Awokensages;
 // ! 0x7f3495cf2d05db6e9e52cdf989bced71e786725c
 const Technomaniacs = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _1, _2;
+    var _2, _3;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const newUri = `https://api.crosspunks.com/cars/meta/1/${tokenId}`;
     const baseUrl = uri;
@@ -669,13 +696,13 @@ const Technomaniacs = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_1 = error.response) === null || _1 === void 0 ? void 0 : _1.status) === 429 ? { errorStatus: 429 } : {})), (((_2 = error.response) === null || _2 === void 0 ? void 0 : _2.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_2 = error.response) === null || _2 === void 0 ? void 0 : _2.status) === 429 ? { errorStatus: 429 } : {})), (((_3 = error.response) === null || _3 === void 0 ? void 0 : _3.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.Technomaniacs = Technomaniacs;
 // ! 0xe7f8ccda432239dcb418e94d625bc2fe6350f6bb
 const ArcadeEdition = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _3, _4;
+    var _4, _5;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const newUri = `https://api.alturanft.com/meta/arcade-edition/${tokenId}`;
     try {
@@ -704,13 +731,13 @@ const ArcadeEdition = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_3 = error.response) === null || _3 === void 0 ? void 0 : _3.status) === 429 ? { errorStatus: 429 } : {})), (((_4 = error.response) === null || _4 === void 0 ? void 0 : _4.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_4 = error.response) === null || _4 === void 0 ? void 0 : _4.status) === 429 ? { errorStatus: 429 } : {})), (((_5 = error.response) === null || _5 === void 0 ? void 0 : _5.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.ArcadeEdition = ArcadeEdition;
 // ! 0x56d93767467c54bd86578666904087c4f16cdb7f
 const Founders_Cabinet = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _5, _6;
+    var _6, _7;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const newUri = `https://api.alturanft.com/meta/chain-cade-founders-edition/${tokenId}`;
     const baseUrl = uri;
@@ -740,13 +767,13 @@ const Founders_Cabinet = (nft, account, whitelisted) => __awaiter(void 0, void 0
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_5 = error.response) === null || _5 === void 0 ? void 0 : _5.status) === 429 ? { errorStatus: 429 } : {})), (((_6 = error.response) === null || _6 === void 0 ? void 0 : _6.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_6 = error.response) === null || _6 === void 0 ? void 0 : _6.status) === 429 ? { errorStatus: 429 } : {})), (((_7 = error.response) === null || _7 === void 0 ? void 0 : _7.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.Founders_Cabinet = Founders_Cabinet;
 // ! 0x2d317ed6c2e3eb5c54ca7518ef19deee96c15c85
 const TTAV = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _7, _8;
+    var _8, _9;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
     const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
@@ -776,13 +803,13 @@ const TTAV = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_7 = error.response) === null || _7 === void 0 ? void 0 : _7.status) === 429 ? { errorStatus: 429 } : {})), (((_8 = error.response) === null || _8 === void 0 ? void 0 : _8.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_8 = error.response) === null || _8 === void 0 ? void 0 : _8.status) === 429 ? { errorStatus: 429 } : {})), (((_9 = error.response) === null || _9 === void 0 ? void 0 : _9.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.TTAV = TTAV;
 // ! 0x7a7ca3b27760b52428d7a9d0a9f369ff31a2de94
 const BoredGUtterCats = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _9, _10;
+    var _10, _11;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const newUri = `https://ipfs.moralis.io:2053/ipfs/QmV4CkNpDsiF5hSaUCJZAndDo1gVM8zxTKMbpN8teyDoTv/${tokenId}.json`;
     try {
@@ -810,13 +837,13 @@ const BoredGUtterCats = (nft, account, whitelisted) => __awaiter(void 0, void 0,
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_9 = error.response) === null || _9 === void 0 ? void 0 : _9.status) === 429 ? { errorStatus: 429 } : {})), (((_10 = error.response) === null || _10 === void 0 ? void 0 : _10.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_10 = error.response) === null || _10 === void 0 ? void 0 : _10.status) === 429 ? { errorStatus: 429 } : {})), (((_11 = error.response) === null || _11 === void 0 ? void 0 : _11.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.BoredGUtterCats = BoredGUtterCats;
 // ! 0x2FeEE2Cc7fB32bD48AB22080e2C680f5390Ef426
 const IDoDirtPolygon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _11, _12;
+    var _12, _13;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
@@ -846,13 +873,13 @@ const IDoDirtPolygon = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_11 = error.response) === null || _11 === void 0 ? void 0 : _11.status) === 429 ? { errorStatus: 429 } : {})), (((_12 = error.response) === null || _12 === void 0 ? void 0 : _12.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_12 = error.response) === null || _12 === void 0 ? void 0 : _12.status) === 429 ? { errorStatus: 429 } : {})), (((_13 = error.response) === null || _13 === void 0 ? void 0 : _13.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.IDoDirtPolygon = IDoDirtPolygon;
 // ! 0x2953399124f0cbb46d2cbacd8a89cf0599974963
 const ArsenalGame = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _13, _14;
+    var _14, _15;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     if (!uri)
         console.log("NFT with no uri collection: ", collectionIdent, "tokenId: ", tokenId);
@@ -884,19 +911,19 @@ const ArsenalGame = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_13 = error.response) === null || _13 === void 0 ? void 0 : _13.status) === 429 ? { errorStatus: 429 } : {})), (((_14 = error.response) === null || _14 === void 0 ? void 0 : _14.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_14 = error.response) === null || _14 === void 0 ? void 0 : _14.status) === 429 ? { errorStatus: 429 } : {})), (((_15 = error.response) === null || _15 === void 0 ? void 0 : _15.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.ArsenalGame = ArsenalGame;
 // ! 0xc69ecd37122a9b5fd7e62bc229d478bb83063c9d
 const Mate = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _15, _16, _17;
+    var _16, _17, _18;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const { data } = yield (0, axios_1.default)(url);
         const imgResp = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
-        const mimeType = (_15 = imgResp === null || imgResp === void 0 ? void 0 : imgResp.headers) === null || _15 === void 0 ? void 0 : _15["content-type"];
+        const mimeType = (_16 = imgResp === null || imgResp === void 0 ? void 0 : imgResp.headers) === null || _16 === void 0 ? void 0 : _16["content-type"];
         const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -921,7 +948,7 @@ const Mate = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_16 = error.response) === null || _16 === void 0 ? void 0 : _16.status) === 429 ? { errorStatus: 429 } : {})), (((_17 = error.response) === null || _17 === void 0 ? void 0 : _17.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_17 = error.response) === null || _17 === void 0 ? void 0 : _17.status) === 429 ? { errorStatus: 429 } : {})), (((_18 = error.response) === null || _18 === void 0 ? void 0 : _18.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.Mate = Mate;
@@ -1217,7 +1244,7 @@ const InterestingCPeople = (nft, account, whitelisted) => __awaiter(void 0, void
 });
 exports.InterestingCPeople = InterestingCPeople;
 const Nagato = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _18;
+    var _19;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
@@ -1248,7 +1275,7 @@ const Nagato = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
         return nft;
     }
     catch (error) {
-        return Object.assign(Object.assign({}, nft), (((_18 = error.response) === null || _18 === void 0 ? void 0 : _18.status) === 429 ? { errorStatus: 429 } : {}));
+        return Object.assign(Object.assign({}, nft), (((_19 = error.response) === null || _19 === void 0 ? void 0 : _19.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
 exports.Nagato = Nagato;
@@ -1285,7 +1312,7 @@ const OpenSEA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
 });
 exports.OpenSEA = OpenSEA;
 const ChainCaders = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _19, _20, _21, _22, _23, _24, _25;
+    var _20, _21, _22, _23, _24, _25, _26;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = yield (0, axios_1.default)(`${__1.proxy}https://api.alturanft.com/api/item/56/${collectionIdent}/${tokenId}`);
@@ -1301,12 +1328,12 @@ const ChainCaders = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             wrapped: data === null || data === void 0 ? void 0 : data.wrapped,
             metaData: {
                 whitelisted,
-                image: (_19 = data === null || data === void 0 ? void 0 : data.item) === null || _19 === void 0 ? void 0 : _19.imageUrl,
-                imageFormat: (_21 = (_20 = data === null || data === void 0 ? void 0 : data.item) === null || _20 === void 0 ? void 0 : _20.imageUrl) === null || _21 === void 0 ? void 0 : _21.match(/(?:\.([^.]+))?$/)[1],
-                name: (_22 = data === null || data === void 0 ? void 0 : data.item) === null || _22 === void 0 ? void 0 : _22.name,
-                description: (_23 = data === null || data === void 0 ? void 0 : data.item) === null || _23 === void 0 ? void 0 : _23.description,
-                collectionName: (_24 = data === null || data === void 0 ? void 0 : data.item) === null || _24 === void 0 ? void 0 : _24.collectionName,
-                attributes: (_25 = data === null || data === void 0 ? void 0 : data.item) === null || _25 === void 0 ? void 0 : _25.properties,
+                image: (_20 = data === null || data === void 0 ? void 0 : data.item) === null || _20 === void 0 ? void 0 : _20.imageUrl,
+                imageFormat: (_22 = (_21 = data === null || data === void 0 ? void 0 : data.item) === null || _21 === void 0 ? void 0 : _21.imageUrl) === null || _22 === void 0 ? void 0 : _22.match(/(?:\.([^.]+))?$/)[1],
+                name: (_23 = data === null || data === void 0 ? void 0 : data.item) === null || _23 === void 0 ? void 0 : _23.name,
+                description: (_24 = data === null || data === void 0 ? void 0 : data.item) === null || _24 === void 0 ? void 0 : _24.description,
+                collectionName: (_25 = data === null || data === void 0 ? void 0 : data.item) === null || _25 === void 0 ? void 0 : _25.collectionName,
+                attributes: (_26 = data === null || data === void 0 ? void 0 : data.item) === null || _26 === void 0 ? void 0 : _26.properties,
                 contractType: "1155",
             },
         };
@@ -1447,7 +1474,7 @@ const MachineFi = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
 });
 exports.MachineFi = MachineFi;
 const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _26, _27, _28;
+    var _27, _28, _29;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const { data } = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
@@ -1464,10 +1491,10 @@ const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: data && ((_26 = data.data) === null || _26 === void 0 ? void 0 : _26.image),
+                image: data && ((_27 = data.data) === null || _27 === void 0 ? void 0 : _27.image),
                 imageFormat: "png",
-                description: data && ((_27 = data.data) === null || _27 === void 0 ? void 0 : _27.description),
-                name: data && ((_28 = data.data) === null || _28 === void 0 ? void 0 : _28.name),
+                description: data && ((_28 = data.data) === null || _28 === void 0 ? void 0 : _28.description),
+                name: data && ((_29 = data.data) === null || _29 === void 0 ? void 0 : _29.name),
             },
         };
         return nft;
@@ -1480,7 +1507,7 @@ const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
 exports.TRSRNFT = TRSRNFT;
 //WUBI
 const WUBI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _29;
+    var _30;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = __1.proxy
@@ -1507,7 +1534,7 @@ const WUBI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
         return nft;
     }
     catch (error) {
-        return Object.assign(Object.assign({}, nft), (((_29 = error.response) === null || _29 === void 0 ? void 0 : _29.status) === 429 ? { errorStatus: 429 } : {}));
+        return Object.assign(Object.assign({}, nft), (((_30 = error.response) === null || _30 === void 0 ? void 0 : _30.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
 exports.WUBI = WUBI;
@@ -1547,7 +1574,7 @@ const PACK = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
 });
 exports.PACK = PACK;
 const VelasOgPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _30, _31;
+    var _31, _32;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = yield (0, axios_1.default)(uri);
@@ -1577,12 +1604,12 @@ const VelasOgPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_30 = error.response) === null || _30 === void 0 ? void 0 : _30.status) === 429 ? { errorStatus: 429 } : {})), (((_31 = error.response) === null || _31 === void 0 ? void 0 : _31.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_31 = error.response) === null || _31 === void 0 ? void 0 : _31.status) === 429 ? { errorStatus: 429 } : {})), (((_32 = error.response) === null || _32 === void 0 ? void 0 : _32.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.VelasOgPunks = VelasOgPunks;
 const Drifters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _32;
+    var _33;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = __1.proxy
@@ -1613,12 +1640,12 @@ const Drifters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
         return nft;
     }
     catch (error) {
-        return Object.assign(Object.assign({}, nft), (((_32 = error.response) === null || _32 === void 0 ? void 0 : _32.status) === 429 ? { errorStatus: 429 } : {}));
+        return Object.assign(Object.assign({}, nft), (((_33 = error.response) === null || _33 === void 0 ? void 0 : _33.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
 exports.Drifters = Drifters;
 const Weed = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _33;
+    var _34;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     if (__1.proxy)
         return nft;
@@ -1649,12 +1676,12 @@ const Weed = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
         return nft;
     }
     catch (error) {
-        return Object.assign(Object.assign({}, nft), (((_33 = error.response) === null || _33 === void 0 ? void 0 : _33.status) === 429 ? { errorStatus: 429 } : {}));
+        return Object.assign(Object.assign({}, nft), (((_34 = error.response) === null || _34 === void 0 ? void 0 : _34.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
 exports.Weed = Weed;
 const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _34;
+    var _35;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = __1.proxy
@@ -1685,7 +1712,7 @@ const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
         return nft;
     }
     catch (error) {
-        return Object.assign(Object.assign({}, nft), (((_34 = error.response) === null || _34 === void 0 ? void 0 : _34.status) === 429 ? { errorStatus: 429 } : {}));
+        return Object.assign(Object.assign({}, nft), (((_35 = error.response) === null || _35 === void 0 ? void 0 : _35.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
 exports.Cities = Cities;
