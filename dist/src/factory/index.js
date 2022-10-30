@@ -25,12 +25,11 @@ const pool = (0, requestPool_1.default)(3000);
 const cheerio = require("cherio");
 const setupURI = (uri) => {
     if (uri) {
-        uri = uri.replace(/(?!\.json)\d+$/gm, "");
+        if (uri.includes(".json")) {
+            uri = uri.replace(/(?!\.json)\d+$/gm, "");
+        }
         if (uri.includes("https://ipfs.io") || uri.includes("moralis")) {
             return uri;
-        }
-        else if (uri.substring(0, 12).includes("ipfs://ipfs/")) {
-            return "https://ipfs.io/ipfs/" + uri.split("//ipfs/")[1];
         }
         else if (/^ipfs:\/\//.test(uri)) {
             return "https://ipfs.io/ipfs/" + uri.split("://")[1];
