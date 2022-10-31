@@ -88,8 +88,9 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     try {
         const res = yield (0, axios_1.default)(`https://api.elrond.com/nfts/${tokenId}`).catch((e) => ({ data: null }));
         const { data } = res;
-        const img = ((_a = data === null || data === void 0 ? void 0 : data.metadata) === null || _a === void 0 ? void 0 : _a.image) || js_base64_1.Base64.decode((data === null || data === void 0 ? void 0 : data.uris[1]) || (data === null || data === void 0 ? void 0 : data.uris[0]));
+        const img = data.url || ((_a = data === null || data === void 0 ? void 0 : data.metadata) === null || _a === void 0 ? void 0 : _a.image) || js_base64_1.Base64.decode((data === null || data === void 0 ? void 0 : data.uris[1]) || (data === null || data === void 0 ? void 0 : data.uris[0]));
         const format = img.match(/\.[0-9a-z]+$/i)[0].replace(".", "");
+        console.log({ img, format, tokenId });
         const nft = {
             native,
             chainId,
