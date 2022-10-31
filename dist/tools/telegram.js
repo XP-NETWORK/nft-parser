@@ -23,7 +23,7 @@ const sendTelegramMessage = (msg) => __awaiter(void 0, void 0, void 0, function*
         yield axios_1.default.get(`https://api.telegram.org/bot5649872974:AAHye96JTkXxrMfkg8FnM4hI30Z4q3xAt00/sendMessage?chat_id=-850284174&text=${str}&parse_mode=HTML`);
     }
     catch (err) {
-        console.log(err);
+        console.log(err.message);
     }
 });
 exports.sendTelegramMessage = sendTelegramMessage;
