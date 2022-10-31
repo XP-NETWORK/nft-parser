@@ -39,7 +39,7 @@ export interface NFT {
 
 export const setupURI = (uri: string): string => {
   if (uri) {
-    if(uri.includes(".json")){
+    if (uri.includes(".json")) {
       uri = uri.replace(/(?!\.json)\d+$/gm, "");
     }
     if (uri.includes("https://ipfs.io") || uri.includes("moralis")) {
@@ -76,7 +76,7 @@ export const Default = async (
   if (!baseUrl && tokenId) {
     return await getWrappedNft(nft, account, whitelisted);
   }
-console.log({uri});
+  console.log({ uri });
 
   const url = `${proxy}${setupURI(baseUrl)}`;
   console.log({ url });
@@ -94,8 +94,8 @@ console.log({uri});
           break;
         case "5":
           chain = EvmChain.ETHEREUM;
-          console.log({contract, tokenId});
-          
+          console.log({ contract, tokenId });
+
           response = await moralis(contract, tokenId, chain)
           response = { data: response }
           break;
@@ -193,7 +193,7 @@ console.log({uri});
 const tryBasic = async (url: string) => {
   try {
     console.log("got here");
-    
+
     const response = await axios(url);
     console.log(response.data);
     return response.data

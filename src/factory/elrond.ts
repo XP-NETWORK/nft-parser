@@ -132,12 +132,14 @@ export const DEFAULT = async (
     const res = await axios(`https://api.elrond.com/nfts/${tokenId}`).catch(
       (e) => ({ data: null })
     );
+    // console.log(res);
 
     const { data } = res;
 
     const img =
-      data?.metadata?.image || Base64.decode(data?.uris[1] || data?.uris[0]);
+      data.url || data?.metadata?.image || Base64.decode(data?.uris[1] || data?.uris[0])
     const format: string = img.match(/\.[0-9a-z]+$/i)[0].replace(".", "");
+    console.log({ img, format, tokenId });
 
     const nft: NFT = {
       native,
@@ -531,10 +533,10 @@ export const WrappedXPNET = async (
         ...(data.animation_url ? { animation_url: data.animation_url } : {}),
         ...(data.animation_url
           ? {
-              animation_url_format: data.animation_url
-                ?.match(/\.([^.]*)$/)
-                ?.at(1),
-            }
+            animation_url_format: data.animation_url
+              ?.match(/\.([^.]*)$/)
+              ?.at(1),
+          }
           : {}),
       },
     };
@@ -585,10 +587,10 @@ export const HOKI = async (
         ...(data.animation_url ? { animation_url: data.animation_url } : {}),
         ...(data.animation_url
           ? {
-              animation_url_format: data.animation_url
-                ?.match(/\.([^.]*)$/)
-                ?.at(1),
-            }
+            animation_url_format: data.animation_url
+              ?.match(/\.([^.]*)$/)
+              ?.at(1),
+          }
           : {}),
       },
     };
@@ -647,10 +649,10 @@ export const Default = async (
         ...(data.animation_url ? { animation_url: data.animation_url } : {}),
         ...(data.animation_url
           ? {
-              animation_url_format: data.animation_url
-                ?.match(/\.([^.]*)$/)
-                ?.at(1),
-            }
+            animation_url_format: data.animation_url
+              ?.match(/\.([^.]*)$/)
+              ?.at(1),
+          }
           : {}),
       },
     };
