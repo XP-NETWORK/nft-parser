@@ -94,6 +94,8 @@ console.log({uri});
           break;
         case "5":
           chain = EvmChain.ETHEREUM;
+          console.log({contract, tokenId});
+          
           response = await moralis(contract, tokenId, chain)
           response = { data: response }
           break;
