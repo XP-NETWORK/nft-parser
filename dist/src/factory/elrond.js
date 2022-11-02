@@ -150,7 +150,7 @@ const tryBasic = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
                 whitelisted,
                 image: img,
                 imageFormat: "",
-                animation_url: undefined,
+                animation_url: img,
                 animation_url_format: undefined,
                 attributes: ((_h = data === null || data === void 0 ? void 0 : data.metadata) === null || _h === void 0 ? void 0 : _h.attributes) || (data === null || data === void 0 ? void 0 : data.attributes),
                 name: ((_j = data === null || data === void 0 ? void 0 : data.metadata) === null || _j === void 0 ? void 0 : _j.name) || (data === null || data === void 0 ? void 0 : data.name),
