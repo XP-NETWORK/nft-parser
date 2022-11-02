@@ -218,7 +218,7 @@ const tryBasic = async (
         whitelisted,
         image: img,
         imageFormat: "",
-        animation_url: undefined,
+        animation_url: img,
         animation_url_format: undefined,
         attributes: data?.metadata?.attributes || data?.attributes,
         name: data?.metadata?.name || data?.name,
