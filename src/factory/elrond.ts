@@ -204,6 +204,8 @@ const tryBasic = async (
 
     const img =
       data.url || data?.metadata?.image || Base64.decode(data?.uris[1] || data?.uris[0])
+      console.log("got to try Basic");
+      
     console.log({ img, tokenId });
 
     const nft: NFT = {
@@ -218,7 +220,7 @@ const tryBasic = async (
         whitelisted,
         image: img,
         imageFormat: "",
-        animation_url: undefined,
+        animation_url: img,
         animation_url_format: undefined,
         attributes: data?.metadata?.attributes || data?.attributes,
         name: data?.metadata?.name || data?.name,
