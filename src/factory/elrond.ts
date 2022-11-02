@@ -132,6 +132,7 @@ export const DEFAULT = async (
     const res = await axios(`https://api.elrond.com/nfts/${tokenId}`).catch(
       (e) => ({ data: null })
     );
+    // console.log(res);
 
     const { data } = res;
 
@@ -167,13 +168,69 @@ export const DEFAULT = async (
     return nft;
   } catch (error: any) {
     console.error(error?.response?.status || error);
-    await sendTelegramMessage(nft);
-    return {
-      ...nft,
-      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
-    };
+    const resp = await tryBasic(nft,
+      account,
+      whitelisted)
+    if (resp) {
+      return resp
+    } else {
+      await sendTelegramMessage(nft);
+      return {
+        ...nft,
+        ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+      };
+    }
   }
 };
+
+const tryBasic = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<any> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const res = await axios(`https://api.elrond.com/nfts/${tokenId}`).catch(
+      (e) => ({ data: null })
+    );
+
+    const { data } = res;
+
+    const img =
+      data.url || data?.metadata?.image || Base64.decode(data?.uris[1] || data?.uris[0])
+    console.log({ img, tokenId });
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: img,
+        imageFormat: "",
+        animation_url: undefined,
+        animation_url_format: undefined,
+        attributes: data?.metadata?.attributes || data?.attributes,
+        name: data?.metadata?.name || data?.name,
+        description: data?.metadata?.description,
+      },
+    };
+
+    return nft;
+  } catch (err) {
+    return undefined
+  }
+}
 
 export const AERMES = async (
   nft: any,
