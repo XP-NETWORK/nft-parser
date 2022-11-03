@@ -202,8 +202,7 @@ const tryBasic = async (
 
     const { data } = res;
 
-    const img =
-      data.url || data?.metadata?.image || Base64.decode(data?.uris[1] || data?.uris[0])
+    const img = data.url || data?.metadata?.image || Base64.decode(data?.uris[1] || data?.uris[0])
       console.log("got to try Basic");
       
     console.log({ img, tokenId });
@@ -519,7 +518,6 @@ export const NBERGS = async (
     collectionIdent,
     uri,
   } = nft;
-  console.log("dora");
   try {
     const { data } = await axios(proxy + uri);
 

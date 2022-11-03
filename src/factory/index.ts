@@ -147,13 +147,15 @@ export const Default = async (
       wrapped: data && data.wrapped,
       metaData: {
         whitelisted,
-        image: setupURI(data.image),
+        image: setupURI(data.image || data.image_url || data.imageUrl),
         imageFormat: format,
         attributes: data.attributes,
         description: data.description,
         name: data.name,
       },
     };
+    console.log(data);
+    
     return nft;
   } catch (error: any) {
     const resp = await tryBasic(uri)
@@ -192,7 +194,7 @@ export const Default = async (
 
 const tryBasic = async (url: string) => {
   try {
-    console.log("got here");
+    console.log("got tryBasic");
 
     const response = await axios(url);
     console.log(response.data);
@@ -255,7 +257,7 @@ export const ART_NFT_MATIC = async (
       wrapped: data && data.wrapped,
       metaData: {
         whitelisted,
-        image: data.image,
+        image: data.image || data.image_url || data.imageUrl,
         imageFormat: format,
         attributes: data.attributes,
         name: data.name,
