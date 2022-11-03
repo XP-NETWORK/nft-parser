@@ -123,7 +123,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: (0, exports.setupURI)(data.image || data.image_url || data.imageUrl),
                 imageFormat: format,
                 attributes: data.attributes,
                 description: data.description,
