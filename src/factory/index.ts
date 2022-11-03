@@ -144,7 +144,7 @@ export const Default = async (
       wrapped: data && data.wrapped,
       metaData: {
         whitelisted,
-        image: setupURI(data.image),
+        image: setupURI(data.image || data.image_url || data.imageUrl),
         imageFormat: format,
         attributes: data.attributes,
         description: data.description,
