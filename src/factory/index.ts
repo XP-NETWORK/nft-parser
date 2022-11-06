@@ -37,30 +37,23 @@ export interface NFT {
   };
 }
 
-export const setupURI = (uri: string): string => {
-  if (uri) {
-    if (uri.includes(".json")) {
-      uri = uri.replace(/(?!\.json)\d+$/gm, "");
+export const setupURI = (oldImageUri: string): string => {
+  try {
+    let newIamgeUri = "undefined"
+    switch (true) {
+      case oldImageUri.slice(0, 6) === "ipfs/Q":
+        newIamgeUri = `https://ipfs.io/${oldImageUri}`
+        break;
+      case oldImageUri.slice(0, 8) === "ipfs://Q":
+        newIamgeUri = `https://ipfs.io/${oldImageUri}`
+        break;
+
+      default:
+        break;
     }
-    if (uri.includes("https://ipfs.io") || uri.includes("moralis")) {
-      return uri;
-    } else if (/^ipfs:\/\//.test(uri)) {
-      return "https://ipfs.io/ipfs/" + uri.split("://")[1];
-    } else if (/^https\:\/\/ipfs.io/.test(uri)) {
-      return uri;
-    } else if (uri.includes("data:image/") || uri.includes("data:application/")) {
-      return uri;
-    } else if (uri[0] === "Q") {
-      return `https://ipfs.io/ipfs/${uri}`;
-    } else if (uri.includes("http://")) {
-      return uri.replace("http://", "https://");
-    } else if (/^https\:\/\//.test(uri)) {
-      return uri;
-    } else {
-      throw new Error("unknown uri format");
-    }
-  } else {
-    return uri;
+    return newIamgeUri;
+  } catch (error) {
+    return "undefined";
   }
 };
 
@@ -69,72 +62,52 @@ export const Default = async (
   account: string,
   whitelisted: boolean
 ): Promise<NFT> => {
-
   const { native, native: { contract, tokenId, chainId }, collectionIdent, uri } = nft;
-  const baseUrl = setupURI(uri);
-
-  if (!baseUrl && tokenId) {
-    return await getWrappedNft(nft, account, whitelisted);
-  }
-  console.log({ uri });
-
-  const url = `${proxy}${setupURI(baseUrl)}`;
-  console.log({ url });
-
   try {
-    let response;
+    let metadata;
 
-    if (url.includes("moralis")) {
+    //try moralis
+    if (uri.includes("moralis")) {
       let chain
       switch (String(chainId)) {
         case "7":
           chain = EvmChain.POLYGON;
-          response = await moralis(contract, tokenId, chain)
-          response = { data: response }
+          metadata = await moralis(contract, tokenId, chain)
           break;
         case "5":
           chain = EvmChain.ETHEREUM;
-          console.log({ contract, tokenId });
-
-          response = await moralis(contract, tokenId, chain)
-          response = { data: response }
+          metadata = await moralis(contract, tokenId, chain)
           break;
         case "4":
           chain = EvmChain.BSC;
-          response = await moralis(contract, tokenId, chain)
-          response = { data: response }
+          metadata = await moralis(contract, tokenId, chain)
           break;
         case "6":
           chain = EvmChain.AVALANCHE;
-          response = await moralis(contract, tokenId, chain)
-          response = { data: response }
+          metadata = await moralis(contract, tokenId, chain)
           break;
         case "8":
           chain = EvmChain.FANTOM;
-          response = await moralis(contract, tokenId, chain)
-          response = { data: response }
+          metadata = await moralis(contract, tokenId, chain)
           break;
         default:
-          response = undefined
+          metadata = undefined
           break;
       }
     }
 
-    if (!response) {
-      response = await axios(url);
+    //try oppense
+    if (!metadata && uri.includes("opensea")) {
+      metadata = await tryOpensea(uri, tokenId);
     }
 
-    let { data } = response;
-    console.log(data);
-
-
-    if (data === "Post ID not found") {
-      throw new Error("404");
+    //try regular axios last
+    if (!metadata) {
+      const resp = await axios(uri);
+      metadata = resp.data
     }
 
-    data = await checkEmptyFromTezos(data);
-
-    let format = await getAssetFormat(data.image).catch((e) => "");
+    let format = await getAssetFormat(metadata.image || metadata.image_url || metadata.imageUrl).catch((e) => "");
 
     const nft: NFT = {
       native,
@@ -144,65 +117,28 @@ export const Default = async (
       uri,
       contract: contract || collectionIdent,
       collectionIdent,
-      wrapped: data && data.wrapped,
+      wrapped: metadata && metadata.wrapped,
       metaData: {
         whitelisted,
-        image: setupURI(data.image || data.image_url || data.imageUrl),
+        image: setupURI(metadata.image || metadata.image_url || metadata.imageUrl),
         imageFormat: format,
-        attributes: data.attributes,
-        description: data.description,
-        name: data.name,
+        attributes: metadata.attributes,
+        description: metadata.description,
+        name: metadata.name,
       },
     };
-    console.log(data);
-    
+    console.log({ image: nft.metaData.image, imageFormat: nft.metaData.imageFormat });
+
     return nft;
   } catch (error: any) {
-    const resp = await tryBasic(uri)
-    if (resp) {
-      let format = await getAssetFormat(resp.image).catch((e) => "");
-      const nft: NFT = {
-        native,
-        chainId,
-        tokenId,
-        owner: account,
-        uri,
-        contract: contract || collectionIdent,
-        collectionIdent,
-        wrapped: resp && resp.wrapped,
-        metaData: {
-          whitelisted,
-          image: setupURI(resp.image),
-          imageFormat: format,
-          attributes: resp.attributes,
-          description: resp.description,
-          name: resp.name,
-        },
-      };
-      console.log(nft);
-
-      return nft;
-    }
     console.error("error in default parser: ", error.message);
-    await sendTelegramMessage(nft)
+    // await sendTelegramMessage(nft)
     return {
       ...nft,
       ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
     };
   }
 };
-
-const tryBasic = async (url: string) => {
-  try {
-    console.log("got tryBasic");
-
-    const response = await axios(url);
-    console.log(response.data);
-    return response.data
-  } catch (error) {
-    return undefined
-  }
-}
 
 const moralis = async (address: string, tokenId: string, chain: any) => {
   try {
@@ -221,6 +157,24 @@ const moralis = async (address: string, tokenId: string, chain: any) => {
   } catch (error) {
     console.log("error in moralis");
     return undefined
+  }
+}
+
+const tryOpensea = async (url: string, tokenId: any) => {
+  if (url.includes("https://api.opensea.io/api/v2/metadata/")) {
+    const newUrl = url.split("/");
+    try {
+      const resp = await axios({
+        url: `https://api.opensea.io/api/v2/metadata/${newUrl[6]}/${newUrl[7]}/${String(tokenId)}`,
+        method: "GET",
+        timeout: 1000 * 25,
+      });
+      return resp.data
+    } catch (error) {
+      return undefined;
+    }
+  } else {
+    return undefined;
   }
 }
 

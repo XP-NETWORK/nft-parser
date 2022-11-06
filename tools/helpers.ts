@@ -42,44 +42,15 @@ export const getWrappedNft = async (
   };
 };
 
-export const getAssetFormat = async (imageUri: string): Promise<string> => {
-  if (!imageUri) {
-    throw new Error("no url:");
-  }
-  let format = "";
+export const getAssetFormat = async (imageUri: string): Promise<any> => {
   try {
-    if (/(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$|\.svg$)/.test(imageUri)) {
-      format = imageUri.match(/(?:\.([^.]+))?$/)?.at(1) || "";
-    } else {
-      if (proxy) {
-        const { headers } = await axios(`${proxy}${setupURI(imageUri)}`);
-
-        format = headers["content-type"].slice(
-          headers["content-type"].lastIndexOf("/") + 1
-        );
-      } else {
-        format = await new Promise(async (resolve, reject) => {
-          const stream = await axios
-            .get(`${proxy}${setupURI(imageUri)}`, {
-              responseType: "stream",
-              timeout: 3000,
-            })
-            .catch((e: any) => {
-              reject(e);
-            });
-
-          stream?.data?.on("data", async (chunk: ArrayBuffer) => {
-            const res = await fromBuffer(chunk).catch((e) => reject(e));
-            stream?.data?.destroy();
-
-            if (res?.ext === "heic") return reject("heic format");
-            resolve(res?.ext || "");
-          });
-        });
+    const formats = [".mp4", ".ogg", ".webm", ".avi", ".apng", ".gif", ".jpg", ".jpeg", ".png", ".svg", ".mov", ".webp",];
+    let format = ""
+    formats.some(substring => {
+      if (imageUri.includes(substring)) {
+        format = substring
       }
-    }
-    console.log(format);
-
+    })
     return format;
   } catch (e: any) {
     console.log(e.message, "reading format");
