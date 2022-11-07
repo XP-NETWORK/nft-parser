@@ -1,6 +1,6 @@
 export interface NFT {
     chainId: string;
-    tokenId: string;
+    tokenId?: string;
     owner: string;
     uri: string;
     contract: string;

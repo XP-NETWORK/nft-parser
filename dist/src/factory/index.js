@@ -37,7 +37,8 @@ const setupURI = (uri) => {
         else if (/^https\:\/\/ipfs.io/.test(uri)) {
             return uri;
         }
-        else if (uri.includes("data:image/") || uri.includes("data:application/")) {
+        else if (uri.includes("data:image/") ||
+            uri.includes("data:application/")) {
             return uri;
         }
         else if (uri[0] === "Q") {
@@ -60,7 +61,7 @@ const setupURI = (uri) => {
 exports.setupURI = setupURI;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri } = nft;
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = (0, exports.setupURI)(uri);
     if (!baseUrl && tokenId) {
         return yield (0, helpers_1.getWrappedNft)(nft, account, whitelisted);
@@ -177,7 +178,7 @@ const moralis = (address, tokenId, chain) => __awaiter(void 0, void 0, void 0, f
     var _b;
     try {
         yield moralis_1.default.start({
-            apiKey: 'NT2aMb8xO5y2IcPxYSd4RvchrzV8wKnzCSHoIdMVF3Y0dTOw4x0AVQ9wrCJpIoBB',
+            apiKey: "NT2aMb8xO5y2IcPxYSd4RvchrzV8wKnzCSHoIdMVF3Y0dTOw4x0AVQ9wrCJpIoBB",
         });
         const response = yield moralis_1.default.EvmApi.nft.getNFTMetadata({
             address,
