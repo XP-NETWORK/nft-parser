@@ -210,6 +210,23 @@ const moralis = async (address: string, tokenId: string, chain: any) => {
     });
 
     //@ts-ignore
+    if (!response?.data?.metadata && response?.data.token_uri) {
+      try {
+        //@ts-ignore
+        let uri = response?.data.token_uri
+        const spl = uri.split("/")
+        // console.log(uri.replace(spl[5].split(".")[0], String(Number(spl[5].split(".")[0]))))
+        const newUri = uri.replace(spl[5].split(".")[0], String(Number(spl[5].split(".")[0])))
+        let meta = await axios.get(newUri)
+        console.log(meta.data);
+        return meta.data;
+      } catch (error) {
+        console.log("error in moralis");
+        return undefined
+      }
+    }
+
+    //@ts-ignore
     return JSON.parse(response?.data?.metadata);
   } catch (error) {
     console.log("error in moralis");
