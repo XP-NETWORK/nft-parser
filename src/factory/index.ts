@@ -47,8 +47,8 @@ export const setupURI = (oldImageUri: string): string => {
       case oldImageUri.slice(0, 8) === "ipfs://Q":
         newIamgeUri = `https://ipfs.io/${oldImageUri}`
         break;
-
       default:
+        newIamgeUri = oldImageUri
         break;
     }
     return newIamgeUri;
@@ -68,6 +68,9 @@ export const Default = async (
 
     //try moralis
     if (uri.includes("moralis")) {
+      // const spl = uri.split("/")
+      // console.log(spl[5].split("."))
+      // console.log(Number(spl[5].split(".")[0]))
       let chain
       switch (String(chainId)) {
         case "7":
@@ -152,6 +155,22 @@ const moralis = async (address: string, tokenId: string, chain: any) => {
       tokenId,
     });
 
+    //@ts-ignore
+    if (!response?.data?.metadata && response?.data.token_uri) {
+      try {
+        //@ts-ignore
+        let uri = response?.data.token_uri
+        const spl = uri.split("/")
+        // console.log(uri.replace(spl[5].split(".")[0], String(Number(spl[5].split(".")[0]))))
+        const newUri = uri.replace(spl[5].split(".")[0], String(Number(spl[5].split(".")[0])))
+        let meta = await axios.get(newUri)
+        console.log(meta.data);
+        return meta.data;
+      } catch (error) {
+        console.log("error in moralis");
+        return undefined
+      }
+    }
     //@ts-ignore
     return JSON.parse(response?.data?.metadata);
   } catch (error) {
