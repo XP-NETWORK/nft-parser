@@ -85,7 +85,6 @@ export const Default = async (
     }
 
     const url = `${proxy}${setupURI(baseUrl)}`;
-    console.log({ url });
 
     try {
         let response;
