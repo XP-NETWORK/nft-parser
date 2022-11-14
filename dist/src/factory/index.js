@@ -67,7 +67,6 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         return yield (0, helpers_1.getWrappedNft)(nft, account, whitelisted);
     }
     const url = `${__1.proxy}${(0, exports.setupURI)(baseUrl)}`;
-    console.log({ url });
     try {
         let response;
         if (url.includes("moralis")) {
