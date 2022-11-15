@@ -31,7 +31,7 @@ const tonParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
 exports.tonParser = tonParser;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e;
-    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    const { native, native: { contract, tokenId, chainId, address }, collectionIdent, uri, } = nft;
     let data;
     try {
         const url = (0, _1.setupURI)(uri);
@@ -40,7 +40,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     }
     catch (e) {
         try {
-            const res = yield (0, axios_1.default)(__1.proxy + `https://api.ton.cat/v2/contracts/nft/${tokenId}`).catch((e) => ({ data: undefined }));
+            const res = yield (0, axios_1.default)(__1.proxy + `https://api.ton.cat/v2/contracts/nft/${address}`).catch((e) => ({ data: undefined }));
             data = (_b = (_a = res.data) === null || _a === void 0 ? void 0 : _a.nft_item) === null || _b === void 0 ? void 0 : _b.metadata;
         }
         catch (error) {
