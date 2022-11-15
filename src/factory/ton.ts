@@ -34,7 +34,7 @@ export const tonParser = async (
 const Default = async (nft: any, account: string, whitelisted: boolean) => {
   const {
     native,
-    native: { contract, tokenId, chainId },
+    native: { contract, tokenId, chainId, address },
     collectionIdent,
     uri,
   } = nft;
@@ -50,7 +50,7 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
   } catch (e) {
     try {
       const res = await axios(
-        proxy + `https://api.ton.cat/v2/contracts/nft/${tokenId}`
+        proxy + `https://api.ton.cat/v2/contracts/nft/${address}`
       ).catch((e) => ({ data: undefined }));
 
       data = res.data?.nft_item?.metadata;
