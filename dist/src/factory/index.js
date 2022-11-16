@@ -24,6 +24,7 @@ const evm_utils_1 = require("@moralisweb3/evm-utils");
 const pool = (0, requestPool_1.default)(3000);
 const cheerio = require("cherio");
 const setupURI = (uri) => {
+    console.log({ uri });
     if (uri) {
         if (uri.includes(".json")) {
             uri = uri.replace(/(?!\.json)\d+$/gm, "");

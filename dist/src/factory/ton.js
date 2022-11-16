@@ -37,6 +37,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         const url = (0, _1.setupURI)(uri);
         const res = yield (0, axios_1.default)(__1.proxy + url).catch((e) => ({ data: undefined }));
         data = res.data;
+        console.log({ data });
     }
     catch (e) {
         try {
@@ -66,6 +67,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             collectionName: native.collectionName,
         },
     };
+    console.log({ nftRes });
     return nftRes;
 });
 /**
