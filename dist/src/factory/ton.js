@@ -30,7 +30,7 @@ const tonParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
 });
 exports.tonParser = tonParser;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f, _g;
     const { native, native: { contract, tokenId, chainId, address }, collectionIdent, uri, } = nft;
     let data;
     try {
@@ -59,8 +59,8 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         collectionIdent,
         metaData: {
             whitelisted,
-            image: (0, _1.setupURI)(native.image),
-            imageFormat: (_e = (_d = native.image) === null || _d === void 0 ? void 0 : _d.match(/\.([^.]*)$/)) === null || _e === void 0 ? void 0 : _e.at(1),
+            image: (0, _1.setupURI)(native.image || (data === null || data === void 0 ? void 0 : data.image) || (data === null || data === void 0 ? void 0 : data.imageUrl) || (data === null || data === void 0 ? void 0 : data.url)),
+            imageFormat: ((_e = (_d = native.image) === null || _d === void 0 ? void 0 : _d.match(/\.([^.]*)$/)) === null || _e === void 0 ? void 0 : _e.at(1)) || ((_g = (_f = data === null || data === void 0 ? void 0 : data.image) === null || _f === void 0 ? void 0 : _f.match(/\.([^.]*)$/)) === null || _g === void 0 ? void 0 : _g.at(1)),
             description: data === null || data === void 0 ? void 0 : data.description,
             name: (data === null || data === void 0 ? void 0 : data.name) || native.name,
             attributes: data === null || data === void 0 ? void 0 : data.attributes,
