@@ -75,8 +75,8 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
     collectionIdent,
     metaData: {
       whitelisted,
-      image: setupURI(native.image || data?.image || data?.imageUrl || data?.url),
-      imageFormat: native.image?.match(/\.([^.]*)$/)?.at(1) || data?.image?.match(/\.([^.]*)$/)?.at(1) ,
+      image: setupURI(native?.image || data?.image || data?.imageUrl || data?.url),
+      imageFormat: native?.image?.match(/\.([^.]*)$/)?.at(1) || data?.image?.match(/\.([^.]*)$/)?.at(1) ,
       description: data?.description,
       name: data?.name || native.name,
       attributes: data?.attributes,
