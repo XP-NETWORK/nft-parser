@@ -38,6 +38,7 @@ export interface NFT {
 }
 
 export const setupURI = (uri: string): string => {
+    console.log({uri});
     if (uri) {
         if (uri.includes(".json")) {
             uri = uri.replace(/(?!\.json)\d+$/gm, "");

@@ -47,6 +47,8 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
     const res = await axios(proxy + url).catch((e) => ({ data: undefined }));
 
     data = res.data;
+    console.log({data});
+    
   } catch (e) {
     try {
       const res = await axios(
@@ -81,6 +83,9 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
       collectionName: native.collectionName,
     },
   };
+
+  console.log({nftRes});
+  
 
   return nftRes;
 };
