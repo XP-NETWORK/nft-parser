@@ -19,7 +19,7 @@ const _1 = require(".");
 const __1 = require("..");
 const pool = (0, requestPool_1.default)(3000);
 const cheerio = require("cherio");
-const tonParser = (collectionIdent, nft, account, whitelisted, chainId) => __awaiter(void 0, void 0, void 0, function* () {
+const tonParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
     switch (true) {
         default:
@@ -29,11 +29,19 @@ const tonParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
     return parsed;
 });
 exports.tonParser = tonParser;
+const getNFTfromTonApi = (address) => __awaiter(void 0, void 0, void 0, function* () {
+    const res = yield (0, axios_1.default)(__1.proxy + `https://api.ton.cat/v2/contracts/nft/${address}`).catch((e) => {
+        console.log(e, "e");
+        return { data: undefined };
+    });
+    return res;
+});
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f;
-    const { native, native: { contract, tokenId, chainId, address }, collectionIdent, uri, } = nft;
+    var _a, _b, _c, _d, _e, _f, _g, _h;
+    const { native, native: { contract, tokenId, chainId }, uri, } = nft;
     let data;
     let newUri = "";
+    let collectionAddress = "";
     try {
         const url = (0, _1.setupURI)(uri);
         const res = yield (0, axios_1.default)(__1.proxy + url).catch((e) => ({ data: undefined }));
@@ -41,31 +49,46 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     }
     catch (e) {
         try {
-            const res = yield (0, axios_1.default)(__1.proxy + `https://api.ton.cat/v2/contracts/nft/${address}`).catch((e) => ({ data: undefined }));
+            const res = yield getNFTfromTonApi(tokenId);
             data = (_b = (_a = res.data) === null || _a === void 0 ? void 0 : _a.nft_item) === null || _b === void 0 ? void 0 : _b.metadata;
             newUri = (_c = res.data) === null || _c === void 0 ? void 0 : _c.nft_item["content_url"];
+            collectionAddress =
+                ((_d = res.data) === null || _d === void 0 ? void 0 : _d.nft_item["collection_address"]) || "SingleNFt";
         }
         catch (error) {
             console.log((error === null || error === void 0 ? void 0 : error.message) || "parse timeout forest");
-            return Object.assign(Object.assign({}, nft), (((_d = error === null || error === void 0 ? void 0 : error.response) === null || _d === void 0 ? void 0 : _d.status) === 404 ? { errorStatus: 404 } : {}));
+            return Object.assign(Object.assign({}, nft), (((_e = error === null || error === void 0 ? void 0 : error.response) === null || _e === void 0 ? void 0 : _e.status) === 404 ? { errorStatus: 404 } : {}));
         }
     }
     try {
         const imgUrl = (0, _1.setupURI)((native === null || native === void 0 ? void 0 : native.image) ||
-            ((_e = data.image) === null || _e === void 0 ? void 0 : _e.original) ||
+            ((_f = data.image) === null || _f === void 0 ? void 0 : _f.original) ||
             (typeof (data === null || data === void 0 ? void 0 : data.image) === "string" && (data === null || data === void 0 ? void 0 : data.image)));
+        let _contract;
+        if (tokenId === contract) {
+            if (collectionAddress) {
+                _contract = collectionAddress;
+            }
+            else {
+                const res = yield getNFTfromTonApi(tokenId);
+                _contract = ((_g = res.data) === null || _g === void 0 ? void 0 : _g.nft_item["collection_address"]) || "SingleNFt";
+            }
+        }
+        else {
+            _contract = contract;
+        }
         const nftRes = {
             native: Object.assign(Object.assign({}, native), { uri: newUri || uri }),
             chainId,
             tokenId,
             owner: account,
             uri: newUri || uri,
-            contract,
-            collectionIdent,
+            contract: _contract,
+            collectionIdent: _contract,
             metaData: {
                 whitelisted,
                 image: imgUrl,
-                imageFormat: (_f = imgUrl.match(/\.([^.]*)$/)) === null || _f === void 0 ? void 0 : _f.at(1),
+                imageFormat: (_h = imgUrl.match(/\.([^.]*)$/)) === null || _h === void 0 ? void 0 : _h.at(1),
                 description: data === null || data === void 0 ? void 0 : data.description,
                 name: (data === null || data === void 0 ? void 0 : data.name) || native.name,
                 attributes: data === null || data === void 0 ? void 0 : data.attributes,
