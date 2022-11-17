@@ -40,15 +40,12 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
   } = nft;
 
   let data;
+  let newUri = "";
 
   try {
     const url = setupURI(uri);
-
     const res = await axios(proxy + url).catch((e) => ({ data: undefined }));
-
     data = res.data;
-    console.log({ data });
-
   } catch (e) {
     try {
       const res = await axios(
@@ -56,6 +53,7 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
       ).catch((e) => ({ data: undefined }));
 
       data = res.data?.nft_item?.metadata;
+      newUri = res.data?.nft_item["content_url"] as string;
     } catch (error: any) {
       console.log(error?.message || "parse timeout forest");
       return {
@@ -65,18 +63,24 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
     }
   }
 
+  const imgUrl = setupURI(
+    native?.image ||
+      data.image?.original ||
+      (typeof data?.image === "string" && data?.image)
+  );
+
   const nftRes: NFT = {
     native,
     chainId,
     tokenId,
     owner: account,
-    uri,
+    uri: newUri || uri,
     contract,
     collectionIdent,
     metaData: {
       whitelisted,
-      image: setupURI(native?.image || data?.image || data?.imageUrl || data?.url),
-      imageFormat: native?.image?.match(/\.([^.]*)$/)?.at(1) || data?.image?.match(/\.([^.]*)$/)?.at(1) ,
+      image: imgUrl,
+      imageFormat: imgUrl.match(/\.([^.]*)$/)?.at(1) as string,
       description: data?.description,
       name: data?.name || native.name,
       attributes: data?.attributes,
@@ -85,7 +89,6 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
   };
 
   console.log({ nftRes });
-
 
   return nftRes;
 };
