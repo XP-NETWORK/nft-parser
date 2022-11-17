@@ -18,8 +18,7 @@ export const tonParser = async (
   collectionIdent: string,
   nft: any,
   account: string,
-  whitelisted: boolean,
-  chainId?: string
+  whitelisted: boolean
 ) => {
   let parsed;
   switch (true) {
@@ -31,16 +30,27 @@ export const tonParser = async (
   return parsed;
 };
 
+const getNFTfromTonApi = async (address: string) => {
+  const res = await axios(
+    proxy + `https://api.ton.cat/v2/contracts/nft/${address}`
+  ).catch((e) => {
+    console.log(e, "e");
+    return { data: undefined };
+  });
+
+  return res;
+};
+
 const Default = async (nft: any, account: string, whitelisted: boolean) => {
   const {
     native,
-    native: { contract, tokenId, chainId, address },
-    collectionIdent,
+    native: { contract, tokenId, chainId },
     uri,
   } = nft;
 
   let data;
   let newUri = "";
+  let collectionAddress = "";
 
   try {
     const url = setupURI(uri);
@@ -48,12 +58,11 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
     data = res.data;
   } catch (e) {
     try {
-      const res = await axios(
-        proxy + `https://api.ton.cat/v2/contracts/nft/${address}`
-      ).catch((e) => ({ data: undefined }));
-
+      const res = await getNFTfromTonApi(tokenId);
       data = res.data?.nft_item?.metadata;
       newUri = res.data?.nft_item["content_url"] as string;
+      collectionAddress =
+        res.data?.nft_item["collection_address"] || "SingleNFt";
     } catch (error: any) {
       console.log(error?.message || "parse timeout forest");
       return {
@@ -70,6 +79,19 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
         (typeof data?.image === "string" && data?.image)
     );
 
+    let _contract: string;
+
+    if (tokenId === contract) {
+      if (collectionAddress) {
+        _contract = collectionAddress;
+      } else {
+        const res = await getNFTfromTonApi(tokenId);
+        _contract = res.data?.nft_item["collection_address"] || "SingleNFt";
+      }
+    } else {
+      _contract = contract;
+    }
+
     const nftRes: NFT = {
       native: {
         ...native,
@@ -79,8 +101,8 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
       tokenId,
       owner: account,
       uri: newUri || uri,
-      contract,
-      collectionIdent,
+      contract: _contract,
+      collectionIdent: _contract,
       metaData: {
         whitelisted,
         image: imgUrl,
