@@ -10,7 +10,7 @@ import * as secret from "./factory/secret";
 import { elrondParser } from "./factory/elrond";
 import { tronParser } from "./factory/tron";
 import { tonParser } from "./factory/ton";
-import { Minter__factory, UserNftMinter__factory } from "xpnet-web3-contracts";
+import { abeyParser } from "./factory/abey";
 import Evm from "../tools/evm";
 
 var isNode = false;
@@ -190,7 +190,7 @@ export const nftGeneralParser = async (
       parsed = await evmParser(collectionIdent, nft, account, whitelisted);
       break;
     case "33":
-      parsed = await evmParser(collectionIdent, nft, account, whitelisted);
+      parsed = await abeyParser(collectionIdent, nft, account, whitelisted);
       break;
 
     case "27":
