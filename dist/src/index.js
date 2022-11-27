@@ -50,6 +50,7 @@ const secret = __importStar(require("./factory/secret"));
 const elrond_1 = require("./factory/elrond");
 const tron_1 = require("./factory/tron");
 const ton_1 = require("./factory/ton");
+const abey_1 = require("./factory/abey");
 const evm_1 = __importDefault(require("../tools/evm"));
 var isNode = false;
 if (typeof process === "object") {
@@ -141,7 +142,7 @@ const nftGeneralParser = (nft, account, whitelisted, factory) => __awaiter(void 
             parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
             break;
         case "33":
-            parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
+            parsed = yield (0, abey_1.abeyParser)(collectionIdent, nft, account, whitelisted);
             break;
         case "27":
             parsed = yield (0, ton_1.tonParser)(collectionIdent, nft, account, whitelisted);
