@@ -315,6 +315,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
         case "0x691A98fB3B5b9bdfc240ec3aada3D97eb867483c":
             parsed = yield evm.moonbeamDefault(nft, account, whitelisted);
             break;
+        case "0x4b826B558006B2B790c7825EaF81c6f77570e1d9":
+            parsed = yield evm.grandWings(nft, account, whitelisted);
+            break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
             break;
