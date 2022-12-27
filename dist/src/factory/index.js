@@ -1898,7 +1898,7 @@ exports.moonbeamDefault = moonbeamDefault;
 const grandWings = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const newUri = uri.slice("/ipfs/");
+        const newUri = uri.slice(uri.indexOf("/ipfs/"));
         const { data } = yield (0, axios_1.default)(`${__1.proxy}$https://ipfs.io/${newUri}`).catch(() => ({
             data: null,
         }));
