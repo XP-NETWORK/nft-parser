@@ -1898,8 +1898,10 @@ exports.moonbeamDefault = moonbeamDefault;
 const grandWings = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const newUri = uri.slice(uri.indexOf("/ipfs/"));
-        const { data } = yield (0, axios_1.default)(`${__1.proxy}https://ipfs.io${newUri}`).catch(() => ({
+        const from = uri.indexOf("/ipfs/");
+        const str = uri.slice(from);
+        const newUri = `${__1.proxy}https://ipfs.io${str}`;
+        const { data } = yield (0, axios_1.default)(`${__1.proxy}${newUri}`).catch(() => ({
             data: null,
         }));
         const nft = {
@@ -1912,7 +1914,7 @@ const grandWings = (nft, account, whitelisted) => __awaiter(void 0, void 0, void
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: data === null || data === void 0 ? void 0 : data.image,
+                image: data === null || data === void 0 ? void 0 : data.image.replace("ipfs://", "https://ipfs.io/"),
                 imageFormat: "jpeg",
                 description: data === null || data === void 0 ? void 0 : data.description,
                 name: data === null || data === void 0 ? void 0 : data.name,
