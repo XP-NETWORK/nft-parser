@@ -2471,12 +2471,12 @@ export const grandWings = async (
         uri,
     } = nft;
     try {
-        const newUri = uri.slice(uri.indexOf("/ipfs/"));
-        const { data } = await axios(`${proxy}https://ipfs.io${newUri}`).catch(
-            () => ({
-                data: null,
-            })
-        );
+        const from = uri.indexOf("/ipfs/");
+        const str = uri.slice(from);
+        const newUri = `${proxy}https://ipfs.io${str}`;
+        const { data } = await axios(`${proxy}${newUri}`).catch(() => ({
+            data: null,
+        }));
         const nft: NFT = {
             native,
             chainId,
@@ -2487,7 +2487,7 @@ export const grandWings = async (
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: data?.image,
+                image: data?.image.replace("ipfs://", "https://ipfs.io/"),
                 imageFormat: "jpeg",
                 description: data?.description,
                 name: data?.name,
