@@ -2471,7 +2471,7 @@ export const grandWings = async (
         uri,
     } = nft;
     try {
-        const newUri = uri.slice("/ipfs/");
+        const newUri = uri.slice(uri.indexOf("/ipfs/"));
         const { data } = await axios(
             `${proxy}$https://ipfs.io/${newUri}`
         ).catch(() => ({
