@@ -2472,11 +2472,11 @@ export const grandWings = async (
     } = nft;
     try {
         const newUri = uri.slice(uri.indexOf("/ipfs/"));
-        const { data } = await axios(
-            `${proxy}$https://ipfs.io/${newUri}`
-        ).catch(() => ({
-            data: null,
-        }));
+        const { data } = await axios(`${proxy}https://ipfs.io${newUri}`).catch(
+            () => ({
+                data: null,
+            })
+        );
         const nft: NFT = {
             native,
             chainId,
