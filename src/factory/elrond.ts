@@ -137,7 +137,9 @@ export const DEFAULT = async (
     const { data } = res;
 
     const img =
-      data.url || data?.metadata?.image || Base64.decode(data?.uris[1] || data?.uris[0])
+      data.url ||
+      data?.metadata?.image ||
+      Base64.decode(data?.uris[1] || data?.uris[0]);
     const format: string = img.match(/\.[0-9a-z]+$/i)[0].replace(".", "");
     console.log({ img, format, tokenId });
 
@@ -168,11 +170,9 @@ export const DEFAULT = async (
     return nft;
   } catch (error: any) {
     console.error(error?.response?.status || error);
-    const resp = await tryBasic(nft,
-      account,
-      whitelisted)
+    const resp = await tryBasic(nft, account, whitelisted);
     if (resp) {
-      return resp
+      return resp;
     } else {
       await sendTelegramMessage(nft);
       return {
@@ -196,15 +196,16 @@ const tryBasic = async (
   } = nft;
 
   try {
-    const res = await axios(`https://api.elrond.com/nfts/${tokenId}`).catch(
-      (e) => ({ data: null })
-    );
+    const format: string = uri
+      .match(/\.[0-9a-z]+$/i)[0]
+      .replace(".", "")
+      .toUpperCase();
+
+    if (imageFormats.includes(format) || videoFormats.includes(format)) return;
+
+    const res = await axios(proxy + uri).catch((e) => ({ data: null }));
 
     const { data } = res;
-
-    const img =
-      data.url || data?.metadata?.image || Base64.decode(data?.uris[1] || data?.uris[0])
-    console.log({ img, tokenId });
 
     const nft: NFT = {
       native,
@@ -216,21 +217,19 @@ const tryBasic = async (
       collectionIdent,
       metaData: {
         whitelisted,
-        image: img,
-        imageFormat: "",
-        animation_url: img,
-        animation_url_format: undefined,
-        attributes: data?.metadata?.attributes || data?.attributes,
-        name: data?.metadata?.name || data?.name,
-        description: data?.metadata?.description,
+        image: setupURI(data.image),
+        imageFormat: data.image.match(/\.[0-9a-z]+$/i)[0].replace(".", ""),
+        name: data.name,
+        attributes: data.attributes,
+        description: data.description,
       },
     };
 
     return nft;
   } catch (err) {
-    return undefined
+    return undefined;
   }
-}
+};
 
 export const AERMES = async (
   nft: any,
@@ -589,10 +588,10 @@ export const WrappedXPNET = async (
         ...(data.animation_url ? { animation_url: data.animation_url } : {}),
         ...(data.animation_url
           ? {
-            animation_url_format: data.animation_url
-              ?.match(/\.([^.]*)$/)
-              ?.at(1),
-          }
+              animation_url_format: data.animation_url
+                ?.match(/\.([^.]*)$/)
+                ?.at(1),
+            }
           : {}),
       },
     };
@@ -643,10 +642,10 @@ export const HOKI = async (
         ...(data.animation_url ? { animation_url: data.animation_url } : {}),
         ...(data.animation_url
           ? {
-            animation_url_format: data.animation_url
-              ?.match(/\.([^.]*)$/)
-              ?.at(1),
-          }
+              animation_url_format: data.animation_url
+                ?.match(/\.([^.]*)$/)
+                ?.at(1),
+            }
           : {}),
       },
     };
@@ -705,10 +704,10 @@ export const Default = async (
         ...(data.animation_url ? { animation_url: data.animation_url } : {}),
         ...(data.animation_url
           ? {
-            animation_url_format: data.animation_url
-              ?.match(/\.([^.]*)$/)
-              ?.at(1),
-          }
+              animation_url_format: data.animation_url
+                ?.match(/\.([^.]*)$/)
+                ?.at(1),
+            }
           : {}),
       },
     };
