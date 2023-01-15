@@ -1,16 +1,13 @@
-import { stringify } from "querystring";
-import BigNumber from "bignumber.js";
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import { checkEmptyFromTezos } from "./tezos";
 import requestPool from "../../tools/requestPool";
 import { getWrappedNft, getAssetFormat } from "../../tools/helpers";
-import { sendTelegramMessage } from "../../tools/telegram";
+
 import { proxy } from "..";
 import Moralis from "moralis";
 import { EvmChain } from "@moralisweb3/evm-utils";
 
 const pool = requestPool(3000);
-const cheerio = require("cherio");
 
 Moralis.start({
   apiKey: "NT2aMb8xO5y2IcPxYSd4RvchrzV8wKnzCSHoIdMVF3Y0dTOw4x0AVQ9wrCJpIoBB",
@@ -49,7 +46,7 @@ export const setupURI = (uri: string): string => {
     if (uri.includes("https://ipfs.io") || uri.includes("moralis")) {
       return uri;
     } else if (/^ipfs:\/\//.test(uri)) {
-      return "https://ipfs.io/ipfs/" + uri.split("://")[1];
+      return uri.replace(/ipfs:\/\/(?:ipfs)?/, "https://ipfs.io/ipfs/"); // "https://ipfs.io/ipfs/" + uri.split("://")[1];
     } else if (/^https\:\/\/ipfs.io/.test(uri)) {
       return uri;
     } else if (
@@ -99,7 +96,6 @@ export const Default = async (
         case "7":
           chain = EvmChain.POLYGON;
           response = await moralis(contract, tokenId, chain);
-          console.log(response);
           response = { data: response };
           break;
         case "5":
@@ -162,15 +158,17 @@ export const Default = async (
     };
     return nft;
   } catch (error: any) {
-    const resp = await tryBasic(uri);
+    const noMoralis = uri.replace(/ipfs\.moralis\.io\:\d+/, "ipfs.io");
+    const resp = await tryBasic(noMoralis);
     if (resp) {
+      console.log(noMoralis, "noMoralis");
       let format = await getAssetFormat(resp.image).catch((e) => "");
       const nft: NFT = {
         native,
         chainId,
         tokenId,
         owner: account,
-        uri,
+        uri: noMoralis,
         contract: contract || collectionIdent,
         collectionIdent,
         wrapped: resp && resp.wrapped,
@@ -197,9 +195,7 @@ export const Default = async (
 
 const tryBasic = async (url: string) => {
   try {
-    const response = await axios(
-      url.replace(/ipfs\.moralis\.io\:\d+/, "ipfs.io/ipfs")
-    );
+    const response = await axios(setupURI(url));
 
     return response.data;
   } catch (error) {
@@ -254,7 +250,7 @@ export const ART_NFT_MATIC = async (
     collectionIdent,
     uri,
   } = nft;
-  const baseUrl = uri;
+
   const url = `${proxy}${setupURI(uri)}`;
   try {
     const response = await axios(url);
