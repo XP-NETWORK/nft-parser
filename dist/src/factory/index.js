@@ -22,7 +22,6 @@ const __1 = require("..");
 const moralis_1 = __importDefault(require("moralis"));
 const evm_utils_1 = require("@moralisweb3/evm-utils");
 const pool = (0, requestPool_1.default)(3000);
-const cheerio = require("cherio");
 moralis_1.default.start({
     apiKey: "NT2aMb8xO5y2IcPxYSd4RvchrzV8wKnzCSHoIdMVF3Y0dTOw4x0AVQ9wrCJpIoBB",
 });
@@ -35,7 +34,7 @@ const setupURI = (uri) => {
             return uri;
         }
         else if (/^ipfs:\/\//.test(uri)) {
-            return "https://ipfs.io/ipfs/" + uri.split("://")[1];
+            return uri.replace(/ipfs:\/\/(?:ipfs)?/, "https://ipfs.io/ipfs/"); // "https://ipfs.io/ipfs/" + uri.split("://")[1];
         }
         else if (/^https\:\/\/ipfs.io/.test(uri)) {
             return uri;
@@ -78,7 +77,6 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
                 case "7":
                     chain = evm_utils_1.EvmChain.POLYGON;
                     response = yield moralis(contract, tokenId, chain);
-                    console.log(response);
                     response = { data: response };
                     break;
                 case "5":
@@ -136,15 +134,17 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         return nft;
     }
     catch (error) {
-        const resp = yield tryBasic(uri);
+        const noMoralis = uri.replace(/ipfs\.moralis\.io\:\d+/, "ipfs.io");
+        const resp = yield tryBasic(noMoralis);
         if (resp) {
+            console.log(noMoralis, "noMoralis");
             let format = yield (0, helpers_1.getAssetFormat)(resp.image).catch((e) => "");
             const nft = {
                 native,
                 chainId,
                 tokenId,
                 owner: account,
-                uri,
+                uri: noMoralis,
                 contract: contract || collectionIdent,
                 collectionIdent,
                 wrapped: resp && resp.wrapped,
@@ -167,7 +167,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
 exports.Default = Default;
 const tryBasic = (url) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield (0, axios_1.default)(url.replace(/ipfs\.moralis\.io\:\d+/, "ipfs.io/ipfs"));
+        const response = yield (0, axios_1.default)((0, exports.setupURI)(url));
         return response.data;
     }
     catch (error) {
@@ -209,7 +209,6 @@ const moralis = (address, tokenId, chain) => __awaiter(void 0, void 0, void 0, f
 const ART_NFT_MATIC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _f, _g;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const baseUrl = uri;
     const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
     try {
         const response = yield (0, axios_1.default)(url);
