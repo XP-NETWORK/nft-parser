@@ -18,7 +18,7 @@ const _1 = require(".");
 const telegram_1 = require("../../tools/telegram");
 const __1 = require("..");
 const js_base64_1 = require("js-base64");
-const videoFormats = ["MP4", "MOV", "WMV", "AVI", "MKV", "FLV", "WEBM", "OGG"];
+const __2 = require("..");
 const imageFormats = ["JPG", "JPEG", "GIF", "PNG"];
 const elrondParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
@@ -106,10 +106,10 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
                 whitelisted,
                 image: imageFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase()) ? img : "",
                 imageFormat: imageFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase()) ? format : "",
-                animation_url: videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
+                animation_url: __2.videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
                     ? img
                     : undefined,
-                animation_url_format: videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
+                animation_url_format: __2.videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
                     ? format
                     : undefined,
                 attributes: ((_b = data === null || data === void 0 ? void 0 : data.metadata) === null || _b === void 0 ? void 0 : _b.attributes) || (data === null || data === void 0 ? void 0 : data.attributes),
@@ -139,7 +139,7 @@ const tryBasic = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
             .match(/\.[0-9a-z]+$/i)[0]
             .replace(".", "")
             .toUpperCase();
-        if (imageFormats.includes(format) || videoFormats.includes(format))
+        if (imageFormats.includes(format) || __2.videoFormats.includes(format))
             return;
         const res = yield (0, axios_1.default)(__1.proxy + uri).catch((e) => ({ data: null }));
         const { data } = res;

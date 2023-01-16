@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAssetFormat = exports.getWrappedNft = void 0;
+exports.tryPinataWrapper = exports.getAssetFormat = exports.getWrappedNft = void 0;
 const axios_1 = __importDefault(require("axios"));
 const factory_1 = require("../src/factory");
 const src_1 = require("../src");
@@ -60,14 +60,10 @@ const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, function*
             else {
                 format = yield new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
                     var _c;
-                    const stream = yield axios_1.default
-                        .get(`${src_1.proxy}${(0, factory_1.setupURI)(imageUri)}`, {
+                    const stream = yield (0, exports.tryPinataWrapper)((url) => axios_1.default.get(url, {
                         responseType: "stream",
                         timeout: 3000,
-                    })
-                        .catch((e) => {
-                        reject(e);
-                    });
+                    }))((0, factory_1.setupURI)(imageUri)).catch((e) => reject(e));
                     (_c = stream === null || stream === void 0 ? void 0 : stream.data) === null || _c === void 0 ? void 0 : _c.on("data", (chunk) => __awaiter(void 0, void 0, void 0, function* () {
                         var _d;
                         const res = yield (0, file_type_1.fromBuffer)(chunk).catch((e) => reject(e));
@@ -87,3 +83,14 @@ const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getAssetFormat = getAssetFormat;
+const tryPinataWrapper = (cb) => (url) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield cb(src_1.proxy + url).catch((e) => {
+        var _a;
+        if (((_a = e.message) === null || _a === void 0 ? void 0 : _a.includes("429")) && /^https:\/\/ipfs.io/.test(url)) {
+            return cb(src_1.proxy +
+                url.replace(/^https:\/\/ipfs.io/, "https://gateway.pinata.cloud"));
+        }
+        throw e;
+    });
+});
+exports.tryPinataWrapper = tryPinataWrapper;

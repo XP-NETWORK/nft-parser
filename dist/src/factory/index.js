@@ -21,6 +21,7 @@ const helpers_1 = require("../../tools/helpers");
 const __1 = require("..");
 const moralis_1 = __importDefault(require("moralis"));
 const evm_utils_1 = require("@moralisweb3/evm-utils");
+const __2 = require("..");
 const pool = (0, requestPool_1.default)(3000);
 moralis_1.default.start({
     apiKey: "NT2aMb8xO5y2IcPxYSd4RvchrzV8wKnzCSHoIdMVF3Y0dTOw4x0AVQ9wrCJpIoBB",
@@ -65,10 +66,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     var _a;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = (0, exports.setupURI)(uri);
-    if (!baseUrl && tokenId) {
-        return yield (0, helpers_1.getWrappedNft)(nft, account, whitelisted);
-    }
-    const url = `${__1.proxy}${(0, exports.setupURI)(baseUrl)}`;
+    const url = (0, exports.setupURI)(baseUrl);
     try {
         let response;
         if (url.includes("moralis")) {
@@ -105,14 +103,13 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             }
         }
         if (!response) {
-            response = yield (0, axios_1.default)(url);
+            response = yield (0, helpers_1.tryPinataWrapper)((url) => (0, axios_1.default)(url))(url);
         }
         let { data } = response;
         if (data === "Post ID not found") {
             throw new Error("404");
         }
-        data = yield (0, tezos_1.checkEmptyFromTezos)(data);
-        let format = yield (0, helpers_1.getAssetFormat)((0, exports.setupURI)(data.image)).catch((e) => "");
+        let format = yield (0, helpers_1.getAssetFormat)(data.image).catch((e) => "");
         const nft = {
             native,
             chainId,
@@ -122,14 +119,11 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             contract: contract || collectionIdent,
             collectionIdent,
             wrapped: data && data.wrapped,
-            metaData: {
-                whitelisted,
-                image: (0, exports.setupURI)(data.image || data.image_url || data.imageUrl),
-                imageFormat: format,
-                attributes: data.attributes,
-                description: data.description,
-                name: data.name,
-            },
+            metaData: Object.assign(Object.assign(Object.assign(Object.assign({ whitelisted }, (!__2.videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
+                ? { image: (0, exports.setupURI)(data.image || data.image_url || data.imageUrl) }
+                : { image: "" })), { animation_url: (0, exports.setupURI)(data.animation_url) }), (__2.videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
+                ? { animation_url_format: format }
+                : { animation_url_format: undefined })), { imageFormat: format, attributes: data.attributes, description: data.description, name: data.name }),
         };
         return nft;
     }
@@ -137,7 +131,6 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         const noMoralis = uri.replace(/ipfs\.moralis\.io\:\d+/, "ipfs.io");
         const resp = yield tryBasic(noMoralis);
         if (resp) {
-            console.log(noMoralis, "noMoralis");
             let format = yield (0, helpers_1.getAssetFormat)(resp.image).catch((e) => "");
             const nft = {
                 native,

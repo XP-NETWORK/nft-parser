@@ -38,7 +38,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.nftGeneralParser = exports.apenftSign = exports.apenftKey = exports.proxy = void 0;
+exports.nftGeneralParser = exports.apenftSign = exports.apenftKey = exports.proxy = exports.videoFormats = void 0;
 const axios_1 = __importDefault(require("axios"));
 const evm = __importStar(require("./factory"));
 const algorand_1 = require("./factory/algorand");
@@ -52,6 +52,16 @@ const tron_1 = require("./factory/tron");
 const ton_1 = require("./factory/ton");
 const abey_1 = require("./factory/abey");
 const evm_1 = __importDefault(require("../tools/evm"));
+exports.videoFormats = [
+    "MP4",
+    "MOV",
+    "WMV",
+    "AVI",
+    "MKV",
+    "FLV",
+    "WEBM",
+    "OGG",
+];
 var isNode = false;
 if (typeof process === "object") {
     if (typeof process.versions === "object") {
