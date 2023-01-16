@@ -48,7 +48,9 @@ export const getAssetFormat = async (imageUri: string): Promise<string> => {
   }
   let format = "";
   try {
-    if (/(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$|\.svg$)/.test(imageUri)) {
+    if (
+      /(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$|\.svg$)/.test(imageUri)
+    ) {
       format = imageUri.match(/(?:\.([^.]+))?$/)?.at(1) || "";
     } else {
       if (proxy) {
@@ -59,14 +61,12 @@ export const getAssetFormat = async (imageUri: string): Promise<string> => {
         );
       } else {
         format = await new Promise(async (resolve, reject) => {
-          const stream = await axios
-            .get(`${proxy}${setupURI(imageUri)}`, {
+          const stream = await tryPinataWrapper((url: string) =>
+            axios.get(url, {
               responseType: "stream",
               timeout: 3000,
             })
-            .catch((e: any) => {
-              reject(e);
-            });
+          )(setupURI(imageUri)).catch((e) => reject(e));
 
           stream?.data?.on("data", async (chunk: ArrayBuffer) => {
             const res = await fromBuffer(chunk).catch((e) => reject(e));
@@ -85,3 +85,16 @@ export const getAssetFormat = async (imageUri: string): Promise<string> => {
     throw e;
   }
 };
+
+export const tryPinataWrapper =
+  (cb: (url: string) => Promise<any>) => async (url: string) => {
+    return await cb(proxy + url).catch((e) => {
+      if (e.message?.includes("429") && /^https:\/\/ipfs.io/.test(url)) {
+        return cb(
+          proxy +
+            url.replace(/^https:\/\/ipfs.io/, "https://gateway.pinata.cloud")
+        );
+      }
+      throw e;
+    });
+  };

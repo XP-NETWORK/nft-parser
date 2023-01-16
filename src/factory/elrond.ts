@@ -7,8 +7,8 @@ import { sendTelegramMessage } from "../../tools/telegram";
 import { proxy } from "..";
 import { symbolName } from "typescript";
 import { Base64 } from "js-base64";
+import { videoFormats } from "..";
 
-const videoFormats = ["MP4", "MOV", "WMV", "AVI", "MKV", "FLV", "WEBM", "OGG"];
 const imageFormats = ["JPG", "JPEG", "GIF", "PNG"];
 
 interface NFT {

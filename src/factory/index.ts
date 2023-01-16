@@ -1,11 +1,13 @@
 import axios, { AxiosResponse } from "axios";
 import { checkEmptyFromTezos } from "./tezos";
 import requestPool from "../../tools/requestPool";
-import { getWrappedNft, getAssetFormat } from "../../tools/helpers";
+import { getAssetFormat, tryPinataWrapper } from "../../tools/helpers";
 
 import { proxy } from "..";
 import Moralis from "moralis";
 import { EvmChain } from "@moralisweb3/evm-utils";
+
+import { videoFormats } from "..";
 
 const pool = requestPool(3000);
 
@@ -81,11 +83,7 @@ export const Default = async (
   } = nft;
   const baseUrl = setupURI(uri);
 
-  if (!baseUrl && tokenId) {
-    return await getWrappedNft(nft, account, whitelisted);
-  }
-
-  const url = `${proxy}${setupURI(baseUrl)}`;
+  const url = setupURI(baseUrl);
 
   try {
     let response;
@@ -125,7 +123,7 @@ export const Default = async (
     }
 
     if (!response) {
-      response = await axios(url);
+      response = await tryPinataWrapper((url) => axios(url))(url);
     }
 
     let { data } = response;
@@ -134,9 +132,7 @@ export const Default = async (
       throw new Error("404");
     }
 
-    data = await checkEmptyFromTezos(data);
-
-    let format = await getAssetFormat(setupURI(data.image)).catch((e) => "");
+    let format = await getAssetFormat(data.image).catch((e) => "");
 
     const nft: NFT = {
       native,
@@ -149,7 +145,13 @@ export const Default = async (
       wrapped: data && data.wrapped,
       metaData: {
         whitelisted,
-        image: setupURI(data.image || data.image_url || data.imageUrl),
+        ...(!videoFormats.includes(format?.toUpperCase())
+          ? { image: setupURI(data.image || data.image_url || data.imageUrl) }
+          : { image: "" }),
+        animation_url: setupURI(data.animation_url),
+        ...(videoFormats.includes(format?.toUpperCase())
+          ? { animation_url_format: format }
+          : { animation_url_format: undefined }),
         imageFormat: format,
         attributes: data.attributes,
         description: data.description,
@@ -161,7 +163,6 @@ export const Default = async (
     const noMoralis = uri.replace(/ipfs\.moralis\.io\:\d+/, "ipfs.io");
     const resp = await tryBasic(noMoralis);
     if (resp) {
-      console.log(noMoralis, "noMoralis");
       let format = await getAssetFormat(resp.image).catch((e) => "");
       const nft: NFT = {
         native,
