@@ -14,7 +14,7 @@ import { JsonRpcProvider } from "@ethersproject/providers";
 
 import punksABI from "../../abi/punks.json";
 
-const svgToImg = require("svg-to-img");
+//const svgToImg = require("svg-to-img");
 
 const pool = requestPool(3000);
 
@@ -280,9 +280,9 @@ export const CRYPTO_PUNKS = async (
       };
     });
 
-    const base64 = await svgToImg
+    const base64 = ""; /*await svgToImg
       .from(imgBytes.replace("data:image/svg+xml;utf8,", ""))
-      .toPng({ encoding: "base64" });
+      .toPng({ encoding: "base64" });*/
 
     const nft: NFT = {
       native,
