@@ -9,7 +9,18 @@ import { EvmChain } from "@moralisweb3/evm-utils";
 
 import { videoFormats } from "..";
 
+import { ethers } from "ethers";
+import { JsonRpcProvider } from "@ethersproject/providers";
+
+import punksABI from "../../abi/punks.json";
+
+const svgToImg = require("svg-to-img");
+
 const pool = requestPool(3000);
+
+const ethersProvider = new JsonRpcProvider(
+  "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
+);
 
 Moralis.start({
   apiKey: "NT2aMb8xO5y2IcPxYSd4RvchrzV8wKnzCSHoIdMVF3Y0dTOw4x0AVQ9wrCJpIoBB",
@@ -235,6 +246,68 @@ const moralis = async (address: string, tokenId: string, chain: any) => {
     return JSON.parse(response.jsonResponse?.metadata);
   } catch (error) {
     throw error;
+  }
+};
+
+export const CRYPTO_PUNKS = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  const {
+    native,
+    native: { contract, tokenId, chainId, name },
+    collectionIdent,
+    uri,
+  } = nft;
+
+  try {
+    const _contract = new ethers.Contract(
+      "0x16F5A35647D6F03D5D3da7b35409D65ba03aF3B2",
+      punksABI,
+      ethersProvider
+    );
+
+    const [rawAttrs, imgBytes] = await Promise.all([
+      _contract.punkAttributes(Number(tokenId)),
+      _contract.punkImageSvg(Number(tokenId)),
+    ]);
+
+    const attrs = rawAttrs.split(",").map((trait: string, idx: number) => {
+      return {
+        key: idx === 0 ? "Type" : "Accessory",
+        value: trait.trim(),
+      };
+    });
+
+    const base64 = await svgToImg
+      .from(imgBytes.replace("data:image/svg+xml;utf8,", ""))
+      .toPng({ encoding: "base64" });
+
+    const nft: NFT = {
+      native,
+      chainId,
+      tokenId,
+      owner: account,
+      uri,
+      contract,
+      collectionIdent,
+      metaData: {
+        whitelisted,
+        image: `data:image/png;base64, ${base64}`,
+        imageFormat: "png",
+        attributes: attrs,
+        name,
+      },
+    };
+    return nft;
+  } catch (error: any) {
+    console.error(error);
+    return {
+      ...nft,
+      ...(error.response?.status === 429 ? { errorStatus: 429 } : {}),
+      ...(error.response?.status === 404 ? { errorStatus: 404 } : {}),
+    };
   }
 };
 

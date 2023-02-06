@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
-    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     //"outDir": "../bridge-interface/node_modules/nft-parser/dist",
     //"outDir": "../nft-cache/node_modules/nft-parser/dist",
@@ -11,7 +11,9 @@
     "declaration": true,
     "skipLibCheck": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true
     //"typeRoots": ["./node_modules/@types", "./types"]
   },
   "include": ["src/**/*"]

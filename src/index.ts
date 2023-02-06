@@ -95,18 +95,14 @@ const evmHelper = Evm();
 export const nftGeneralParser = async (
   nft: NFT,
   account: string,
-  whitelisted: boolean,
-  factory?: any
+  whitelisted: boolean
 ): Promise<ParsedNFT> => {
   //proxy = mode === "proxy" ? proxy : "";
 
   const {
-    native: { contract, tokenId, chainId },
+    native: { chainId },
     collectionIdent,
-    uri,
   } = nft;
-
-  evmHelper.init(factory);
 
   let parsed;
   switch (chainId) {
@@ -223,10 +219,6 @@ const evmParser = async (
   chainId?: string
 ) => {
   let parsed;
-
-  if (!nft.uri) {
-    nft = await evmHelper.getUri(nft, collectionIdent);
-  }
 
   switch (collectionIdent) {
     case "0x0271c6853d4b2bdccd53aaf9edb66993e14d4cba":
@@ -396,6 +388,10 @@ const evmParser = async (
       break;
     case "0x4b826B558006B2B790c7825EaF81c6f77570e1d9":
       parsed = await evm.grandWings(nft, account, whitelisted);
+      break;
+
+    case "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB":
+      parsed = await evm.CRYPTO_PUNKS(nft, account, whitelisted);
       break;
     default:
       parsed = await evm.Default(nft, account, whitelisted);
