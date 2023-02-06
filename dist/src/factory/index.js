@@ -25,7 +25,7 @@ const __2 = require("..");
 const ethers_1 = require("ethers");
 const providers_1 = require("@ethersproject/providers");
 const punks_json_1 = __importDefault(require("../../abi/punks.json"));
-const svgToImg = require("svg-to-img");
+//const svgToImg = require("svg-to-img");
 const pool = (0, requestPool_1.default)(3000);
 const ethersProvider = new providers_1.JsonRpcProvider("https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161");
 moralis_1.default.start({
@@ -217,9 +217,9 @@ const CRYPTO_PUNKS = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
                 value: trait.trim(),
             };
         });
-        const base64 = yield svgToImg
-            .from(imgBytes.replace("data:image/svg+xml;utf8,", ""))
-            .toPng({ encoding: "base64" });
+        const base64 = ""; /*await svgToImg
+          .from(imgBytes.replace("data:image/svg+xml;utf8,", ""))
+          .toPng({ encoding: "base64" });*/
         const nft = {
             native,
             chainId,
