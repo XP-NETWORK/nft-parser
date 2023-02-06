@@ -86,10 +86,9 @@ axios_1.default.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 const evmHelper = (0, evm_1.default)();
-const nftGeneralParser = (nft, account, whitelisted, factory) => __awaiter(void 0, void 0, void 0, function* () {
+const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     //proxy = mode === "proxy" ? proxy : "";
-    const { native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    evmHelper.init(factory);
+    const { native: { chainId }, collectionIdent, } = nft;
     let parsed;
     switch (chainId) {
         case "4":
@@ -166,9 +165,6 @@ exports.nftGeneralParser = nftGeneralParser;
 __exportStar(require("../tools/helpers"), exports);
 const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
-    if (!nft.uri) {
-        nft = yield evmHelper.getUri(nft, collectionIdent);
-    }
     switch (collectionIdent) {
         case "0x0271c6853d4b2bdccd53aaf9edb66993e14d4cba":
             parsed = yield evm.ART_NFT_MATIC(nft, account, whitelisted);
@@ -327,6 +323,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
             break;
         case "0x4b826B558006B2B790c7825EaF81c6f77570e1d9":
             parsed = yield evm.grandWings(nft, account, whitelisted);
+            break;
+        case "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB":
+            parsed = yield evm.CRYPTO_PUNKS(nft, account, whitelisted);
             break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);

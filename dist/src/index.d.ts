@@ -35,5 +35,5 @@ interface NFT {
     collectionIdent: string;
     [x: string]: any;
 }
-export declare const nftGeneralParser: (nft: NFT, account: string, whitelisted: boolean, factory?: any) => Promise<ParsedNFT>;
+export declare const nftGeneralParser: (nft: NFT, account: string, whitelisted: boolean) => Promise<ParsedNFT>;
 export * from "../tools/helpers";
