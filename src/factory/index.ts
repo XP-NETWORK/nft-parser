@@ -143,7 +143,10 @@ export const Default = async (
       throw new Error("404");
     }
 
-    let format = await getAssetFormat(data.image).catch((e) => "");
+    let image =
+      data.image || data.image_url || data.imageUrl || data.image_data;
+
+    let format = await getAssetFormat(image).catch((e) => "");
 
     const nft: NFT = {
       native,
@@ -157,7 +160,7 @@ export const Default = async (
       metaData: {
         whitelisted,
         ...(!videoFormats.includes(format?.toUpperCase())
-          ? { image: setupURI(data.image || data.image_url || data.imageUrl) }
+          ? { image: setupURI(image) }
           : { image: "" }),
         animation_url: setupURI(data.animation_url),
         ...(videoFormats.includes(format?.toUpperCase())
@@ -268,7 +271,7 @@ export const CRYPTO_PUNKS = async (
       ethersProvider
     );
 
-    const [rawAttrs, imgBytes] = await Promise.all([
+    const [rawAttrs, imgSVG] = await Promise.all([
       _contract.punkAttributes(Number(tokenId)),
       _contract.punkImageSvg(Number(tokenId)),
     ]);
@@ -280,10 +283,6 @@ export const CRYPTO_PUNKS = async (
       };
     });
 
-    const base64 = ""; /*await svgToImg
-      .from(imgBytes.replace("data:image/svg+xml;utf8,", ""))
-      .toPng({ encoding: "base64" });*/
-
     const nft: NFT = {
       native,
       chainId,
@@ -294,8 +293,8 @@ export const CRYPTO_PUNKS = async (
       collectionIdent,
       metaData: {
         whitelisted,
-        image: `data:image/png;base64, ${base64}`,
-        imageFormat: "png",
+        image: imgSVG,
+        imageFormat: "svg",
         attributes: attrs,
         name,
       },
