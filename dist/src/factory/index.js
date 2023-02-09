@@ -114,7 +114,8 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         if (data === "Post ID not found") {
             throw new Error("404");
         }
-        let format = yield (0, helpers_1.getAssetFormat)(data.image).catch((e) => "");
+        let image = data.image || data.image_url || data.imageUrl || data.image_data;
+        let format = yield (0, helpers_1.getAssetFormat)(image).catch((e) => "");
         const nft = {
             native,
             chainId,
@@ -125,7 +126,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             collectionIdent,
             wrapped: data && data.wrapped,
             metaData: Object.assign(Object.assign(Object.assign(Object.assign({ whitelisted }, (!__2.videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
-                ? { image: (0, exports.setupURI)(data.image || data.image_url || data.imageUrl) }
+                ? { image: (0, exports.setupURI)(image) }
                 : { image: "" })), { animation_url: (0, exports.setupURI)(data.animation_url) }), (__2.videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
                 ? { animation_url_format: format }
                 : { animation_url_format: undefined })), { imageFormat: format, attributes: data.attributes, description: data.description, name: data.name }),
@@ -207,7 +208,7 @@ const CRYPTO_PUNKS = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
     const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
     try {
         const _contract = new ethers_1.ethers.Contract("0x16F5A35647D6F03D5D3da7b35409D65ba03aF3B2", punks_json_1.default, ethersProvider);
-        const [rawAttrs, imgBytes] = yield Promise.all([
+        const [rawAttrs, imgSVG] = yield Promise.all([
             _contract.punkAttributes(Number(tokenId)),
             _contract.punkImageSvg(Number(tokenId)),
         ]);
@@ -217,9 +218,6 @@ const CRYPTO_PUNKS = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
                 value: trait.trim(),
             };
         });
-        const base64 = ""; /*await svgToImg
-          .from(imgBytes.replace("data:image/svg+xml;utf8,", ""))
-          .toPng({ encoding: "base64" });*/
         const nft = {
             native,
             chainId,
@@ -230,8 +228,8 @@ const CRYPTO_PUNKS = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: `data:image/png;base64, ${base64}`,
-                imageFormat: "png",
+                image: imgSVG,
+                imageFormat: "svg",
                 attributes: attrs,
                 name,
             },
