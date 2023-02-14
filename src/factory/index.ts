@@ -252,6 +252,15 @@ const moralis = async (address: string, tokenId: string, chain: any) => {
   }
 };
 
+export const SWAPABLE = async (
+  nft: any,
+  account: string,
+  whitelisted: boolean
+): Promise<NFT> => {
+  nft.uri = nft.uri.replace(/([^\/]+)$/, nft.native?.tokenId);
+  return Default(nft, account, whitelisted);
+};
+
 export const CRYPTO_PUNKS = async (
   nft: any,
   account: string,

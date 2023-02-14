@@ -393,6 +393,10 @@ const evmParser = async (
     case "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB":
       parsed = await evm.CRYPTO_PUNKS(nft, account, whitelisted);
       break;
+
+    case "0xF20B2647679D32FF36dCD17Fe4FfA5661EF79E7b":
+      parsed = await evm.SWAPABLE(nft, account, whitelisted);
+      break;
     default:
       parsed = await evm.Default(nft, account, whitelisted);
       break;
