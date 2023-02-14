@@ -327,6 +327,9 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
         case "0xb47e3cd837dDF8e4c57F05d70Ab865de6e193BBB":
             parsed = yield evm.CRYPTO_PUNKS(nft, account, whitelisted);
             break;
+        case "0xF20B2647679D32FF36dCD17Fe4FfA5661EF79E7b":
+            parsed = yield evm.SWAPABLE(nft, account, whitelisted);
+            break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);
             break;
