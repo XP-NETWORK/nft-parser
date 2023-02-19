@@ -13,6 +13,7 @@ import { ethers } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
 
 import punksABI from "../../abi/punks.json";
+import { type } from "os";
 
 //const svgToImg = require("svg-to-img");
 
@@ -143,8 +144,18 @@ export const Default = async (
       throw new Error("404");
     }
 
+    if (typeof data.nft === "object") {
+      data = {
+        ...data.nft,
+      };
+    }
+
     let image =
-      data.image || data.image_url || data.imageUrl || data.image_data;
+      data.image ||
+      data.image_url ||
+      data.imageUrl ||
+      data.image_data ||
+      data.url;
 
     let format = await getAssetFormat(image).catch((e) => "");
 
