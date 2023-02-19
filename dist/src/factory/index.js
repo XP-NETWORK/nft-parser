@@ -114,7 +114,14 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         if (data === "Post ID not found") {
             throw new Error("404");
         }
-        let image = data.image || data.image_url || data.imageUrl || data.image_data;
+        if (typeof data.nft === "object") {
+            data = Object.assign({}, data.nft);
+        }
+        let image = data.image ||
+            data.image_url ||
+            data.imageUrl ||
+            data.image_data ||
+            data.url;
         let format = yield (0, helpers_1.getAssetFormat)(image).catch((e) => "");
         const nft = {
             native,
