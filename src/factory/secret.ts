@@ -1,10 +1,3 @@
-import axios from "axios";
-import { nftGeneralParser } from "..";
-import { NFT, setupURI } from ".";
-import * as evm from ".";
-
-import { proxy } from "..";
-
 export const secretParser = async (
   collectionIdent: string,
   nft: any,
@@ -14,9 +7,19 @@ export const secretParser = async (
 ) => {
   let parsed;
   switch (collectionIdent) {
-    default:
-      parsed = await evm.Default(nft, account, whitelisted);
+    default: {
+      parsed = {
+        ...nft,
+        metaData:
+          Object.keys(nft?.metaData)?.length === 0
+            ? {
+                ...nft.native?.metadata,
+                image: nft.native?.metadata?.media?.at(0)?.url,
+              }
+            : nft.metaData,
+      };
       break;
+    }
   }
 
   return parsed;

@@ -11,7 +11,6 @@ import { elrondParser } from "./factory/elrond";
 import { tronParser } from "./factory/tron";
 import { tonParser } from "./factory/ton";
 import { abeyParser } from "./factory/abey";
-import Evm from "../tools/evm";
 
 export const videoFormats = [
   "MP4",
@@ -89,8 +88,6 @@ interface NFT {
   collectionIdent: string;
   [x: string]: any;
 }
-
-const evmHelper = Evm();
 
 export const nftGeneralParser = async (
   nft: NFT,
@@ -190,6 +187,7 @@ export const nftGeneralParser = async (
         account,
         whitelisted
       );
+      break;
     case "30":
       parsed = await evmParser(collectionIdent, nft, account, whitelisted);
       break;
@@ -199,7 +197,6 @@ export const nftGeneralParser = async (
     case "33":
       parsed = await abeyParser(collectionIdent, nft, account, whitelisted);
       break;
-
     case "27":
       parsed = await tonParser(collectionIdent, nft, account, whitelisted);
       break;
