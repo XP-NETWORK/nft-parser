@@ -51,7 +51,6 @@ const elrond_1 = require("./factory/elrond");
 const tron_1 = require("./factory/tron");
 const ton_1 = require("./factory/ton");
 const abey_1 = require("./factory/abey");
-const evm_1 = __importDefault(require("../tools/evm"));
 exports.videoFormats = [
     "MP4",
     "MOV",
@@ -85,7 +84,6 @@ axios_1.default.interceptors.request.use(function (config) {
     }
     return Promise.reject(error);
 });
-const evmHelper = (0, evm_1.default)();
 const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     //proxy = mode === "proxy" ? proxy : "";
     const { native: { chainId }, collectionIdent, } = nft;
@@ -144,6 +142,7 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
             break;
         case "24":
             parsed = yield secret.secretParser(collectionIdent, nft, account, whitelisted);
+            break;
         case "30":
             parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
             break;
