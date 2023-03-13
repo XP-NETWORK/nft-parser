@@ -1,3 +1,5 @@
+import * as evm from './index'
+
 export const secretParser = async (
   collectionIdent: string,
   nft: any,
@@ -8,6 +10,11 @@ export const secretParser = async (
   let parsed;
   switch (collectionIdent) {
     default: {
+    
+      if (nft.uri) {
+        parsed = await evm.Default(nft, account, whitelisted);
+      } else {
+      
       parsed = {
         ...nft,
         metaData:
@@ -18,6 +25,7 @@ export const secretParser = async (
               }
             : nft.metaData,
       };
+    }
       break;
     }
   }
