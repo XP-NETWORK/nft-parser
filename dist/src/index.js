@@ -51,6 +51,7 @@ const elrond_1 = require("./factory/elrond");
 const tron_1 = require("./factory/tron");
 const ton_1 = require("./factory/ton");
 const abey_1 = require("./factory/abey");
+const near_1 = require("./factory/near");
 exports.videoFormats = [
     "MP4",
     "MOV",
@@ -154,6 +155,9 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
             break;
         case "27":
             parsed = yield (0, ton_1.tonParser)(collectionIdent, nft, account, whitelisted);
+            break;
+        case "31":
+            parsed = yield (0, near_1.nearParser)(collectionIdent, nft, account, whitelisted);
             break;
         default:
             return yield evmParser(collectionIdent, nft, account, whitelisted);
