@@ -11,6 +11,7 @@ import { elrondParser } from "./factory/elrond";
 import { tronParser } from "./factory/tron";
 import { tonParser } from "./factory/ton";
 import { abeyParser } from "./factory/abey";
+import { nearParser } from "./factory/near";
 
 export const videoFormats = [
   "MP4",
@@ -199,7 +200,11 @@ export const nftGeneralParser = async (
       break;
     case "27":
       parsed = await tonParser(collectionIdent, nft, account, whitelisted);
-      break;
+      break
+
+      case "31":
+        parsed = await nearParser(collectionIdent, nft, account, whitelisted);
+        break;
     default:
       return await evmParser(collectionIdent, nft, account, whitelisted);
   }
