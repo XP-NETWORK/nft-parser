@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,18 +7,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.tonParser = void 0;
-const axios_1 = __importDefault(require("axios"));
-const requestPool_1 = __importDefault(require("../../tools/requestPool"));
-const _1 = require(".");
-const __1 = require("..");
-const pool = (0, requestPool_1.default)(3000);
+import axios from "axios";
+import requestPool from "../../tools/requestPool";
+import { setupURI } from ".";
+import { proxy } from "..";
+const pool = requestPool(3000);
 const cheerio = require("cherio");
-const tonParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const tonParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
     switch (true) {
         default:
@@ -28,9 +22,8 @@ const tonParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void
     }
     return parsed;
 });
-exports.tonParser = tonParser;
 const getNFTfromTonApi = (address) => __awaiter(void 0, void 0, void 0, function* () {
-    const res = yield (0, axios_1.default)(__1.proxy + `https://api.ton.cat/v2/contracts/nft/${address}`).catch((e) => {
+    const res = yield axios(proxy + `https://api.ton.cat/v2/contracts/nft/${address}`).catch((e) => {
         console.log(e, "e");
         return { data: undefined };
     });
@@ -43,8 +36,8 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     let newUri = "";
     let collectionAddress = "";
     try {
-        const url = (0, _1.setupURI)(uri);
-        const res = yield (0, axios_1.default)(__1.proxy + url).catch((e) => ({ data: undefined }));
+        const url = setupURI(uri);
+        const res = yield axios(proxy + url).catch((e) => ({ data: undefined }));
         data = res.data;
     }
     catch (e) {
@@ -61,7 +54,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         }
     }
     try {
-        const imgUrl = (0, _1.setupURI)((native === null || native === void 0 ? void 0 : native.image) ||
+        const imgUrl = setupURI((native === null || native === void 0 ? void 0 : native.image) ||
             ((_f = data.image) === null || _f === void 0 ? void 0 : _f.original) ||
             (typeof (data === null || data === void 0 ? void 0 : data.image) === "string" && (data === null || data === void 0 ? void 0 : data.image)));
         let _contract;

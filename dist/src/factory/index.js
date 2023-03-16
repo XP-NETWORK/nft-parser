@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,30 +7,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.RCM = exports.abeyChainUserMinter = exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.Weed = exports.Drifters = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.DirtyLife = exports.COZYCOSM = exports.OPENSTORE = exports.ChainCaders = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.CoolPig = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.CRYPTO_PUNKS = exports.SWAPABLE = exports.Default = exports.setupURI = void 0;
-exports.grandWings = exports.moonbeamDefault = exports.AbeyDefault = void 0;
-const axios_1 = __importDefault(require("axios"));
-const tezos_1 = require("./tezos");
-const requestPool_1 = __importDefault(require("../../tools/requestPool"));
-const helpers_1 = require("../../tools/helpers");
-const __1 = require("..");
-const moralis_1 = __importDefault(require("moralis"));
-const evm_utils_1 = require("@moralisweb3/evm-utils");
-const __2 = require("..");
-const ethers_1 = require("ethers");
-const providers_1 = require("@ethersproject/providers");
-const punks_json_1 = __importDefault(require("../../abi/punks.json"));
+import axios from "axios";
+import { checkEmptyFromTezos } from "./tezos";
+import requestPool from "../../tools/requestPool";
+import { getAssetFormat, tryPinataWrapper } from "../../tools/helpers";
+import { proxy } from "..";
+import Moralis from "moralis";
+import { EvmChain } from "@moralisweb3/evm-utils";
+import { videoFormats } from "..";
+import { ethers } from "ethers";
+import { JsonRpcProvider } from "@ethersproject/providers";
+import punksABI from "../../abi/punks.json";
 //const svgToImg = require("svg-to-img");
-const pool = (0, requestPool_1.default)(3000);
-const ethersProvider = new providers_1.JsonRpcProvider("https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161");
-moralis_1.default.start({
+const pool = requestPool(3000);
+const ethersProvider = new JsonRpcProvider("https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161");
+Moralis.start({
     apiKey: "NT2aMb8xO5y2IcPxYSd4RvchrzV8wKnzCSHoIdMVF3Y0dTOw4x0AVQ9wrCJpIoBB",
 });
-const setupURI = (uri) => {
+export const setupURI = (uri) => {
     if (uri) {
         if (uri.includes(".json")) {
             uri = uri.replace(/(?!\.json)\d+$/gm, "");
@@ -66,39 +59,38 @@ const setupURI = (uri) => {
         return uri;
     }
 };
-exports.setupURI = setupURI;
-const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const baseUrl = (0, exports.setupURI)(uri);
-    const url = (0, exports.setupURI)(baseUrl);
+    const baseUrl = setupURI(uri);
+    const url = setupURI(baseUrl);
     try {
         let response;
         if (url.includes("moralis")) {
             let chain;
             switch (String(chainId)) {
                 case "7":
-                    chain = evm_utils_1.EvmChain.POLYGON;
+                    chain = EvmChain.POLYGON;
                     response = yield moralis(contract, tokenId, chain);
                     response = { data: response };
                     break;
                 case "5":
-                    chain = evm_utils_1.EvmChain.ETHEREUM;
+                    chain = EvmChain.ETHEREUM;
                     response = yield moralis(contract, tokenId, chain);
                     response = { data: response };
                     break;
                 case "4":
-                    chain = evm_utils_1.EvmChain.BSC;
+                    chain = EvmChain.BSC;
                     response = yield moralis(contract, tokenId, chain);
                     response = { data: response };
                     break;
                 case "6":
-                    chain = evm_utils_1.EvmChain.AVALANCHE;
+                    chain = EvmChain.AVALANCHE;
                     response = yield moralis(contract, tokenId, chain);
                     response = { data: response };
                     break;
                 case "8":
-                    chain = evm_utils_1.EvmChain.FANTOM;
+                    chain = EvmChain.FANTOM;
                     response = yield moralis(contract, tokenId, chain);
                     response = { data: response };
                     break;
@@ -108,7 +100,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             }
         }
         if (!response) {
-            response = yield (0, helpers_1.tryPinataWrapper)((url) => (0, axios_1.default)(url))(url);
+            response = yield tryPinataWrapper((url) => axios(url))(url);
         }
         let { data } = response;
         if (data === "Post ID not found") {
@@ -122,7 +114,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             data.imageUrl ||
             data.image_data ||
             data.url;
-        let format = yield (0, helpers_1.getAssetFormat)(image).catch((e) => "");
+        let format = yield getAssetFormat(image).catch((e) => "");
         const nft = {
             native,
             chainId,
@@ -132,9 +124,9 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             contract: contract || collectionIdent,
             collectionIdent,
             wrapped: data && data.wrapped,
-            metaData: Object.assign(Object.assign(Object.assign(Object.assign({ whitelisted }, (!__2.videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
-                ? { image: (0, exports.setupURI)(image) }
-                : { image: "" })), { animation_url: (0, exports.setupURI)(data.animation_url) }), (__2.videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
+            metaData: Object.assign(Object.assign(Object.assign(Object.assign({ whitelisted }, (!videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
+                ? { image: setupURI(image) }
+                : { image: "" })), { animation_url: setupURI(data.animation_url) }), (videoFormats.includes(format === null || format === void 0 ? void 0 : format.toUpperCase())
                 ? { animation_url_format: format }
                 : { animation_url_format: undefined })), { imageFormat: format, attributes: data.attributes, description: data.description, name: data.name }),
         };
@@ -144,7 +136,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         const noMoralis = uri.replace(/ipfs\.moralis\.io\:\d+/, "ipfs.io");
         const resp = yield tryBasic(noMoralis);
         if (resp) {
-            let format = yield (0, helpers_1.getAssetFormat)(resp.image).catch((e) => "");
+            let format = yield getAssetFormat(resp.image).catch((e) => "");
             const nft = {
                 native,
                 chainId,
@@ -156,7 +148,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
                 wrapped: resp && resp.wrapped,
                 metaData: {
                     whitelisted,
-                    image: (0, exports.setupURI)(resp.image),
+                    image: setupURI(resp.image),
                     imageFormat: format,
                     attributes: resp.attributes,
                     description: resp.description,
@@ -170,10 +162,9 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         return Object.assign(Object.assign({}, nft), (((_a = error.response) === null || _a === void 0 ? void 0 : _a.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.Default = Default;
 const tryBasic = (url) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const response = yield (0, axios_1.default)((0, exports.setupURI)(url));
+        const response = yield axios(setupURI(url));
         return response.data;
     }
     catch (error) {
@@ -183,7 +174,7 @@ const tryBasic = (url) => __awaiter(void 0, void 0, void 0, function* () {
 const moralis = (address, tokenId, chain) => __awaiter(void 0, void 0, void 0, function* () {
     var _b, _c, _d, _e;
     try {
-        const response = (yield moralis_1.default.EvmApi.nft.getNFTMetadata({
+        const response = (yield Moralis.EvmApi.nft.getNFTMetadata({
             address,
             chain,
             tokenId,
@@ -195,7 +186,7 @@ const moralis = (address, tokenId, chain) => __awaiter(void 0, void 0, void 0, f
                 const spl = uri.split("/");
                 // console.log(uri.replace(spl[5].split(".")[0], String(Number(spl[5].split(".")[0]))))
                 const newUri = uri.replace(spl[5].split(".")[0], String(Number(spl[5].split(".")[0])));
-                let meta = yield axios_1.default.get(newUri);
+                let meta = yield axios.get(newUri);
                 //console.log(meta.data);
                 return meta.data;
             }
@@ -210,17 +201,16 @@ const moralis = (address, tokenId, chain) => __awaiter(void 0, void 0, void 0, f
         throw error;
     }
 });
-const SWAPABLE = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const SWAPABLE = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _f;
     nft.uri = nft.uri.replace(/([^\/]+)$/, (_f = nft.native) === null || _f === void 0 ? void 0 : _f.tokenId);
-    return (0, exports.Default)(nft, account, whitelisted);
+    return Default(nft, account, whitelisted);
 });
-exports.SWAPABLE = SWAPABLE;
-const CRYPTO_PUNKS = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const CRYPTO_PUNKS = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _g, _h;
     const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
     try {
-        const _contract = new ethers_1.ethers.Contract("0x16F5A35647D6F03D5D3da7b35409D65ba03aF3B2", punks_json_1.default, ethersProvider);
+        const _contract = new ethers.Contract("0x16F5A35647D6F03D5D3da7b35409D65ba03aF3B2", punksABI, ethersProvider);
         const [rawAttrs, imgSVG] = yield Promise.all([
             _contract.punkAttributes(Number(tokenId)),
             _contract.punkImageSvg(Number(tokenId)),
@@ -254,17 +244,16 @@ const CRYPTO_PUNKS = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
         return Object.assign(Object.assign(Object.assign({}, nft), (((_g = error.response) === null || _g === void 0 ? void 0 : _g.status) === 429 ? { errorStatus: 429 } : {})), (((_h = error.response) === null || _h === void 0 ? void 0 : _h.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.CRYPTO_PUNKS = CRYPTO_PUNKS;
 // ! 0x0271c6853d4b2bdccd53aaf9edb66993e14d4cba
 // ! 0x4508af04de4073b10a53ac416eb311f4a2ab9569
-const ART_NFT_MATIC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const ART_NFT_MATIC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _j, _k;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const response = yield (0, axios_1.default)(url);
+        const response = yield axios(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${data.image}`);
+        const { headers } = yield axios(`${proxy}${data.image}`);
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -290,15 +279,14 @@ const ART_NFT_MATIC = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
         return Object.assign(Object.assign(Object.assign({}, nft), (((_j = error.response) === null || _j === void 0 ? void 0 : _j.status) === 429 ? { errorStatus: 429 } : {})), (((_k = error.response) === null || _k === void 0 ? void 0 : _k.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.ART_NFT_MATIC = ART_NFT_MATIC;
 // ! 0xa8a079ea48dc846899bdb542f3728dbc6758fdfa
-const EtherHead = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const EtherHead = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _l, _m;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const response = yield (0, axios_1.default)(url);
+        const response = yield axios(url);
         const { data } = response;
         const nft = {
             native,
@@ -324,15 +312,14 @@ const EtherHead = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
         return Object.assign(Object.assign(Object.assign({}, nft), (((_l = error.response) === null || _l === void 0 ? void 0 : _l.status) === 429 ? { errorStatus: 429 } : {})), (((_m = error.response) === null || _m === void 0 ? void 0 : _m.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.EtherHead = EtherHead;
 // ! 0x6e1ecc59f4005d0f2707ab7a0a8cecbaba41c11e
-const AngelOfAether = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const AngelOfAether = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _o, _p;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const response = yield (0, axios_1.default)(url);
+        const response = yield axios(url);
         const { data } = response;
         const nft = {
             native,
@@ -358,17 +345,16 @@ const AngelOfAether = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
         return Object.assign(Object.assign(Object.assign({}, nft), (((_o = error.response) === null || _o === void 0 ? void 0 : _o.status) === 429 ? { errorStatus: 429 } : {})), (((_p = error.response) === null || _p === void 0 ? void 0 : _p.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.AngelOfAether = AngelOfAether;
 // ! 0xe5b3903ffb3a00e91c75e25a4bd6616d3171e45e
-const Legend = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const Legend = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _q, _r;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const response = yield (0, axios_1.default)(url);
+        const response = yield axios(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(data.image)}`);
+        const { headers } = yield axios(`${proxy}${setupURI(data.image)}`);
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -381,7 +367,7 @@ const Legend = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
                 name: data.name,
@@ -394,18 +380,17 @@ const Legend = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
         return Object.assign(Object.assign(Object.assign({}, nft), (((_q = error.response) === null || _q === void 0 ? void 0 : _q.status) === 429 ? { errorStatus: 429 } : {})), (((_r = error.response) === null || _r === void 0 ? void 0 : _r.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.Legend = Legend;
 // ! 0xee6d7e31ea2095df9b2f89ec15111d3de5cd39af
 // ! AlphaBettyDoodle
-const AlphaBettyDoodle = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const AlphaBettyDoodle = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _s, _t;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const response = yield (0, axios_1.default)(url);
+        const response = yield axios(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(data.image)}`);
+        const { headers } = yield axios(`${proxy}${setupURI(data.image)}`);
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -418,7 +403,7 @@ const AlphaBettyDoodle = (nft, account, whitelisted) => __awaiter(void 0, void 0
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
                 description: data.description,
@@ -432,14 +417,13 @@ const AlphaBettyDoodle = (nft, account, whitelisted) => __awaiter(void 0, void 0
         return Object.assign(Object.assign(Object.assign({}, nft), (((_s = error.response) === null || _s === void 0 ? void 0 : _s.status) === 429 ? { errorStatus: 429 } : {})), (((_t = error.response) === null || _t === void 0 ? void 0 : _t.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.AlphaBettyDoodle = AlphaBettyDoodle;
-const Mabstronauts = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const Mabstronauts = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _u, _v;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const response = yield (0, axios_1.default)(url);
+        const response = yield axios(url);
         const { data } = response;
         const nft = {
             native,
@@ -467,17 +451,16 @@ const Mabstronauts = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
         return Object.assign(Object.assign(Object.assign({}, nft), (((_u = error.response) === null || _u === void 0 ? void 0 : _u.status) === 429 ? { errorStatus: 429 } : {})), (((_v = error.response) === null || _v === void 0 ? void 0 : _v.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.Mabstronauts = Mabstronauts;
 // ! 0x0D41c70E20587c2ec1cea9c4A3d394eC63C4bfbe
-const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _w, _x;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const response = yield (0, axios_1.default)(url);
+        const response = yield axios(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(data.image)}`);
+        const { headers } = yield axios(`${proxy}${setupURI(data.image)}`);
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -490,7 +473,7 @@ const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
                 description: data.direction,
@@ -505,22 +488,21 @@ const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
         return Object.assign(Object.assign(Object.assign({}, nft), (((_w = error.response) === null || _w === void 0 ? void 0 : _w.status) === 429 ? { errorStatus: 429 } : {})), (((_x = error.response) === null || _x === void 0 ? void 0 : _x.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.RocketMonsters = RocketMonsters;
 //0xc97e56Cd5777b46015F88BBB047f90cf556f520b
 // ! 0xDcAA2b071c1851D8Da43f85a34a5A57d4Fa93A1A
-const TheBlackMagic = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const TheBlackMagic = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _y, _z;
     // debugger;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     const imageFormats = ["gif", "jpg", "jpeg", "png", "svg", "webp"];
     let nestedImage;
     try {
-        const response = yield (0, axios_1.default)(url);
+        const response = yield axios(url);
         let { data } = response;
-        data = yield (0, tezos_1.checkEmptyFromTezos)(data);
-        const imgResp = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        data = yield checkEmptyFromTezos(data);
+        const imgResp = yield axios(setupURI(data.image));
         const headers = imgResp.headers["content-type"];
         let formats;
         let mimeType;
@@ -550,8 +532,8 @@ const TheBlackMagic = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
             metaData: {
                 whitelisted,
                 image: nestedImage
-                    ? (0, exports.setupURI)(imgResp.data.formats[0].uri)
-                    : (0, exports.setupURI)(data.image),
+                    ? setupURI(imgResp.data.formats[0].uri)
+                    : setupURI(data.image),
                 imageFormat: nestedImage
                     ? mimeType.slice(mimeType.lastIndexOf("/") + 1)
                     : format,
@@ -569,17 +551,16 @@ const TheBlackMagic = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
         return Object.assign(Object.assign(Object.assign({}, nft), (((_y = error.response) === null || _y === void 0 ? void 0 : _y.status) === 429 ? { errorStatus: 429 } : {})), (((_z = error.response) === null || _z === void 0 ? void 0 : _z.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.TheBlackMagic = TheBlackMagic;
 // ! 0x4c1900270dbf0c1e6a9c984aef9a18a7cb9ab1cc
-const CartelPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const CartelPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _0, _1;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const response = yield (0, axios_1.default)(url);
+        const response = yield axios(url);
         const { data } = response;
-        const imgResp = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        const imgResp = yield axios(setupURI(data.image));
         const mimeType = imgResp.headers["content-type"];
         const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
         const nft = {
@@ -593,7 +574,7 @@ const CartelPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
                 attributes: data.attributes,
@@ -606,19 +587,18 @@ const CartelPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
         return Object.assign(Object.assign(Object.assign({}, nft), (((_0 = error.response) === null || _0 === void 0 ? void 0 : _0.status) === 429 ? { errorStatus: 429 } : {})), (((_1 = error.response) === null || _1 === void 0 ? void 0 : _1.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.CartelPunks = CartelPunks;
 // ! 0x36f8f51f65fe200311f709b797baf4e193dd0b0d
-const TreatNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const TreatNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _2, _3;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const newUrl = `${__1.proxy}https://treatdao.com/api/nft/${tokenId}`;
+    const newUrl = `${proxy}https://treatdao.com/api/nft/${tokenId}`;
     try {
-        const response = yield (0, axios_1.default)(newUrl);
+        const response = yield axios(newUrl);
         const { data } = response;
         // const imgResp = await axios(setupURI(data.image));
         // const mimeType = imgResp.headers["content-type"];
         // const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
-        const format = yield (0, helpers_1.getAssetFormat)((0, exports.setupURI)(data.image));
+        const format = yield getAssetFormat(setupURI(data.image));
         const nft = {
             native,
             chainId,
@@ -647,19 +627,18 @@ const TreatNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
         return Object.assign(Object.assign(Object.assign({}, nft), (((_2 = error.response) === null || _2 === void 0 ? void 0 : _2.status) === 429 ? { errorStatus: 429 } : {})), (((_3 = error.response) === null || _3 === void 0 ? void 0 : _3.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.TreatNFT = TreatNFT;
 //0x2c83eaf6e460c673d92477a7c49eb4ecd04e1216
 //c
 // ! 0x2c83eaf6e460c673d92477a7c49eb4ecd04e1216
-const IdoDirt = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const IdoDirt = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _4, _5;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const newUrl = `${__1.proxy}https://treatdao.com/api/nft/${tokenId}`;
+    const newUrl = `${proxy}https://treatdao.com/api/nft/${tokenId}`;
     try {
-        const response = yield (0, axios_1.default)(newUrl);
+        const response = yield axios(newUrl);
         const { data } = response;
-        const imgResp = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        const imgResp = yield axios(setupURI(data.image));
         const mimeType = imgResp.headers["content-type"];
         const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
         const nft = {
@@ -686,17 +665,16 @@ const IdoDirt = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         return Object.assign(Object.assign(Object.assign({}, nft), (((_4 = error.response) === null || _4 === void 0 ? void 0 : _4.status) === 429 ? { errorStatus: 429 } : {})), (((_5 = error.response) === null || _5 === void 0 ? void 0 : _5.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.IdoDirt = IdoDirt;
 // ! 0x691bd0f2f5a145fcf297cf4be79095b66f002cbc
-const Awokensages = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const Awokensages = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _6, _7;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const newUri = `https://api.crosspunks.com/cars/meta/2/${tokenId}`;
     const baseUrl = uri;
     try {
-        const response = yield (0, axios_1.default)(newUri);
+        const response = yield axios(newUri);
         const { data } = response;
-        const imgResp = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        const imgResp = yield axios(setupURI(data.image));
         const mimeType = imgResp.headers["content-type"];
         const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
         const nft = {
@@ -710,7 +688,7 @@ const Awokensages = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
                 attributes: data.attributes,
@@ -724,17 +702,16 @@ const Awokensages = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
         return Object.assign(Object.assign(Object.assign({}, nft), (((_6 = error.response) === null || _6 === void 0 ? void 0 : _6.status) === 429 ? { errorStatus: 429 } : {})), (((_7 = error.response) === null || _7 === void 0 ? void 0 : _7.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.Awokensages = Awokensages;
 // ! 0x7f3495cf2d05db6e9e52cdf989bced71e786725c
-const Technomaniacs = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const Technomaniacs = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _8, _9;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const newUri = `https://api.crosspunks.com/cars/meta/1/${tokenId}`;
     const baseUrl = uri;
     try {
-        const response = yield (0, axios_1.default)(newUri);
+        const response = yield axios(newUri);
         const { data } = response;
-        const imgResp = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        const imgResp = yield axios(setupURI(data.image));
         const mimeType = imgResp.headers["content-type"];
         const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
         const nft = {
@@ -748,7 +725,7 @@ const Technomaniacs = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
                 attributes: data.attributes,
@@ -762,14 +739,13 @@ const Technomaniacs = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
         return Object.assign(Object.assign(Object.assign({}, nft), (((_8 = error.response) === null || _8 === void 0 ? void 0 : _8.status) === 429 ? { errorStatus: 429 } : {})), (((_9 = error.response) === null || _9 === void 0 ? void 0 : _9.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.Technomaniacs = Technomaniacs;
 // ! 0xe7f8ccda432239dcb418e94d625bc2fe6350f6bb
-const ArcadeEdition = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const ArcadeEdition = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _10, _11;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const newUri = `https://api.alturanft.com/meta/arcade-edition/${tokenId}`;
     try {
-        const response = yield (0, axios_1.default)(newUri);
+        const response = yield axios(newUri);
         const { data } = response;
         const mimeType = data.mime;
         const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
@@ -784,7 +760,7 @@ const ArcadeEdition = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
                 description: data.description,
@@ -797,15 +773,14 @@ const ArcadeEdition = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
         return Object.assign(Object.assign(Object.assign({}, nft), (((_10 = error.response) === null || _10 === void 0 ? void 0 : _10.status) === 429 ? { errorStatus: 429 } : {})), (((_11 = error.response) === null || _11 === void 0 ? void 0 : _11.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.ArcadeEdition = ArcadeEdition;
 // ! 0x56d93767467c54bd86578666904087c4f16cdb7f
-const Founders_Cabinet = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const Founders_Cabinet = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _12, _13;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const newUri = `https://api.alturanft.com/meta/chain-cade-founders-edition/${tokenId}`;
     const baseUrl = uri;
     try {
-        const response = yield (0, axios_1.default)(newUri);
+        const response = yield axios(newUri);
         const { data } = response;
         const mimeType = data.mime;
         const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
@@ -820,7 +795,7 @@ const Founders_Cabinet = (nft, account, whitelisted) => __awaiter(void 0, void 0
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
                 description: data.name,
@@ -833,16 +808,15 @@ const Founders_Cabinet = (nft, account, whitelisted) => __awaiter(void 0, void 0
         return Object.assign(Object.assign(Object.assign({}, nft), (((_12 = error.response) === null || _12 === void 0 ? void 0 : _12.status) === 429 ? { errorStatus: 429 } : {})), (((_13 = error.response) === null || _13 === void 0 ? void 0 : _13.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.Founders_Cabinet = Founders_Cabinet;
 // ! 0x2d317ed6c2e3eb5c54ca7518ef19deee96c15c85
-const TTAV = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const TTAV = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _14, _15;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const { data } = yield (0, axios_1.default)(url);
-        const { headers } = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        const { data } = yield axios(url);
+        const { headers } = yield axios(setupURI(data.image));
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -855,7 +829,7 @@ const TTAV = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
                 description: data.description,
@@ -869,15 +843,14 @@ const TTAV = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
         return Object.assign(Object.assign(Object.assign({}, nft), (((_14 = error.response) === null || _14 === void 0 ? void 0 : _14.status) === 429 ? { errorStatus: 429 } : {})), (((_15 = error.response) === null || _15 === void 0 ? void 0 : _15.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.TTAV = TTAV;
 // ! 0x7a7ca3b27760b52428d7a9d0a9f369ff31a2de94
-const BoredGUtterCats = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const BoredGUtterCats = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _16, _17;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const newUri = `https://ipfs.moralis.io:2053/ipfs/QmV4CkNpDsiF5hSaUCJZAndDo1gVM8zxTKMbpN8teyDoTv/${tokenId}.json`;
     try {
-        const { data } = yield (0, axios_1.default)(newUri);
-        const { headers } = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        const { data } = yield axios(newUri);
+        const { headers } = yield axios(setupURI(data.image));
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -890,7 +863,7 @@ const BoredGUtterCats = (nft, account, whitelisted) => __awaiter(void 0, void 0,
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 name: data.name,
                 description: data.description,
@@ -903,15 +876,14 @@ const BoredGUtterCats = (nft, account, whitelisted) => __awaiter(void 0, void 0,
         return Object.assign(Object.assign(Object.assign({}, nft), (((_16 = error.response) === null || _16 === void 0 ? void 0 : _16.status) === 429 ? { errorStatus: 429 } : {})), (((_17 = error.response) === null || _17 === void 0 ? void 0 : _17.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.BoredGUtterCats = BoredGUtterCats;
 // ! 0x2FeEE2Cc7fB32bD48AB22080e2C680f5390Ef426
-const IDoDirtPolygon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const IDoDirtPolygon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _18, _19;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const { data } = yield (0, axios_1.default)(url);
-        const { headers } = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        const { data } = yield axios(url);
+        const { headers } = yield axios(setupURI(data.image));
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -924,7 +896,7 @@ const IDoDirtPolygon = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
                 description: data.description,
@@ -939,17 +911,16 @@ const IDoDirtPolygon = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
         return Object.assign(Object.assign(Object.assign({}, nft), (((_18 = error.response) === null || _18 === void 0 ? void 0 : _18.status) === 429 ? { errorStatus: 429 } : {})), (((_19 = error.response) === null || _19 === void 0 ? void 0 : _19.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.IDoDirtPolygon = IDoDirtPolygon;
 // ! 0x2953399124f0cbb46d2cbacd8a89cf0599974963
-const ArsenalGame = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const ArsenalGame = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _20, _21;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     if (!uri)
         console.log("NFT with no uri collection: ", collectionIdent, "tokenId: ", tokenId);
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const { data } = yield (0, axios_1.default)(url);
-        const { headers } = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        const { data } = yield axios(url);
+        const { headers } = yield axios(setupURI(data.image));
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -962,7 +933,7 @@ const ArsenalGame = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 animation_url: data.animation_url,
                 animation_url_format: "mp4",
@@ -977,15 +948,14 @@ const ArsenalGame = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
         return Object.assign(Object.assign(Object.assign({}, nft), (((_20 = error.response) === null || _20 === void 0 ? void 0 : _20.status) === 429 ? { errorStatus: 429 } : {})), (((_21 = error.response) === null || _21 === void 0 ? void 0 : _21.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.ArsenalGame = ArsenalGame;
 // ! 0xc69ecd37122a9b5fd7e62bc229d478bb83063c9d
-const Mate = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const Mate = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _22, _23, _24;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const { data } = yield (0, axios_1.default)(url);
-        const imgResp = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        const { data } = yield axios(url);
+        const imgResp = yield axios(setupURI(data.image));
         const mimeType = (_22 = imgResp === null || imgResp === void 0 ? void 0 : imgResp.headers) === null || _22 === void 0 ? void 0 : _22["content-type"];
         const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
         const nft = {
@@ -999,7 +969,7 @@ const Mate = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.animation_url),
+                image: setupURI(data.animation_url),
                 imageFormat: format,
                 attributes: data.attributes,
                 description: data.description,
@@ -1014,12 +984,11 @@ const Mate = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
         return Object.assign(Object.assign(Object.assign({}, nft), (((_23 = error.response) === null || _23 === void 0 ? void 0 : _23.status) === 429 ? { errorStatus: 429 } : {})), (((_24 = error.response) === null || _24 === void 0 ? void 0 : _24.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.Mate = Mate;
-const CoolPig = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const CoolPig = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const { data } = yield (0, axios_1.default)(url);
+        const { data } = yield axios(url);
         const nft = {
             native,
             chainId,
@@ -1046,17 +1015,16 @@ const CoolPig = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         return nft;
     }
 });
-exports.CoolPig = CoolPig;
 // ! 0x8eaeaa3a67abfc7c141775234fc30c707e26cf49
 // ! ABCBears
-const ABCBears = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const ABCBears = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     if (!uri)
         console.log("NFT with no uri collection: ", collectionIdent, "tokenId: ", tokenId);
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const { data } = yield (0, axios_1.default)(url);
-        const { headers } = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        const { data } = yield axios(url);
+        const { headers } = yield axios(setupURI(data.image));
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -1069,7 +1037,7 @@ const ABCBears = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 animation_url: data.animation_url,
                 animation_url_format: "mp4",
@@ -1084,17 +1052,16 @@ const ABCBears = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
         return nft;
     }
 });
-exports.ABCBears = ABCBears;
 // ! 0x51ecb52ebb85384679b108a9e6a017ae17754eef
 // ! Tragic Monsters
-const TragicMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const TragicMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     if (!uri)
         console.log("NFT with no uri collection: ", collectionIdent, "tokenId: ", tokenId);
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const { data } = yield (0, axios_1.default)(url);
-        const { headers } = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        const { data } = yield axios(url);
+        const { headers } = yield axios(setupURI(data.image));
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -1107,7 +1074,7 @@ const TragicMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 description: data.description,
                 name: data.name,
@@ -1120,17 +1087,16 @@ const TragicMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
         return nft;
     }
 });
-exports.TragicMonsters = TragicMonsters;
 // ! 0xbede8ad4878e5ce441accce6a828ea7bc5be1ed0
 // ! Super Fat Academy NFT
-const SuperFatAcademy = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const SuperFatAcademy = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     if (!uri)
         console.log("NFT with no uri collection: ", collectionIdent, "tokenId: ", tokenId);
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const { data } = yield (0, axios_1.default)(url);
-        const { headers } = yield (0, axios_1.default)((0, exports.setupURI)(data.image));
+        const { data } = yield axios(url);
+        const { headers } = yield axios(setupURI(data.image));
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -1143,7 +1109,7 @@ const SuperFatAcademy = (nft, account, whitelisted) => __awaiter(void 0, void 0,
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 description: data.description,
                 name: data.name,
@@ -1156,17 +1122,16 @@ const SuperFatAcademy = (nft, account, whitelisted) => __awaiter(void 0, void 0,
         return nft;
     }
 });
-exports.SuperFatAcademy = SuperFatAcademy;
 // ! 0xb94c3fd0016888bab09dbc229f9397294e828a54
 // ! Forgotten Runes Comic
-const ForgottenRunesComic = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const ForgottenRunesComic = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const response = yield (0, axios_1.default)(url);
+        const response = yield axios(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(data.image)}`);
+        const { headers } = yield axios(`${proxy}${setupURI(data.image)}`);
         const video = headers["content-type"].includes("video");
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
@@ -1182,7 +1147,7 @@ const ForgottenRunesComic = (nft, account, whitelisted) => __awaiter(void 0, voi
                 whitelisted,
                 image: "",
                 imageFormat: "",
-                animation_url: (0, exports.setupURI)(data.image),
+                animation_url: setupURI(data.image),
                 animation_url_format: format,
                 attributes: data.attributes,
                 description: data.description,
@@ -1196,17 +1161,16 @@ const ForgottenRunesComic = (nft, account, whitelisted) => __awaiter(void 0, voi
         return nft;
     }
 });
-exports.ForgottenRunesComic = ForgottenRunesComic;
 // ! 0xd4c77e46b0266a7aca11083bcc86342f47bbdd04
 // ! LilDickie
-const LilDickie = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const LilDickie = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const response = yield (0, axios_1.default)(url);
+        const response = yield axios(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(data.image)}`);
+        const { headers } = yield axios(`${proxy}${setupURI(data.image)}`);
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -1219,7 +1183,7 @@ const LilDickie = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
                 description: data.description,
@@ -1233,17 +1197,16 @@ const LilDickie = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
         return nft;
     }
 });
-exports.LilDickie = LilDickie;
 // ! 0x9304f22a5ab577119210d730e41755a6732e19f7
 // ! TheCheeks
-const TheCheeks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const TheCheeks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const response = yield (0, axios_1.default)(url);
+        const response = yield axios(url);
         const { data } = response;
-        const { headers } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(data.image)}`);
+        const { headers } = yield axios(`${proxy}${setupURI(data.image)}`);
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
             native,
@@ -1256,7 +1219,7 @@ const TheCheeks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
                 description: data.description,
@@ -1270,15 +1233,14 @@ const TheCheeks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
         return nft;
     }
 });
-exports.TheCheeks = TheCheeks;
 // ! 0x028faf7eab0d8abb4a2d784206bfa98979041ffc
 // ! Interesting CPeople
-const InterestingCPeople = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const InterestingCPeople = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const response = yield (0, axios_1.default)(url);
+        const response = yield axios(url);
         const { data } = response;
         const nft = {
             native,
@@ -1291,7 +1253,7 @@ const InterestingCPeople = (nft, account, whitelisted) => __awaiter(void 0, void
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: "png",
                 attributes: data.attributes,
                 description: data.description,
@@ -1305,15 +1267,14 @@ const InterestingCPeople = (nft, account, whitelisted) => __awaiter(void 0, void
         return nft;
     }
 });
-exports.InterestingCPeople = InterestingCPeople;
-const Nagato = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const Nagato = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _25;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const url = `${__1.proxy}${(0, exports.setupURI)(uri)}`;
+    const url = `${proxy}${setupURI(uri)}`;
     try {
-        const response = __1.proxy
+        const response = proxy
             ? (yield pool.addRequest(url))
-            : yield (0, axios_1.default)(url);
+            : yield axios(url);
         const { data } = response;
         const nft = {
             native,
@@ -1327,7 +1288,7 @@ const Nagato = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             metaData: {
                 whitelisted,
                 image: data
-                    ? (0, exports.setupURI)(data.image)
+                    ? setupURI(data.image)
                     : `https://ipfs-nft-storage.com/ipfs/velasnagato/${tokenId}.png`,
                 imageFormat: "png",
                 attributes: data && data.attributes,
@@ -1341,11 +1302,10 @@ const Nagato = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
         return Object.assign(Object.assign({}, nft), (((_25 = error.response) === null || _25 === void 0 ? void 0 : _25.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
-exports.Nagato = Nagato;
-const OpenSEA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const OpenSEA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(`${__1.proxy}${uri.replace("0x{id}", tokenId)}`);
+        const response = yield axios(`${proxy}${uri.replace("0x{id}", tokenId)}`);
         const { data } = response;
         const nft = {
             native,
@@ -1373,12 +1333,11 @@ const OpenSEA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         return nft;
     }
 });
-exports.OpenSEA = OpenSEA;
-const ChainCaders = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const ChainCaders = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _26, _27, _28, _29, _30, _31, _32;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(`${__1.proxy}https://api.alturanft.com/api/item/56/${collectionIdent}/${tokenId}`);
+        const response = yield axios(`${proxy}https://api.alturanft.com/api/item/56/${collectionIdent}/${tokenId}`);
         const { data } = response;
         const nft = {
             native,
@@ -1407,13 +1366,12 @@ const ChainCaders = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
         return nft;
     }
 });
-exports.ChainCaders = ChainCaders;
-const OPENSTORE = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const OPENSTORE = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId, contractType }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(contractType === "ERC1155"
-            ? `${__1.proxy}https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/${tokenId}`
-            : `${__1.proxy}${uri.replace(/:\d+/, "").replace(".moralis", "")}`);
+        const response = yield axios(contractType === "ERC1155"
+            ? `${proxy}https://api.opensea.io/api/v2/metadata/matic/0x2953399124F0cBB46d2CbACD8A89cF0599974963/${tokenId}`
+            : `${proxy}${uri.replace(/:\d+/, "").replace(".moralis", "")}`);
         const { data } = response;
         const nft = {
             native,
@@ -1426,7 +1384,7 @@ const OPENSTORE = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: data && (0, exports.setupURI)(data.image_url || data.image),
+                image: data && setupURI(data.image_url || data.image),
                 imageFormat: "png",
                 description: data && data.description,
                 animation_url: data && data.animation_url,
@@ -1440,11 +1398,10 @@ const OPENSTORE = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
         return nft;
     }
 });
-exports.OPENSTORE = OPENSTORE;
-const COZYCOSM = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const COZYCOSM = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const res = yield (0, axios_1.default)((0, exports.setupURI)(uri));
+        const res = yield axios(setupURI(uri));
         const { data } = res;
         const nft = {
             native,
@@ -1457,7 +1414,7 @@ const COZYCOSM = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: "png",
                 name: data.name,
                 description: data.description,
@@ -1471,11 +1428,10 @@ const COZYCOSM = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
         return nft;
     }
 });
-exports.COZYCOSM = COZYCOSM;
-const DirtyLife = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const DirtyLife = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const { data } = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
+        const { data } = yield axios(`${proxy}${uri}`).catch(() => ({
             data: null,
         }));
         const nft = {
@@ -1489,7 +1445,7 @@ const DirtyLife = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             wrapped: data === null || data === void 0 ? void 0 : data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data === null || data === void 0 ? void 0 : data.image),
+                image: setupURI(data === null || data === void 0 ? void 0 : data.image),
                 imageFormat: "png",
                 description: data === null || data === void 0 ? void 0 : data.description,
                 name: data === null || data === void 0 ? void 0 : data.name,
@@ -1504,8 +1460,7 @@ const DirtyLife = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
         return nft;
     }
 });
-exports.DirtyLife = DirtyLife;
-const MachineFi = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const MachineFi = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         console.log("here");
@@ -1535,12 +1490,11 @@ const MachineFi = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
         return nft;
     }
 });
-exports.MachineFi = MachineFi;
-const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _33, _34, _35;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const { data } = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
+        const { data } = yield axios(`${proxy}${uri}`).catch(() => ({
             data: null,
         }));
         const nft = {
@@ -1567,15 +1521,14 @@ const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         return nft;
     }
 });
-exports.TRSRNFT = TRSRNFT;
 //WUBI
-const WUBI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const WUBI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _36;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = __1.proxy
-            ? (yield pool.addRequest(__1.proxy + uri))
-            : yield (0, axios_1.default)(uri);
+        const response = proxy
+            ? (yield pool.addRequest(proxy + uri))
+            : yield axios(uri);
         const { data } = response;
         const nft = {
             native,
@@ -1588,7 +1541,7 @@ const WUBI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: data && (0, exports.setupURI)(data === null || data === void 0 ? void 0 : data.image),
+                image: data && setupURI(data === null || data === void 0 ? void 0 : data.image),
                 imageFormat: "png",
                 description: data && (data === null || data === void 0 ? void 0 : data.description),
                 name: data && (data === null || data === void 0 ? void 0 : data.name),
@@ -1600,11 +1553,10 @@ const WUBI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
         return Object.assign(Object.assign({}, nft), (((_36 = error.response) === null || _36 === void 0 ? void 0 : _36.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
-exports.WUBI = WUBI;
-const PACK = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const PACK = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
+        const response = yield axios(`${proxy}${uri}`).catch(() => ({
             data: null,
         }));
         const { data } = response;
@@ -1619,7 +1571,7 @@ const PACK = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: "png",
                 description: data.description,
                 name: data.name,
@@ -1635,12 +1587,11 @@ const PACK = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
         return nft;
     }
 });
-exports.PACK = PACK;
-const VelasOgPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const VelasOgPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _37, _38;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = yield (0, axios_1.default)(uri);
+        const response = yield axios(uri);
         const { data } = response;
         const nft = {
             native,
@@ -1653,7 +1604,7 @@ const VelasOgPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: "png",
                 description: data.description,
                 name: data.name,
@@ -1670,14 +1621,13 @@ const VelasOgPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
         return Object.assign(Object.assign(Object.assign({}, nft), (((_37 = error.response) === null || _37 === void 0 ? void 0 : _37.status) === 429 ? { errorStatus: 429 } : {})), (((_38 = error.response) === null || _38 === void 0 ? void 0 : _38.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
-exports.VelasOgPunks = VelasOgPunks;
-const Drifters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const Drifters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _39;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = __1.proxy
-            ? (yield pool.addRequest(__1.proxy + uri))
-            : yield (0, axios_1.default)(uri);
+        const response = proxy
+            ? (yield pool.addRequest(proxy + uri))
+            : yield axios(uri);
         const { data } = response;
         const nft = {
             native,
@@ -1706,14 +1656,13 @@ const Drifters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
         return Object.assign(Object.assign({}, nft), (((_39 = error.response) === null || _39 === void 0 ? void 0 : _39.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
-exports.Drifters = Drifters;
-const Weed = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const Weed = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _40;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    if (__1.proxy)
+    if (proxy)
         return nft;
     try {
-        const response = yield (0, axios_1.default)(uri);
+        const response = yield axios(uri);
         const { data } = response;
         const nft = {
             native,
@@ -1742,14 +1691,13 @@ const Weed = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
         return Object.assign(Object.assign({}, nft), (((_40 = error.response) === null || _40 === void 0 ? void 0 : _40.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
-exports.Weed = Weed;
-const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _41;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const response = __1.proxy
-            ? (yield pool.addRequest(__1.proxy + uri))
-            : yield (0, axios_1.default)(uri);
+        const response = proxy
+            ? (yield pool.addRequest(proxy + uri))
+            : yield axios(uri);
         const { data } = response;
         const nft = {
             native,
@@ -1762,7 +1710,7 @@ const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: data && (0, exports.setupURI)(data.image),
+                image: data && setupURI(data.image),
                 imageFormat: "png",
                 description: data && data.description,
                 name: data && data.name,
@@ -1778,15 +1726,14 @@ const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
         return Object.assign(Object.assign({}, nft), (((_41 = error.response) === null || _41 === void 0 ? void 0 : _41.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
-exports.Cities = Cities;
-exports.Mountains = exports.Cities;
-const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const Mountains = Cities;
+export const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        let { data } = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
+        let { data } = yield axios(`${proxy}${uri}`).catch(() => ({
             data: null,
         }));
-        data = yield (0, tezos_1.checkEmptyFromTezos)(data);
+        data = yield checkEmptyFromTezos(data);
         const nft = {
             native,
             chainId,
@@ -1798,7 +1745,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             wrapped: data && data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: data && (0, exports.setupURI)(data.image),
+                image: data && setupURI(data.image),
                 imageFormat: "png",
                 description: data && (data === null || data === void 0 ? void 0 : data.description),
                 name: data && (data === null || data === void 0 ? void 0 : data.name),
@@ -1812,12 +1759,11 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
         return nft;
     }
 });
-exports.WrappedXPNET = WrappedXPNET;
 //!0x34933A5958378e7141AA2305Cdb5cDf514896035
-const abeyChainUserMinter = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const abeyChainUserMinter = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const { data } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(uri)}`).catch(() => ({
+        const { data } = yield axios(`${proxy}${setupURI(uri)}`).catch(() => ({
             data: null,
         }));
         const nft = {
@@ -1830,7 +1776,7 @@ const abeyChainUserMinter = (nft, account, whitelisted) => __awaiter(void 0, voi
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: (0, exports.setupURI)(data.image),
+                image: setupURI(data.image),
                 imageFormat: "png",
                 description: data && (data === null || data === void 0 ? void 0 : data.description),
                 name: data && (data === null || data === void 0 ? void 0 : data.name),
@@ -1844,11 +1790,10 @@ const abeyChainUserMinter = (nft, account, whitelisted) => __awaiter(void 0, voi
         return nft;
     }
 });
-exports.abeyChainUserMinter = abeyChainUserMinter;
-const RCM = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const RCM = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const { data } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(uri)}`).catch(() => ({
+        const { data } = yield axios(`${proxy}${setupURI(uri)}`).catch(() => ({
             data: null,
         }));
         const nft = {
@@ -1875,12 +1820,11 @@ const RCM = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fun
         return nft;
     }
 });
-exports.RCM = RCM;
-const AbeyDefault = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const AbeyDefault = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const newURI = `https://metadata.fantase.io/${collectionIdent.toLowerCase()}/metadata/json/${tokenId}.json`;
     try {
-        const { data } = yield (0, axios_1.default)(`${__1.proxy}${newURI}`).catch(() => ({
+        const { data } = yield axios(`${proxy}${newURI}`).catch(() => ({
             data: null,
         }));
         const nft = {
@@ -1907,11 +1851,10 @@ const AbeyDefault = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
         return nft;
     }
 });
-exports.AbeyDefault = AbeyDefault;
-const moonbeamDefault = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const moonbeamDefault = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
-        const { data } = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
+        const { data } = yield axios(`${proxy}${uri}`).catch(() => ({
             data: null,
         }));
         const nft = {
@@ -1938,14 +1881,13 @@ const moonbeamDefault = (nft, account, whitelisted) => __awaiter(void 0, void 0,
         return nft;
     }
 });
-exports.moonbeamDefault = moonbeamDefault;
-const grandWings = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const grandWings = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const from = uri.indexOf("/ipfs/");
         const str = uri.slice(from);
-        const newUri = `${__1.proxy}https://ipfs.io${str}`;
-        const { data } = yield (0, axios_1.default)(`${__1.proxy}${newUri}`).catch(() => ({
+        const newUri = `${proxy}https://ipfs.io${str}`;
+        const { data } = yield axios(`${proxy}${newUri}`).catch(() => ({
             data: null,
         }));
         const nft = {
@@ -1972,4 +1914,3 @@ const grandWings = (nft, account, whitelisted) => __awaiter(void 0, void 0, void
         return nft;
     }
 });
-exports.grandWings = grandWings;

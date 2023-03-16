@@ -1,30 +1,3 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __exportStar = (this && this.__exportStar) || function(m, exports) {
-    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -34,25 +7,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.nftGeneralParser = exports.apenftSign = exports.apenftKey = exports.proxy = exports.videoFormats = void 0;
-const axios_1 = __importDefault(require("axios"));
-const evm = __importStar(require("./factory"));
-const algorand_1 = require("./factory/algorand");
-const tezos = __importStar(require("./factory/tezos"));
-const veChain = __importStar(require("./factory/veChain"));
-const fantom = __importStar(require("./factory/fantom"));
-const aurora = __importStar(require("./factory/auora"));
-const secret = __importStar(require("./factory/secret"));
-const elrond_1 = require("./factory/elrond");
-const tron_1 = require("./factory/tron");
-const ton_1 = require("./factory/ton");
-const abey_1 = require("./factory/abey");
-const near_1 = require("./factory/near");
-exports.videoFormats = [
+import axios from "axios";
+import * as evm from "./factory";
+import { algorandParser } from "./factory/algorand";
+import * as tezos from "./factory/tezos";
+import * as veChain from "./factory/veChain";
+import * as fantom from "./factory/fantom";
+import * as aurora from "./factory/auora";
+import * as secret from "./factory/secret";
+import { elrondParser } from "./factory/elrond";
+import { tronParser } from "./factory/tron";
+import { tonParser } from "./factory/ton";
+import { abeyParser } from "./factory/abey";
+import { nearParser } from "./factory/near";
+export const videoFormats = [
     "MP4",
     "MOV",
     "WMV",
@@ -70,13 +38,13 @@ if (typeof process === "object") {
         }
     }
 }
-exports.proxy = isNode
+export const proxy = isNode
     ? ""
     : "https://sheltered-crag-76748.herokuapp.com/";
-exports.apenftKey = "rV9UjZwMSK4zqkKEWOUnUXXY2zNgPJ8i";
-exports.apenftSign = "7c9caa14981ff714f92fe16322bcf13803cd3c0d219ef008eb0e5ebf352814ca.7625.1663231473";
-axios_1.default.defaults.timeout = isNode ? 3000 : axios_1.default.defaults.timeout;
-axios_1.default.interceptors.request.use(function (config) {
+export const apenftKey = "rV9UjZwMSK4zqkKEWOUnUXXY2zNgPJ8i";
+export const apenftSign = "7c9caa14981ff714f92fe16322bcf13803cd3c0d219ef008eb0e5ebf352814ca.7625.1663231473";
+axios.defaults.timeout = isNode ? 3000 : axios.defaults.timeout;
+axios.interceptors.request.use(function (config) {
     // Do something before request is sent
     return config;
 }, function (error) {
@@ -85,7 +53,7 @@ axios_1.default.interceptors.request.use(function (config) {
     }
     return Promise.reject(error);
 });
-const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+export const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     //proxy = mode === "proxy" ? proxy : "";
     const { native: { chainId }, collectionIdent, } = nft;
     let parsed;
@@ -130,13 +98,13 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
             parsed = yield veChain.veChainParser(collectionIdent, nft, account, whitelisted);
             break;
         case "2":
-            parsed = yield (0, elrond_1.elrondParser)(collectionIdent, nft, account, whitelisted);
+            parsed = yield elrondParser(collectionIdent, nft, account, whitelisted);
             break;
         case "15":
-            parsed = yield (0, algorand_1.algorandParser)(collectionIdent, nft, account, whitelisted);
+            parsed = yield algorandParser(collectionIdent, nft, account, whitelisted);
             break;
         case "9":
-            parsed = yield (0, tron_1.tronParser)(collectionIdent, nft, account, whitelisted);
+            parsed = yield tronParser(collectionIdent, nft, account, whitelisted);
             break;
         case "18":
             parsed = yield tezos.tezosParser(collectionIdent, nft, account, whitelisted);
@@ -151,21 +119,20 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
             parsed = yield evmParser(collectionIdent, nft, account, whitelisted);
             break;
         case "33":
-            parsed = yield (0, abey_1.abeyParser)(collectionIdent, nft, account, whitelisted);
+            parsed = yield abeyParser(collectionIdent, nft, account, whitelisted);
             break;
         case "27":
-            parsed = yield (0, ton_1.tonParser)(collectionIdent, nft, account, whitelisted);
+            parsed = yield tonParser(collectionIdent, nft, account, whitelisted);
             break;
         case "31":
-            parsed = yield (0, near_1.nearParser)(collectionIdent, nft, account, whitelisted);
+            parsed = yield nearParser(collectionIdent, nft, account, whitelisted);
             break;
         default:
             return yield evmParser(collectionIdent, nft, account, whitelisted);
     }
     return parsed;
 });
-exports.nftGeneralParser = nftGeneralParser;
-__exportStar(require("../tools/helpers"), exports);
+export * from "../tools/helpers";
 const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
     switch (collectionIdent) {
