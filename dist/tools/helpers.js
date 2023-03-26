@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,14 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import axios from "axios";
-import { setupURI } from "../src/factory";
-import { proxy } from "../src";
-import { fromBuffer } from "file-type";
-export const getWrappedNft = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.tryPinataWrapper = exports.getAssetFormat = exports.getWrappedNft = void 0;
+const axios_1 = __importDefault(require("axios"));
+const factory_1 = require("../src/factory");
+const src_1 = require("../src");
+const file_type_1 = require("file-type");
+const getWrappedNft = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const res = yield axios(`https://nft.xp.network/w/${tokenId}`);
+    const res = yield (0, axios_1.default)(`https://nft.xp.network/w/${tokenId}`);
     const { data } = res;
     return {
         native,
@@ -27,7 +33,7 @@ export const getWrappedNft = (nft, account, whitelisted) => __awaiter(void 0, vo
         wrapped: data === null || data === void 0 ? void 0 : data.wrapped,
         metaData: {
             whitelisted,
-            image: setupURI(data === null || data === void 0 ? void 0 : data.image),
+            image: (0, factory_1.setupURI)(data === null || data === void 0 ? void 0 : data.image),
             imageFormat: (_a = data === null || data === void 0 ? void 0 : data.image) === null || _a === void 0 ? void 0 : _a.match(/(?:\.([^.]+))?$/)[1],
             attributes: data === null || data === void 0 ? void 0 : data.attributes,
             description: data === null || data === void 0 ? void 0 : data.description,
@@ -35,7 +41,8 @@ export const getWrappedNft = (nft, account, whitelisted) => __awaiter(void 0, vo
         },
     };
 });
-export const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, function* () {
+exports.getWrappedNft = getWrappedNft;
+const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     if (!imageUri) {
         throw new Error("no url:");
@@ -46,20 +53,20 @@ export const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, fu
             format = ((_b = imageUri.match(/(?:\.([^.]+))?$/)) === null || _b === void 0 ? void 0 : _b.at(1)) || "";
         }
         else {
-            if (proxy) {
-                const { headers } = yield axios(`${proxy}${setupURI(imageUri)}`);
+            if (src_1.proxy) {
+                const { headers } = yield (0, axios_1.default)(`${src_1.proxy}${(0, factory_1.setupURI)(imageUri)}`);
                 format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
             }
             else {
                 format = yield new Promise((resolve, reject) => __awaiter(void 0, void 0, void 0, function* () {
                     var _c;
-                    const stream = yield tryPinataWrapper((url) => axios.get(url, {
+                    const stream = yield (0, exports.tryPinataWrapper)((url) => axios_1.default.get(url, {
                         responseType: "stream",
                         timeout: 3000,
-                    }))(setupURI(imageUri)).catch((e) => reject(e));
+                    }))((0, factory_1.setupURI)(imageUri)).catch((e) => reject(e));
                     (_c = stream === null || stream === void 0 ? void 0 : stream.data) === null || _c === void 0 ? void 0 : _c.on("data", (chunk) => __awaiter(void 0, void 0, void 0, function* () {
                         var _d;
-                        const res = yield fromBuffer(chunk).catch((e) => reject(e));
+                        const res = yield (0, file_type_1.fromBuffer)(chunk).catch((e) => reject(e));
                         (_d = stream === null || stream === void 0 ? void 0 : stream.data) === null || _d === void 0 ? void 0 : _d.destroy();
                         if ((res === null || res === void 0 ? void 0 : res.ext) === "heic")
                             return reject("heic format");
@@ -75,13 +82,15 @@ export const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, fu
         throw e;
     }
 });
-export const tryPinataWrapper = (cb) => (url) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield cb(proxy + url).catch((e) => {
+exports.getAssetFormat = getAssetFormat;
+const tryPinataWrapper = (cb) => (url) => __awaiter(void 0, void 0, void 0, function* () {
+    return yield cb(src_1.proxy + url).catch((e) => {
         var _a;
         if (((_a = e.message) === null || _a === void 0 ? void 0 : _a.includes("429")) && /^https:\/\/ipfs.io/.test(url)) {
-            return cb(proxy +
+            return cb(src_1.proxy +
                 url.replace(/^https:\/\/ipfs.io/, "https://gateway.pinata.cloud"));
         }
         throw e;
     });
 });
+exports.tryPinataWrapper = tryPinataWrapper;

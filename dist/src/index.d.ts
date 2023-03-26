@@ -37,3 +37,4 @@ interface NFT {
 }
 export declare const nftGeneralParser: (nft: NFT, account: string, whitelisted: boolean) => Promise<ParsedNFT>;
 export * from "../tools/helpers";
+export declare const injectMoralis: (M: any) => void;

@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,11 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import axios from "axios";
-import { getAssetFormat } from "..";
-import { setupURI } from ".";
-import { proxy } from "..";
-export const algorandParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Bozeman = exports.CBCG = exports.SMC = exports.Alchemon = exports.WarriorCroc = exports.LikeD00dles = exports.Default = exports.algorandParser = void 0;
+const axios_1 = __importDefault(require("axios"));
+const __1 = require("..");
+const _1 = require(".");
+const __2 = require("..");
+const algorandParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     switch (true) {
         case collectionIdent.includes("D00dles"):
             collectionIdent = "D00dles";
@@ -65,77 +71,78 @@ export const algorandParser = (collectionIdent, nft, account, whitelisted) => __
     let parsed;
     switch (collectionIdent) {
         case "D00dles":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "Donkey":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "Algo Rocket":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "ALGO WEIRD AXEL":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "Warrior Croc":
-            parsed = yield WarriorCroc(nft, account, whitelisted);
+            parsed = yield (0, exports.WarriorCroc)(nft, account, whitelisted);
             break;
         case "Al Goanna":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "BrontosEYE":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "Number 512":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "Shep":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "The Psychedelic Forest":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "RaptorEYE":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "Dead Putin Society":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "LION'S BEAUTY":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "Floating ghost":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "AlgoSeas Pirate":
-            parsed = yield LikeD00dles(nft, account, whitelisted);
+            parsed = yield (0, exports.LikeD00dles)(nft, account, whitelisted);
             break;
         case "Alchemon":
-            parsed = yield Alchemon(nft, account, whitelisted);
+            parsed = yield (0, exports.Alchemon)(nft, account, whitelisted);
             break;
         case "SMC":
-            parsed = yield SMC(nft, account, whitelisted);
+            parsed = yield (0, exports.SMC)(nft, account, whitelisted);
             break;
         case "C.B.C.G":
-            parsed = yield CBCG(nft, account, whitelisted);
+            parsed = yield (0, exports.CBCG)(nft, account, whitelisted);
             break;
         case "Bozeman Mountaineers JMFL":
-            parsed = yield Bozeman(nft, account, whitelisted);
+            parsed = yield (0, exports.Bozeman)(nft, account, whitelisted);
             break;
         default:
-            parsed = yield Default(nft, account, whitelisted);
+            parsed = yield (0, exports.Default)(nft, account, whitelisted);
             break;
     }
     return parsed;
 });
+exports.algorandParser = algorandParser;
 // ! COLLECTIONS
 // ! Default
-export const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
     try {
         const [json, foramt] = yield Promise.all([
-            axios(proxy + `https://api.algoxnft.com/v1/assets/${tokenId}`),
-            getAssetFormat(setupURI(uri)),
+            (0, axios_1.default)(__2.proxy + `https://api.algoxnft.com/v1/assets/${tokenId}`),
+            (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
         ]);
         const { data } = json;
         return {
@@ -149,7 +156,7 @@ export const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
             wrapped: null,
             metaData: {
                 whitelisted,
-                image: setupURI(uri),
+                image: (0, _1.setupURI)(uri),
                 imageFormat: foramt,
                 name: (data === null || data === void 0 ? void 0 : data.name) || name,
                 collectionName: (data === null || data === void 0 ? void 0 : data.collection_name) || name.split("#")[0].trim(),
@@ -162,12 +169,13 @@ export const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
         return Object.assign(Object.assign({}, nft), (((_b = error.response) === null || _b === void 0 ? void 0 : _b.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
+exports.Default = Default;
 // ! "D00dles"
-export const LikeD00dles = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+const LikeD00dles = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const url = `${proxy}${setupURI(uri)}`;
+    const url = `${__2.proxy}${(0, _1.setupURI)(uri)}`;
     try {
-        const response = yield axios(url);
+        const response = yield (0, axios_1.default)(url);
         const { data, headers } = response;
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
@@ -181,7 +189,7 @@ export const LikeD00dles = (nft, account, whitelisted) => __awaiter(void 0, void
             wrapped: data.wrapped,
             metaData: {
                 whitelisted,
-                image: setupURI(url),
+                image: (0, _1.setupURI)(url),
                 imageFormat: format,
                 attributes: data.attributes,
                 description: data.description,
@@ -195,13 +203,14 @@ export const LikeD00dles = (nft, account, whitelisted) => __awaiter(void 0, void
         return nft;
     }
 });
+exports.LikeD00dles = LikeD00dles;
 // ! Warrior Croc
-export const WarriorCroc = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+const WarriorCroc = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     // debugger;
-    const url = `${proxy}${setupURI(uri)}`;
+    const url = `${__2.proxy}${(0, _1.setupURI)(uri)}`;
     try {
-        const response = yield axios(url);
+        const response = yield (0, axios_1.default)(url);
         const { data } = response;
         const format = data["image_mime_type"].slice(data["image_mime_type"].lastIndexOf("/") + 1);
         const nft = {
@@ -215,7 +224,7 @@ export const WarriorCroc = (nft, account, whitelisted) => __awaiter(void 0, void
             wrapped: data.wrapped,
             metaData: {
                 whitelisted,
-                image: setupURI(data.image),
+                image: (0, _1.setupURI)(data.image),
                 imageFormat: format,
                 attributes: data.attributes,
                 description: data.description,
@@ -229,13 +238,14 @@ export const WarriorCroc = (nft, account, whitelisted) => __awaiter(void 0, void
         return nft;
     }
 });
+exports.WarriorCroc = WarriorCroc;
 // ! Alchemon
-export const Alchemon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+const Alchemon = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
-    const url = `${proxy}${setupURI(uri)}`;
+    const url = `${__2.proxy}${(0, _1.setupURI)(uri)}`;
     try {
-        const response = yield axios(url);
+        const response = yield (0, axios_1.default)(url);
         const { data, headers } = response;
         const format = headers["content-type"].slice(headers["content-type"].lastIndexOf("/") + 1);
         const nft = {
@@ -251,7 +261,7 @@ export const Alchemon = (nft, account, whitelisted) => __awaiter(void 0, void 0,
                 whitelisted,
                 image: "",
                 imageFormat: "",
-                animation_url: setupURI(uri),
+                animation_url: (0, _1.setupURI)(uri),
                 animation_url_format: format,
                 attributes: data.attributes,
                 description: data.description,
@@ -265,11 +275,12 @@ export const Alchemon = (nft, account, whitelisted) => __awaiter(void 0, void 0,
         return nft;
     }
 });
-export const SMC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+exports.Alchemon = Alchemon;
+const SMC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
     const [attrs, foramt] = yield Promise.all([
-        axios(proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
-        getAssetFormat(setupURI(uri)),
+        (0, axios_1.default)(__2.proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+        (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
     ]);
     const { data } = attrs;
     try {
@@ -284,7 +295,7 @@ export const SMC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void
             wrapped: null,
             metaData: {
                 whitelisted,
-                image: setupURI(uri),
+                image: (0, _1.setupURI)(uri),
                 imageFormat: foramt,
                 name,
                 symbol: "SMC",
@@ -299,14 +310,15 @@ export const SMC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void
         return nft;
     }
 });
-export const CBCG = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+exports.SMC = SMC;
+const CBCG = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
     /* const attrs = await axios(
       proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`
     );*/
     const [attrs, foramt] = yield Promise.all([
-        axios(proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
-        getAssetFormat(setupURI(uri)),
+        (0, axios_1.default)(__2.proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+        (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
     ]);
     const { data } = attrs;
     try {
@@ -321,7 +333,7 @@ export const CBCG = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             wrapped: null,
             metaData: {
                 whitelisted,
-                image: setupURI(uri),
+                image: (0, _1.setupURI)(uri),
                 imageFormat: foramt,
                 name,
                 symbol: "C.B.C.G",
@@ -336,14 +348,15 @@ export const CBCG = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
         return nft;
     }
 });
-export const Bozeman = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+exports.CBCG = CBCG;
+const Bozeman = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
     /* const attrs = await axios(
       proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`
     );*/
     const [attrs, foramt] = yield Promise.all([
-        axios(proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
-        getAssetFormat(setupURI(uri)),
+        (0, axios_1.default)(__2.proxy + `https://api.algoxnft.com/v1/assets/${tokenId}/arc69`),
+        (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
     ]);
     const { data } = attrs;
     try {
@@ -358,7 +371,7 @@ export const Bozeman = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
             wrapped: null,
             metaData: {
                 whitelisted,
-                image: setupURI(uri),
+                image: (0, _1.setupURI)(uri),
                 imageFormat: foramt,
                 name,
                 //symbol: "Bozeman Mountaineers JMFL",
@@ -373,3 +386,4 @@ export const Bozeman = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
         return nft;
     }
 });
+exports.Bozeman = Bozeman;

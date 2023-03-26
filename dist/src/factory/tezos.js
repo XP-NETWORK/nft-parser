@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -7,22 +8,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { setupURI } from ".";
-import { bytes2Char } from "@taquito/utils";
-import { TezosToolkit, } from "@taquito/taquito";
-import axios from "axios";
-import { proxy } from "..";
-import { getAssetFormat } from "../../tools/helpers";
-const tezos = new TezosToolkit("https://mainnet.smartpy.io/");
-export const checkEmptyFromTezos = (data) => __awaiter(void 0, void 0, void 0, function* () {
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Rarible = exports.TributeTezoTrooperz = exports.RocketMonsters = exports.Default = exports.tezosParser = exports.checkEmptyFromTezos = void 0;
+const _1 = require(".");
+const utils_1 = require("@taquito/utils");
+const taquito_1 = require("@taquito/taquito");
+const axios_1 = __importDefault(require("axios"));
+const __1 = require("..");
+const helpers_1 = require("../../tools/helpers");
+const tezos = new taquito_1.TezosToolkit("https://mainnet.smartpy.io/");
+const checkEmptyFromTezos = (data) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f, _g;
     if (!(data === null || data === void 0 ? void 0 : data.image) && ((_a = data === null || data === void 0 ? void 0 : data.wrapped) === null || _a === void 0 ? void 0 : _a.origin) === "18") {
         try {
             const contract = yield tezos.contract.at((_b = data === null || data === void 0 ? void 0 : data.wrapped) === null || _b === void 0 ? void 0 : _b.contract);
             const storage = (yield contract.storage());
             const tokenStorage = yield storage.token_metadata.get((_c = data === null || data === void 0 ? void 0 : data.wrapped) === null || _c === void 0 ? void 0 : _c.tokenId);
-            const nativeUrl = bytes2Char(tokenStorage.token_info.get(""));
-            const nativeMeta = yield axios(`${setupURI(nativeUrl)}`).catch(() => ({
+            const nativeUrl = (0, utils_1.bytes2Char)(tokenStorage.token_info.get(""));
+            const nativeMeta = yield (0, axios_1.default)(`${(0, _1.setupURI)(nativeUrl)}`).catch(() => ({
                 data: null,
             }));
             return Object.assign(Object.assign({}, data), { image: (_d = nativeMeta === null || nativeMeta === void 0 ? void 0 : nativeMeta.data) === null || _d === void 0 ? void 0 : _d.displayUri, name: (_e = nativeMeta === null || nativeMeta === void 0 ? void 0 : nativeMeta.data) === null || _e === void 0 ? void 0 : _e.name, description: (_f = nativeMeta === null || nativeMeta === void 0 ? void 0 : nativeMeta.data) === null || _f === void 0 ? void 0 : _f.description, symbol: (_g = nativeMeta === null || nativeMeta === void 0 ? void 0 : nativeMeta.data) === null || _g === void 0 ? void 0 : _g.symbol });
@@ -36,8 +42,9 @@ export const checkEmptyFromTezos = (data) => __awaiter(void 0, void 0, void 0, f
         return data;
     }
 });
+exports.checkEmptyFromTezos = checkEmptyFromTezos;
 const getMetadata = (nft, account = "", whitelisted = true) => __awaiter(void 0, void 0, void 0, function* () {
-    const res = yield axios(proxy + setupURI(nft.uri));
+    const res = yield (0, axios_1.default)(__1.proxy + (0, _1.setupURI)(nft.uri));
     const { data } = res;
     const parsed = {
         native: nft.native,
@@ -49,8 +56,8 @@ const getMetadata = (nft, account = "", whitelisted = true) => __awaiter(void 0,
         collectionIdent: nft.collectionIdent,
         metaData: {
             whitelisted,
-            image: setupURI(data.displayUri),
-            imageFormat: yield getAssetFormat(setupURI(data.displayUri)),
+            image: (0, _1.setupURI)(data.displayUri),
+            imageFormat: yield (0, helpers_1.getAssetFormat)((0, _1.setupURI)(data.displayUri)),
             attributes: data === null || data === void 0 ? void 0 : data.attributes,
             description: data === null || data === void 0 ? void 0 : data.description,
             name: data === null || data === void 0 ? void 0 : data.name,
@@ -59,28 +66,29 @@ const getMetadata = (nft, account = "", whitelisted = true) => __awaiter(void 0,
     };
     return parsed;
 });
-export const tezosParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+const tezosParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native: { contract, tokenId, chainId }, uri, } = nft;
     let parsed;
     switch (collectionIdent) {
         case "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA":
-            parsed = yield TributeTezoTrooperz(nft, account, whitelisted);
+            parsed = yield (0, exports.TributeTezoTrooperz)(nft, account, whitelisted);
             break;
         case "KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS":
-            parsed = yield Rarible(nft, account, whitelisted);
+            parsed = yield (0, exports.Rarible)(nft, account, whitelisted);
             break;
         case "KT1RCzrLhBpdKXkyasKGpDTCcdbBTipUk77x":
             parsed = nft.native.meta
-                ? yield Default(nft, account, whitelisted)
-                : yield RocketMonsters(nft, account, whitelisted);
+                ? yield (0, exports.Default)(nft, account, whitelisted)
+                : yield (0, exports.RocketMonsters)(nft, account, whitelisted);
             break;
         default:
-            parsed = yield Default(nft, account, whitelisted);
+            parsed = yield (0, exports.Default)(nft, account, whitelisted);
             break;
     }
     return parsed;
 });
-export const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+exports.tezosParser = tezosParser;
+const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     if (!nft.native.meta) {
         return yield getMetadata(nft, account, whitelisted).catch(() => nft);
     }
@@ -97,7 +105,7 @@ export const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
         collectionIdent,
         metaData: {
             whitelisted,
-            image: setupURI(displayUri || image),
+            image: (0, _1.setupURI)(displayUri || image),
             imageFormat: format,
             attributes,
             symbol,
@@ -107,9 +115,10 @@ export const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
     };
     return parsed;
 });
-export const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+exports.Default = Default;
+const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { collectionIdent, uri, native, native: { tokenId, chainId, contract }, } = nft;
-    const res = yield axios(proxy + setupURI(uri));
+    const res = yield (0, axios_1.default)(__1.proxy + (0, _1.setupURI)(uri));
     const { data } = res;
     const parsed = {
         native,
@@ -121,7 +130,7 @@ export const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, v
         collectionIdent: nft.collectionIdent,
         metaData: {
             whitelisted,
-            image: setupURI(data.displayUri),
+            image: (0, _1.setupURI)(data.displayUri),
             imageFormat: "png",
             attributes: data === null || data === void 0 ? void 0 : data.attributes,
             description: data === null || data === void 0 ? void 0 : data.description,
@@ -132,8 +141,9 @@ export const RocketMonsters = (nft, account, whitelisted) => __awaiter(void 0, v
     };
     return parsed;
 });
+exports.RocketMonsters = RocketMonsters;
 // ! "KT18pPEPFqiP472bWxmxvN1NmMMFZVhojwEA"
-export const TributeTezoTrooperz = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+const TributeTezoTrooperz = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { description, attributes, formats, image, name, symbol }, }, }, }, } = nft;
     const mimeType = formats[0].mimeType;
     const format = mimeType.slice(mimeType.lastIndexOf("/") + 1);
@@ -147,7 +157,7 @@ export const TributeTezoTrooperz = (nft, account, whitelisted) => __awaiter(void
         collectionIdent,
         metaData: {
             whitelisted,
-            image: setupURI(image),
+            image: (0, _1.setupURI)(image),
             imageFormat: format,
             attributes,
             symbol,
@@ -157,8 +167,9 @@ export const TributeTezoTrooperz = (nft, account, whitelisted) => __awaiter(void
     };
     return parsed;
 });
+exports.TributeTezoTrooperz = TributeTezoTrooperz;
 // ! KT18pVpRXKPY2c4U2yFEGSH3ZnhB2kL8kwXS
-export const Rarible = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+const Rarible = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { description, attributes, displayUri, artifactUri, name, symbol, }, }, }, }, } = nft;
     const parsed = {
         native,
@@ -170,9 +181,9 @@ export const Rarible = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
         collectionIdent,
         metaData: {
             whitelisted,
-            image: setupURI(displayUri),
+            image: (0, _1.setupURI)(displayUri),
             imageFormat: "gif",
-            animation_url: setupURI(artifactUri),
+            animation_url: (0, _1.setupURI)(artifactUri),
             animation_url_format: "mp4",
             attributes,
             symbol,
@@ -182,3 +193,4 @@ export const Rarible = (nft, account, whitelisted) => __awaiter(void 0, void 0, 
     };
     return parsed;
 });
+exports.Rarible = Rarible;

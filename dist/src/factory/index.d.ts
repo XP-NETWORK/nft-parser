@@ -22,6 +22,7 @@ export interface NFT {
         collectionName?: string;
     };
 }
+export declare const injectMoralis: (M: any) => void;
 export declare const setupURI: (uri: string) => string;
 export declare const Default: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
 export declare const SWAPABLE: (nft: any, account: string, whitelisted: boolean) => Promise<NFT>;
