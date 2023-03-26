@@ -200,11 +200,11 @@ export const nftGeneralParser = async (
       break;
     case "27":
       parsed = await tonParser(collectionIdent, nft, account, whitelisted);
-      break
+      break;
 
-      case "31":
-        parsed = await nearParser(collectionIdent, nft, account, whitelisted);
-        break;
+    case "31":
+      parsed = await nearParser(collectionIdent, nft, account, whitelisted);
+      break;
     default:
       return await evmParser(collectionIdent, nft, account, whitelisted);
   }
@@ -212,6 +212,7 @@ export const nftGeneralParser = async (
 };
 
 export * from "../tools/helpers";
+export const injectMoralis = evm.injectMoralis;
 
 const evmParser = async (
   collectionIdent: string,

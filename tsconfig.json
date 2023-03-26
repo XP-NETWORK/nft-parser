@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2016",
-    "module": "ES2020",
+    "module": "CommonJS",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     //"outDir": "../bridge-interface/node_modules/nft-parser/dist",

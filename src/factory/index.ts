@@ -4,8 +4,8 @@ import requestPool from "../../tools/requestPool";
 import { getAssetFormat, tryPinataWrapper } from "../../tools/helpers";
 
 import { proxy } from "..";
-import Moralis from "moralis";
-import { EvmChain } from "@moralisweb3/evm-utils";
+
+import { EvmChain } from "@moralisweb3/common-evm-utils";
 
 import { videoFormats } from "..";
 
@@ -13,9 +13,6 @@ import { ethers } from "ethers";
 import { JsonRpcProvider } from "@ethersproject/providers";
 
 import punksABI from "../../abi/punks.json";
-import { type } from "os";
-
-//const svgToImg = require("svg-to-img");
 
 const pool = requestPool(3000);
 
@@ -23,9 +20,7 @@ const ethersProvider = new JsonRpcProvider(
   "https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161"
 );
 
-Moralis.start({
-  apiKey: "NT2aMb8xO5y2IcPxYSd4RvchrzV8wKnzCSHoIdMVF3Y0dTOw4x0AVQ9wrCJpIoBB",
-});
+let Moralis: any;
 
 export interface NFT {
   chainId: string;
@@ -51,6 +46,10 @@ export interface NFT {
     collectionName?: string;
   };
 }
+
+export const injectMoralis = function (M: any) {
+  Moralis = M;
+};
 
 export const setupURI = (uri: string): string => {
   if (uri) {
@@ -100,7 +99,7 @@ export const Default = async (
   try {
     let response;
 
-    if (url.includes("moralis")) {
+    if (url.includes("moralis") && Moralis) {
       let chain;
       switch (String(chainId)) {
         case "7":
