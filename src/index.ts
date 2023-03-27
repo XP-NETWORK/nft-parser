@@ -496,10 +496,12 @@ const evmParser = async (
         case "0x94ee593b5E9bf08Ff5CAab70e827e009DB0E2712":
             parsed = await divineAnarchy(nft, account, whitelisted);
             break;
+        case "0x97beA466d5689B9d75c10253EfC819F37aBbF13d":
+            parsed = await divineAnarchy(nft, account, whitelisted);
+            break;
         default:
             parsed = await evm.Default(nft, account, whitelisted);
             break;
     }
-
     return parsed;
 };
