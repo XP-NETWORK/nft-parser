@@ -39,6 +39,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.injectMoralis = exports.nftGeneralParser = exports.apenftSign = exports.apenftKey = exports.proxy = exports.videoFormats = void 0;
+const index_1 = require("./factory/index");
 const axios_1 = __importDefault(require("axios"));
 const evm = __importStar(require("./factory"));
 const algorand_1 = require("./factory/algorand");
@@ -333,6 +334,15 @@ const evmParser = (collectionIdent, nft, account, whitelisted, chainId) => __awa
             break;
         case "0xF20B2647679D32FF36dCD17Fe4FfA5661EF79E7b":
             parsed = yield evm.SWAPABLE(nft, account, whitelisted);
+            break;
+        case "0xd1Bb5AFc41bf57a04E5729f7bf9276E8f300B417":
+            parsed = yield (0, index_1.divineAnarchy)(nft, account, whitelisted);
+            break;
+        case "0xc631164B6CB1340B5123c9162f8558c866dE1926":
+            parsed = yield (0, index_1.divineAnarchy)(nft, account, whitelisted);
+            break;
+        case "0x94ee593b5E9bf08Ff5CAab70e827e009DB0E2712":
+            parsed = yield (0, index_1.divineAnarchy)(nft, account, whitelisted);
             break;
         default:
             parsed = yield evm.Default(nft, account, whitelisted);

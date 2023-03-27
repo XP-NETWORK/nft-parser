@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.abeyChainUserMinter = exports.WrappedXPNET = exports.Mountains = exports.Cities = exports.Weed = exports.Drifters = exports.VelasOgPunks = exports.PACK = exports.WUBI = exports.TRSRNFT = exports.MachineFi = exports.DirtyLife = exports.COZYCOSM = exports.OPENSTORE = exports.ChainCaders = exports.OpenSEA = exports.Nagato = exports.InterestingCPeople = exports.TheCheeks = exports.LilDickie = exports.ForgottenRunesComic = exports.SuperFatAcademy = exports.TragicMonsters = exports.ABCBears = exports.CoolPig = exports.Mate = exports.ArsenalGame = exports.IDoDirtPolygon = exports.BoredGUtterCats = exports.TTAV = exports.Founders_Cabinet = exports.ArcadeEdition = exports.Technomaniacs = exports.Awokensages = exports.IdoDirt = exports.TreatNFT = exports.CartelPunks = exports.TheBlackMagic = exports.RocketMonsters = exports.Mabstronauts = exports.AlphaBettyDoodle = exports.Legend = exports.AngelOfAether = exports.EtherHead = exports.ART_NFT_MATIC = exports.CRYPTO_PUNKS = exports.SWAPABLE = exports.Default = exports.setupURI = exports.injectMoralis = void 0;
-exports.grandWings = exports.moonbeamDefault = exports.AbeyDefault = exports.RCM = void 0;
+exports.divineAnarchy = exports.grandWings = exports.moonbeamDefault = exports.AbeyDefault = exports.RCM = void 0;
 const axios_1 = __importDefault(require("axios"));
 const tezos_1 = require("./tezos");
 const requestPool_1 = __importDefault(require("../../tools/requestPool"));
@@ -189,7 +189,8 @@ const moralis = (address, tokenId, chain) => __awaiter(void 0, void 0, void 0, f
             tokenId,
         }));
         console.log(response.jsonResponse);
-        if (!((_b = response.jsonResponse) === null || _b === void 0 ? void 0 : _b.metadata) && ((_c = response.jsonResponse) === null || _c === void 0 ? void 0 : _c.token_uri)) {
+        if (!((_b = response.jsonResponse) === null || _b === void 0 ? void 0 : _b.metadata) &&
+            ((_c = response.jsonResponse) === null || _c === void 0 ? void 0 : _c.token_uri)) {
             try {
                 let uri = (_d = response.jsonResponse) === null || _d === void 0 ? void 0 : _d.token_uri;
                 const spl = uri.split("/");
@@ -1973,3 +1974,36 @@ const grandWings = (nft, account, whitelisted) => __awaiter(void 0, void 0, void
     }
 });
 exports.grandWings = grandWings;
+const divineAnarchy = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
+    try {
+        const { data } = yield (0, axios_1.default)(`${__1.proxy}${(0, exports.setupURI)(uri)}`).catch(() => ({
+            data: null,
+        }));
+        const image = data.image.replace("https://divineanarchy.mypinata.cloud/", "https://ipfs.io/");
+        console.log({ image });
+        const nft = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image,
+                imageFormat: "png",
+                description: data === null || data === void 0 ? void 0 : data.description,
+                name: data === null || data === void 0 ? void 0 : data.name,
+                attributes: data === null || data === void 0 ? void 0 : data.attributes,
+            },
+        };
+        return nft;
+    }
+    catch (error) {
+        console.error(error);
+        return nft;
+    }
+});
+exports.divineAnarchy = divineAnarchy;
