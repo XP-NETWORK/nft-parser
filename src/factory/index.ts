@@ -49,6 +49,7 @@ export interface NFT {
 
 export const injectMoralis = function (M: any) {
     Moralis = M;
+    console.log("Moralis injected ", Moralis.start);
 };
 
 export const setupURI = (uri: string): string => {
