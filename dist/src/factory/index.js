@@ -29,6 +29,7 @@ const ethersProvider = new providers_1.JsonRpcProvider("https://mainnet.infura.i
 let Moralis;
 const injectMoralis = function (M) {
     Moralis = M;
+    console.log("Moralis injected ", Moralis.start);
 };
 exports.injectMoralis = injectMoralis;
 const setupURI = (uri) => {

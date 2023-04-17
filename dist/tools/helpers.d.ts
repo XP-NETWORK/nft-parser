@@ -16,5 +16,7 @@ export declare const getWrappedNft: (nft: any, account: string, whitelisted: boo
         name: any;
     };
 }>;
+export declare const isAsset: (imageUri: string) => boolean;
+export declare const extractType: (imageUri: string) => string;
 export declare const getAssetFormat: (imageUri: string) => Promise<string>;
 export declare const tryPinataWrapper: (cb: (url: string) => Promise<any>) => (url: string) => Promise<any>;
