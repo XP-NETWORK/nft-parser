@@ -1,8 +1,7 @@
-import { divineAnarchy } from "./factory/index";
 import axios from "axios";
 import * as evm from "./factory";
 import { algorandParser } from "./factory/algorand";
-import * as elrd from "./factory/elrond";
+
 import * as tezos from "./factory/tezos";
 import * as veChain from "./factory/veChain";
 import * as fantom from "./factory/fantom";
@@ -488,16 +487,19 @@ const evmParser = async (
             break;
 
         case "0xd1Bb5AFc41bf57a04E5729f7bf9276E8f300B417":
-            parsed = await divineAnarchy(nft, account, whitelisted);
+            parsed = await evm.divineAnarchy(nft, account, whitelisted);
             break;
         case "0xc631164B6CB1340B5123c9162f8558c866dE1926":
-            parsed = await divineAnarchy(nft, account, whitelisted);
+            parsed = await evm.divineAnarchy(nft, account, whitelisted);
             break;
         case "0x94ee593b5E9bf08Ff5CAab70e827e009DB0E2712":
-            parsed = await divineAnarchy(nft, account, whitelisted);
+            parsed = await evm.divineAnarchy(nft, account, whitelisted);
             break;
         case "0x97beA466d5689B9d75c10253EfC819F37aBbF13d":
-            parsed = await divineAnarchy(nft, account, whitelisted);
+            parsed = await evm.divineAnarchy(nft, account, whitelisted);
+            break;
+        case "0xC2C747E0F7004F9E8817Db2ca4997657a7746928":
+            parsed = await evm.Hashmasks(nft, account, whitelisted);
             break;
         default:
             parsed = await evm.Default(nft, account, whitelisted);

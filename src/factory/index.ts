@@ -140,6 +140,8 @@ export const Default = async (
 
         let { data } = response;
 
+        console.log(data, "data");
+
         if (data === "Post ID not found") {
             throw new Error("404");
         }
@@ -2627,6 +2629,52 @@ export const divineAnarchy = async (
                 whitelisted,
                 image,
                 imageFormat: "png",
+                description: data?.description,
+                name: data?.name,
+                attributes: data?.attributes,
+            },
+        };
+        return nft;
+    } catch (error: any) {
+        console.error(error);
+
+        return nft;
+    }
+};
+
+export const Hashmasks = async (
+    nft: any,
+    account: string,
+    whitelisted: boolean
+) => {
+    const {
+        native,
+        native: { contract, tokenId, chainId },
+        collectionIdent,
+    } = nft;
+
+    const uri = setupURI(
+        `https://hashmap.azurewebsites.net/getMask/${tokenId}`
+    );
+
+    console.log(uri, "uri");
+    try {
+        const { data } = await axios(`${proxy}${uri}`).catch(() => ({
+            data: null,
+        }));
+
+        const nft: NFT = {
+            native,
+            chainId,
+            tokenId,
+            owner: account,
+            uri,
+            contract,
+            collectionIdent,
+            metaData: {
+                whitelisted,
+                image: data.image,
+                imageFormat: "jpg",
                 description: data?.description,
                 name: data?.name,
                 attributes: data?.attributes,
