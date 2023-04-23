@@ -77,3 +77,4 @@ export declare const AbeyDefault: (nft: any, account: string, whitelisted: boole
 export declare const moonbeamDefault: (nft: any, account: string, whitelisted: boolean) => Promise<any>;
 export declare const grandWings: (nft: any, account: string, whitelisted: boolean) => Promise<any>;
 export declare const divineAnarchy: (nft: any, account: string, whitelisted: boolean) => Promise<any>;
+export declare const Hashmasks: (nft: any, account: string, whitelisted: boolean) => Promise<any>;
