@@ -42,7 +42,7 @@ const getWrappedNft = (nft, account, whitelisted) => __awaiter(void 0, void 0, v
     };
 });
 exports.getWrappedNft = getWrappedNft;
-const isAsset = (imageUri) => /(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$|\.svg$)/.test(imageUri);
+const isAsset = (imageUri) => /(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$|\.svg$|\.mov$|\.mkv$|\.flv$|\.wmv$|\.ogg$)/.test(imageUri);
 exports.isAsset = isAsset;
 const extractType = (imageUri) => { var _a; return ((_a = imageUri.match(/(?:\.([^.]+))?$/)) === null || _a === void 0 ? void 0 : _a.at(1)) || ""; };
 exports.extractType = extractType;
