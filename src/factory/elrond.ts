@@ -1,5 +1,5 @@
 import axios from "axios";
-import { isAsset } from "..";
+import { isAsset, getAssetFormat } from "..";
 import { setupURI } from ".";
 import { url } from "inspector";
 //import { sendTelegramMessage } from "../../tools/telegram";
@@ -131,7 +131,6 @@ export const DEFAULT = async (
         const res = await axios(`https://api.elrond.com/nfts/${tokenId}`).catch(
             (e) => ({ data: null })
         );
-        // console.log(res);
 
         const { data } = res;
 
@@ -139,8 +138,9 @@ export const DEFAULT = async (
             data.url ||
             data?.metadata?.image ||
             Base64.decode(data?.uris[1] || data?.uris[0]);
-        const format: string = img.match(/\.[0-9a-z]+$/i)[0].replace(".", "");
-        console.log({ img, format, tokenId });
+
+        const format = await getAssetFormat(img);
+        console.log(format, "format");
 
         const nft: NFT = {
             native,

@@ -43,7 +43,9 @@ export const getWrappedNft = async (
 };
 
 export const isAsset = (imageUri: string) =>
-    /(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$|\.svg$)/.test(imageUri);
+    /(\.png$|\.jpe?g$|\.gif$|\.mp4$|\.avi$|\.webm$|\.svg$|\.mov$|\.mkv$|\.flv$|\.wmv$|\.ogg$)/.test(
+        imageUri
+    );
 
 export const extractType = (imageUri: string) =>
     imageUri.match(/(?:\.([^.]+))?$/)?.at(1) || "";
