@@ -31,25 +31,47 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.nearParser = void 0;
+const axios_1 = __importDefault(require("axios"));
 const evm = __importStar(require("./index"));
 const nearParser = (collectionIdent, nft, account, whitelisted, chainId) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
+    var _a, _b, _c, _d;
     let parsed;
     switch (collectionIdent) {
         default: {
-            if (nft.uri) {
+            let uri;
+            try {
+                uri = evm.setupURI(nft.uri);
+            }
+            catch (_e) {
+                uri = false;
+            }
+            if (uri) {
                 parsed = yield evm.Default(nft, account, whitelisted);
             }
             else {
+                if (nft.media.match(/^\d+\.\S+$/)) {
+                    const res = (yield (0, axios_1.default)(`https://api-v2-mainnet.paras.id/token?token_series_id=${nft.native.token_id}&contract_id=${collectionIdent}`)).data;
+                    if (!res.data)
+                        return;
+                    const { data: { results }, } = res;
+                    console.log(results, "results");
+                    const data = results[0].metadata;
+                    data.image = data.media;
+                    return Object.assign(Object.assign({}, nft), { metaData: Object.assign(Object.assign({}, data), { imageFormat: ((_b = (_a = data.image) === null || _a === void 0 ? void 0 : _a.match(/(?:\.([^.]+))?$/)) === null || _b === void 0 ? void 0 : _b.at(1)) ||
+                                "" }) });
+                }
                 parsed = Object.assign(Object.assign({}, nft), { metaData: {
                         name: nft.title,
                         description: nft.description,
                         image: nft.image,
-                        imageFormat: ((_b = (_a = nft.image) === null || _a === void 0 ? void 0 : _a.match(/(?:\.([^.]+))?$/)) === null || _b === void 0 ? void 0 : _b.at(1)) || "",
+                        imageFormat: ((_d = (_c = nft.image) === null || _c === void 0 ? void 0 : _c.match(/(?:\.([^.]+))?$/)) === null || _d === void 0 ? void 0 : _d.at(1)) || "",
                         collectionName: nft.collectionIdent,
-                        attributes: nft.attributes
+                        attributes: nft.attributes,
                     } });
             }
             break;
