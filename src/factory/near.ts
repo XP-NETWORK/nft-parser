@@ -35,7 +35,7 @@ export const nearParser = async (
                     const {
                         data: { results },
                     } = res;
-                    console.log(results, "results");
+
                     const data = results[0].metadata;
                     data.image = data.media;
                     return {
@@ -54,9 +54,6 @@ export const nearParser = async (
                     metaData: {
                         name: nft.title,
                         description: nft.description,
-                        image: nft.image,
-                        imageFormat:
-                            nft.image?.match(/(?:\.([^.]+))?$/)?.at(1) || "",
                         collectionName: nft.collectionIdent,
                         attributes: nft.attributes,
                     },
@@ -64,6 +61,12 @@ export const nearParser = async (
             }
             break;
         }
+    }
+
+    if (!parsed.metaData.image) {
+        parsed.metaData.image = nft.image;
+        parsed.metaData.imageFormat =
+            nft.image?.match(/(?:\.([^.]+))?$/)?.at(1) || "";
     }
 
     return parsed;
