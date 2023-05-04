@@ -60,7 +60,8 @@ const setupURI = (uri) => {
             return uri;
         }
         else {
-            throw new Error("unknown uri format");
+            return "";
+            //throw new Error("unknown uri format");
         }
     }
     else {
@@ -71,9 +72,9 @@ exports.setupURI = setupURI;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
-    const baseUrl = (0, exports.setupURI)(uri);
-    const url = (0, exports.setupURI)(baseUrl);
     try {
+        const baseUrl = (0, exports.setupURI)(uri);
+        const url = (0, exports.setupURI)(baseUrl);
         let response;
         if (url.includes("moralis") && Moralis) {
             let chain;

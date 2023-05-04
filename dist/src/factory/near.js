@@ -51,7 +51,9 @@ const nearParser = (collectionIdent, nft, account, whitelisted, chainId) => __aw
                 uri = false;
             }
             if (uri) {
-                parsed = yield evm.Default(nft, account, whitelisted);
+                parsed = yield evm
+                    .Default(nft, account, whitelisted)
+                    .catch((e) => nft);
             }
             else {
                 if (nft.media.match(/^\d+\.\S+$/)) {
