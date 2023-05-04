@@ -61,7 +61,6 @@ const nearParser = (collectionIdent, nft, account, whitelisted, chainId) => __aw
                     if (!res.data)
                         return;
                     const { data: { results }, } = res;
-                    console.log(results, "results");
                     const data = results[0].metadata;
                     data.image = data.media;
                     return Object.assign(Object.assign({}, nft), { metaData: Object.assign(Object.assign({}, data), { imageFormat: ((_b = (_a = data.image) === null || _a === void 0 ? void 0 : _a.match(/(?:\.([^.]+))?$/)) === null || _b === void 0 ? void 0 : _b.at(1)) ||
@@ -70,14 +69,17 @@ const nearParser = (collectionIdent, nft, account, whitelisted, chainId) => __aw
                 parsed = Object.assign(Object.assign({}, nft), { metaData: {
                         name: nft.title,
                         description: nft.description,
-                        image: nft.image,
-                        imageFormat: ((_d = (_c = nft.image) === null || _c === void 0 ? void 0 : _c.match(/(?:\.([^.]+))?$/)) === null || _d === void 0 ? void 0 : _d.at(1)) || "",
                         collectionName: nft.collectionIdent,
                         attributes: nft.attributes,
                     } });
             }
             break;
         }
+    }
+    if (!parsed.metaData.image) {
+        parsed.metaData.image = nft.image;
+        parsed.metaData.imageFormat =
+            ((_d = (_c = nft.image) === null || _c === void 0 ? void 0 : _c.match(/(?:\.([^.]+))?$/)) === null || _d === void 0 ? void 0 : _d.at(1)) || "";
     }
     return parsed;
 });
