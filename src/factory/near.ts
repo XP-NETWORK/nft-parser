@@ -21,7 +21,9 @@ export const nearParser = async (
             }
 
             if (uri) {
-                parsed = await evm.Default(nft, account, whitelisted);
+                parsed = await evm
+                    .Default(nft, account, whitelisted)
+                    .catch((e) => nft);
             } else {
                 if (nft.media.match(/^\d+\.\S+$/)) {
                     const res = (

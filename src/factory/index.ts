@@ -75,7 +75,8 @@ export const setupURI = (uri: string): string => {
         } else if (/^https\:\/\//.test(uri)) {
             return uri;
         } else {
-            throw new Error("unknown uri format");
+            return "";
+            //throw new Error("unknown uri format");
         }
     } else {
         return uri;
@@ -93,11 +94,11 @@ export const Default = async (
         collectionIdent,
         uri,
     } = nft;
-    const baseUrl = setupURI(uri);
-
-    const url = setupURI(baseUrl);
-
     try {
+        const baseUrl = setupURI(uri);
+
+        const url = setupURI(baseUrl);
+
         let response;
 
         if (url.includes("moralis") && Moralis) {
