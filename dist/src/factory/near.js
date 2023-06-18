@@ -39,7 +39,7 @@ exports.nearParser = void 0;
 const axios_1 = __importDefault(require("axios"));
 const evm = __importStar(require("./index"));
 const nearParser = (collectionIdent, nft, account, whitelisted, chainId) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
     let parsed;
     switch (collectionIdent) {
         default: {
@@ -47,7 +47,7 @@ const nearParser = (collectionIdent, nft, account, whitelisted, chainId) => __aw
             try {
                 uri = evm.setupURI(nft.uri);
             }
-            catch (_e) {
+            catch (_f) {
                 uri = false;
             }
             if (uri) {
@@ -76,10 +76,10 @@ const nearParser = (collectionIdent, nft, account, whitelisted, chainId) => __aw
             break;
         }
     }
-    if (!parsed.metaData.image) {
+    if (!((_c = parsed.metaData) === null || _c === void 0 ? void 0 : _c.image)) {
         parsed.metaData.image = nft.image;
         parsed.metaData.imageFormat =
-            ((_d = (_c = nft.image) === null || _c === void 0 ? void 0 : _c.match(/(?:\.([^.]+))?$/)) === null || _d === void 0 ? void 0 : _d.at(1)) || "";
+            ((_e = (_d = nft.image) === null || _d === void 0 ? void 0 : _d.match(/(?:\.([^.]+))?$/)) === null || _e === void 0 ? void 0 : _e.at(1)) || "";
     }
     return parsed;
 });
