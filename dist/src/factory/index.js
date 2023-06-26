@@ -43,6 +43,9 @@ const setupURI = (uri) => {
         else if (/^ipfs:\/\//.test(uri)) {
             return uri.replace(/ipfs:\/\/(?:ipfs)?/, "https://ipfs.io/ipfs/"); // "https://ipfs.io/ipfs/" + uri.split("://")[1];
         }
+        else if (/ipfs\.infura\.io/.test(uri)) {
+            return uri.replace(/ipfs\.infura\.io/, "ipfs.io");
+        }
         else if (/^https\:\/\/ipfs.io/.test(uri)) {
             return uri;
         }
