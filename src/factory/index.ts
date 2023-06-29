@@ -137,6 +137,14 @@ export const Default = async (
             }
         }
 
+        if (/^data:application/.test(url)) {
+            response = {
+                data: await fetch(url)
+                    .then((res) => res.json())
+                    .then((res) => res),
+            };
+        }
+
         if (!response) {
             response = await tryPinataWrapper((url) => axios(url))(url);
         }
@@ -2235,7 +2243,7 @@ export const Drifters = async (
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: `https://drifters-nft.s3.amazonaws.com/${tokenId}.png`,
+                image: setupURI(data.image),
                 imageFormat: "png",
                 description: data?.description,
                 name: data?.name,
