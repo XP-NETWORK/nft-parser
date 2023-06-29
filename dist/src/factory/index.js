@@ -112,6 +112,13 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
                     break;
             }
         }
+        if (/^data:application/.test(url)) {
+            response = {
+                data: yield fetch(url)
+                    .then((res) => res.json())
+                    .then((res) => res),
+            };
+        }
         if (!response) {
             response = yield (0, helpers_1.tryPinataWrapper)((url) => (0, axios_1.default)(url))(url);
         }
@@ -1697,7 +1704,7 @@ const Drifters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: `https://drifters-nft.s3.amazonaws.com/${tokenId}.png`,
+                image: (0, exports.setupURI)(data.image),
                 imageFormat: "png",
                 description: data === null || data === void 0 ? void 0 : data.description,
                 name: data === null || data === void 0 ? void 0 : data.name,
