@@ -151,8 +151,6 @@ export const Default = async (
 
         let { data } = response;
 
-        console.log(data, "data");
-
         if (data === "Post ID not found") {
             throw new Error("404");
         }
