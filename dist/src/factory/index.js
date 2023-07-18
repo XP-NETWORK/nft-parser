@@ -123,7 +123,6 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             response = yield (0, helpers_1.tryPinataWrapper)((url) => (0, axios_1.default)(url))(url);
         }
         let { data } = response;
-        console.log(data, "data");
         if (data === "Post ID not found") {
             throw new Error("404");
         }

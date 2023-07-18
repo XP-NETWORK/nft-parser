@@ -44,7 +44,9 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     let collectionAddress = "";
     try {
         const url = (0, _1.setupURI)(uri);
-        const res = yield (0, axios_1.default)(__1.proxy + url).catch((e) => ({ data: undefined }));
+        const res = yield (0, axios_1.default)(__1.proxy + url).catch((e) => ({
+            data: undefined,
+        }));
         data = res.data;
     }
     catch (e) {
@@ -57,7 +59,9 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
         }
         catch (error) {
             console.log((error === null || error === void 0 ? void 0 : error.message) || "parse timeout forest");
-            return Object.assign(Object.assign({}, nft), (((_e = error === null || error === void 0 ? void 0 : error.response) === null || _e === void 0 ? void 0 : _e.status) === 404 ? { errorStatus: 404 } : {}));
+            return Object.assign(Object.assign({}, nft), (((_e = error === null || error === void 0 ? void 0 : error.response) === null || _e === void 0 ? void 0 : _e.status) === 404
+                ? { errorStatus: 404 }
+                : {}));
         }
     }
     try {
@@ -71,7 +75,8 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             }
             else {
                 const res = yield getNFTfromTonApi(tokenId);
-                _contract = ((_g = res.data) === null || _g === void 0 ? void 0 : _g.nft_item["collection_address"]) || "SingleNFt";
+                _contract =
+                    ((_g = res.data) === null || _g === void 0 ? void 0 : _g.nft_item["collection_address"]) || "SingleNFt";
             }
         }
         else {
