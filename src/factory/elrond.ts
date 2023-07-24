@@ -134,13 +134,16 @@ export const DEFAULT = async (
 
         const { data } = res;
 
+        if (!data) {
+            throw new Error("Cant query nft by id in elrond");
+        }
+
         const img =
             data.url ||
             data?.metadata?.image ||
             Base64.decode(data?.uris[1] || data?.uris[0]);
 
         const format = await getAssetFormat(img);
-        console.log(format, "format");
 
         const nft: NFT = {
             native,
@@ -199,15 +202,17 @@ const tryBasic = async (
     } = nft;
 
     try {
+        let url = uri;
         const format: string = uri
             .match(/\.[0-9a-z]+$/i)[0]
             .replace(".", "")
             .toUpperCase();
 
-        if (imageFormats.includes(format) || videoFormats.includes(format))
-            return;
+        if (imageFormats.includes(format) || videoFormats.includes(format)) {
+            url = native.uri;
+        }
 
-        const res = await axios(proxy + uri).catch((e) => ({ data: null }));
+        const res = await axios(proxy + url).catch((e) => ({ data: null }));
 
         const { data } = res;
 
@@ -216,7 +221,7 @@ const tryBasic = async (
             chainId,
             tokenId,
             owner: account,
-            uri,
+            uri: url,
             contract,
             collectionIdent,
             metaData: {
