@@ -89,11 +89,13 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     try {
         const res = yield (0, axios_1.default)(`https://api.elrond.com/nfts/${tokenId}`).catch((e) => ({ data: null }));
         const { data } = res;
+        if (!data) {
+            throw new Error("Cant query nft by id in elrond");
+        }
         const img = data.url ||
             ((_a = data === null || data === void 0 ? void 0 : data.metadata) === null || _a === void 0 ? void 0 : _a.image) ||
             js_base64_1.Base64.decode((data === null || data === void 0 ? void 0 : data.uris[1]) || (data === null || data === void 0 ? void 0 : data.uris[0]));
         const format = yield (0, __1.getAssetFormat)(img);
-        console.log(format, "format");
         const nft = {
             native,
             chainId,
@@ -137,20 +139,22 @@ exports.DEFAULT = DEFAULT;
 const tryBasic = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
+        let url = uri;
         const format = uri
             .match(/\.[0-9a-z]+$/i)[0]
             .replace(".", "")
             .toUpperCase();
-        if (imageFormats.includes(format) || __3.videoFormats.includes(format))
-            return;
-        const res = yield (0, axios_1.default)(__2.proxy + uri).catch((e) => ({ data: null }));
+        if (imageFormats.includes(format) || __3.videoFormats.includes(format)) {
+            url = native.uri;
+        }
+        const res = yield (0, axios_1.default)(__2.proxy + url).catch((e) => ({ data: null }));
         const { data } = res;
         const nft = {
             native,
             chainId,
             tokenId,
             owner: account,
-            uri,
+            uri: url,
             contract,
             collectionIdent,
             metaData: {
