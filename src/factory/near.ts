@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as evm from "./index";
-
+import { getAssetFormat } from "..";
 import { NFT } from "./index";
 
 export const nearParser = async (
@@ -38,15 +38,14 @@ export const nearParser = async (
 
                     const data = results[0].metadata;
                     data.image = data.media;
+                    const imageFormat = await getAssetFormat(data.image).catch(
+                        (e) => ""
+                    );
                     return {
                         ...nft,
                         metaData: {
                             ...data,
-                            imageFormat:
-                                data.image
-                                    ?.match(/\.[0-9a-z]+$/i)
-                                    ?.at(0)
-                                    ?.replace(".", "") || "",
+                            imageFormat,
                         },
                     };
                 }
