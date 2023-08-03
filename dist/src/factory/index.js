@@ -1388,7 +1388,7 @@ const OpenSEA = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
 });
 exports.OpenSEA = OpenSEA;
 const ChainCaders = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _26, _27, _28, _29, _30, _31, _32;
+    var _26, _27, _28, _29, _30, _31, _32, _33, _34;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = yield (0, axios_1.default)(`${__1.proxy}https://api.alturanft.com/api/item/56/${collectionIdent}/${tokenId}`);
@@ -1405,11 +1405,11 @@ const ChainCaders = (nft, account, whitelisted) => __awaiter(void 0, void 0, voi
             metaData: {
                 whitelisted,
                 image: (_26 = data === null || data === void 0 ? void 0 : data.item) === null || _26 === void 0 ? void 0 : _26.imageUrl,
-                imageFormat: (_28 = (_27 = data === null || data === void 0 ? void 0 : data.item) === null || _27 === void 0 ? void 0 : _27.imageUrl) === null || _28 === void 0 ? void 0 : _28.match(/(?:\.([^.]+))?$/)[1],
-                name: (_29 = data === null || data === void 0 ? void 0 : data.item) === null || _29 === void 0 ? void 0 : _29.name,
-                description: (_30 = data === null || data === void 0 ? void 0 : data.item) === null || _30 === void 0 ? void 0 : _30.description,
-                collectionName: (_31 = data === null || data === void 0 ? void 0 : data.item) === null || _31 === void 0 ? void 0 : _31.collectionName,
-                attributes: (_32 = data === null || data === void 0 ? void 0 : data.item) === null || _32 === void 0 ? void 0 : _32.properties,
+                imageFormat: (_30 = (_29 = (_28 = (_27 = data === null || data === void 0 ? void 0 : data.item) === null || _27 === void 0 ? void 0 : _27.imageUrl) === null || _28 === void 0 ? void 0 : _28.match(/\.[0-9a-z]+$/i)) === null || _29 === void 0 ? void 0 : _29.at(0)) === null || _30 === void 0 ? void 0 : _30.replace(".", ""),
+                name: (_31 = data === null || data === void 0 ? void 0 : data.item) === null || _31 === void 0 ? void 0 : _31.name,
+                description: (_32 = data === null || data === void 0 ? void 0 : data.item) === null || _32 === void 0 ? void 0 : _32.description,
+                collectionName: (_33 = data === null || data === void 0 ? void 0 : data.item) === null || _33 === void 0 ? void 0 : _33.collectionName,
+                attributes: (_34 = data === null || data === void 0 ? void 0 : data.item) === null || _34 === void 0 ? void 0 : _34.properties,
                 contractType: "1155",
             },
         };
@@ -1550,7 +1550,7 @@ const MachineFi = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
 });
 exports.MachineFi = MachineFi;
 const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _33, _34, _35;
+    var _35, _36, _37;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const { data } = yield (0, axios_1.default)(`${__1.proxy}${uri}`).catch(() => ({
@@ -1567,10 +1567,10 @@ const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             wrapped: data && data.wrapped,
             metaData: {
                 whitelisted,
-                image: data && ((_33 = data.data) === null || _33 === void 0 ? void 0 : _33.image),
+                image: data && ((_35 = data.data) === null || _35 === void 0 ? void 0 : _35.image),
                 imageFormat: "png",
-                description: data && ((_34 = data.data) === null || _34 === void 0 ? void 0 : _34.description),
-                name: data && ((_35 = data.data) === null || _35 === void 0 ? void 0 : _35.name),
+                description: data && ((_36 = data.data) === null || _36 === void 0 ? void 0 : _36.description),
+                name: data && ((_37 = data.data) === null || _37 === void 0 ? void 0 : _37.name),
             },
         };
         return nft;
@@ -1583,7 +1583,7 @@ const TRSRNFT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
 exports.TRSRNFT = TRSRNFT;
 //WUBI
 const WUBI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _36;
+    var _38;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = __1.proxy
@@ -1610,7 +1610,7 @@ const WUBI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
         return nft;
     }
     catch (error) {
-        return Object.assign(Object.assign({}, nft), (((_36 = error.response) === null || _36 === void 0 ? void 0 : _36.status) === 429 ? { errorStatus: 429 } : {}));
+        return Object.assign(Object.assign({}, nft), (((_38 = error.response) === null || _38 === void 0 ? void 0 : _38.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
 exports.WUBI = WUBI;
@@ -1650,7 +1650,7 @@ const PACK = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
 });
 exports.PACK = PACK;
 const VelasOgPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _37, _38;
+    var _39, _40;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = yield (0, axios_1.default)(uri);
@@ -1680,12 +1680,12 @@ const VelasOgPunks = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign(Object.assign({}, nft), (((_37 = error.response) === null || _37 === void 0 ? void 0 : _37.status) === 429 ? { errorStatus: 429 } : {})), (((_38 = error.response) === null || _38 === void 0 ? void 0 : _38.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign(Object.assign({}, nft), (((_39 = error.response) === null || _39 === void 0 ? void 0 : _39.status) === 429 ? { errorStatus: 429 } : {})), (((_40 = error.response) === null || _40 === void 0 ? void 0 : _40.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.VelasOgPunks = VelasOgPunks;
 const Drifters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _39;
+    var _41;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = __1.proxy
@@ -1716,12 +1716,12 @@ const Drifters = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
         return nft;
     }
     catch (error) {
-        return Object.assign(Object.assign({}, nft), (((_39 = error.response) === null || _39 === void 0 ? void 0 : _39.status) === 429 ? { errorStatus: 429 } : {}));
+        return Object.assign(Object.assign({}, nft), (((_41 = error.response) === null || _41 === void 0 ? void 0 : _41.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
 exports.Drifters = Drifters;
 const Weed = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _40;
+    var _42;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     if (__1.proxy)
         return nft;
@@ -1752,12 +1752,12 @@ const Weed = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
         return nft;
     }
     catch (error) {
-        return Object.assign(Object.assign({}, nft), (((_40 = error.response) === null || _40 === void 0 ? void 0 : _40.status) === 429 ? { errorStatus: 429 } : {}));
+        return Object.assign(Object.assign({}, nft), (((_42 = error.response) === null || _42 === void 0 ? void 0 : _42.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
 exports.Weed = Weed;
 const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _41;
+    var _43;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const response = __1.proxy
@@ -1788,7 +1788,7 @@ const Cities = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
         return nft;
     }
     catch (error) {
-        return Object.assign(Object.assign({}, nft), (((_41 = error.response) === null || _41 === void 0 ? void 0 : _41.status) === 429 ? { errorStatus: 429 } : {}));
+        return Object.assign(Object.assign({}, nft), (((_43 = error.response) === null || _43 === void 0 ? void 0 : _43.status) === 429 ? { errorStatus: 429 } : {}));
     }
 });
 exports.Cities = Cities;

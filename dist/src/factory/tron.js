@@ -34,7 +34,7 @@ const tronParser = (collectionIdent, nft, account, whitelisted) => __awaiter(voi
 });
 exports.tronParser = tronParser;
 const SpaceClub = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d;
+    var _a, _b, _c, _d, _e;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const query = {
         operationName: "assetsDetail",
@@ -68,7 +68,7 @@ const SpaceClub = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
             metaData: {
                 whitelisted,
                 image: asset === null || asset === void 0 ? void 0 : asset.imageUrl,
-                imageFormat: (_d = (_c = asset === null || asset === void 0 ? void 0 : asset.imageUrl) === null || _c === void 0 ? void 0 : _c.match(/(?:\.([^.]+))?$/)) === null || _d === void 0 ? void 0 : _d.at(1),
+                imageFormat: ((_e = (_d = (_c = asset === null || asset === void 0 ? void 0 : asset.imageUrl) === null || _c === void 0 ? void 0 : _c.match(/\.[0-9a-z]+$/i)) === null || _d === void 0 ? void 0 : _d.at(0)) === null || _e === void 0 ? void 0 : _e.replace(".", "")) || "",
                 attributes: asset === null || asset === void 0 ? void 0 : asset.properties,
                 description: asset.description,
                 name: asset.name,
@@ -84,7 +84,7 @@ const SpaceClub = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 
 });
 exports.SpaceClub = SpaceClub;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _e;
+    var _f;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     const baseUrl = uri;
     const url = `${__1.proxy}${(0, _1.setupURI)(uri)}`;
@@ -114,7 +114,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     }
     catch (error) {
         console.error(error);
-        return Object.assign(Object.assign({}, nft), (((_e = error.response) === null || _e === void 0 ? void 0 : _e.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign({}, nft), (((_f = error.response) === null || _f === void 0 ? void 0 : _f.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.Default = Default;
