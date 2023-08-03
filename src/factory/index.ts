@@ -1839,7 +1839,10 @@ export const ChainCaders = async (
             metaData: {
                 whitelisted,
                 image: data?.item?.imageUrl,
-                imageFormat: data?.item?.imageUrl?.match(/(?:\.([^.]+))?$/)[1],
+                imageFormat: data?.item?.imageUrl
+                    ?.match(/\.[0-9a-z]+$/i)
+                    ?.at(0)
+                    ?.replace(".", ""),
                 name: data?.item?.name,
                 description: data?.item?.description,
                 collectionName: data?.item?.collectionName,

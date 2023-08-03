@@ -43,8 +43,10 @@ export const nearParser = async (
                         metaData: {
                             ...data,
                             imageFormat:
-                                data.image?.match(/(?:\.([^.]+))?$/)?.at(1) ||
-                                "",
+                                data.image
+                                    ?.match(/\.[0-9a-z]+$/i)
+                                    ?.at(0)
+                                    ?.replace(".", "") || "",
                         },
                     };
                 }
@@ -66,7 +68,10 @@ export const nearParser = async (
     if (!parsed.metaData?.image) {
         parsed.metaData.image = nft.image;
         parsed.metaData.imageFormat =
-            nft.image?.match(/(?:\.([^.]+))?$/)?.at(1) || "";
+            nft.image
+                ?.match(/\.[0-9a-z]+$/i)
+                ?.at(0)
+                ?.replace(".", "") || "";
     }
 
     return parsed;
