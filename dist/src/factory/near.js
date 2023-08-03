@@ -38,8 +38,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.nearParser = void 0;
 const axios_1 = __importDefault(require("axios"));
 const evm = __importStar(require("./index"));
+const __1 = require("..");
 const nearParser = (collectionIdent, nft, account, whitelisted, chainId) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a, _b, _c, _d;
     let parsed;
     switch (collectionIdent) {
         default: {
@@ -47,7 +48,7 @@ const nearParser = (collectionIdent, nft, account, whitelisted, chainId) => __aw
             try {
                 uri = evm.setupURI(nft.uri);
             }
-            catch (_h) {
+            catch (_e) {
                 uri = false;
             }
             if (uri) {
@@ -63,7 +64,8 @@ const nearParser = (collectionIdent, nft, account, whitelisted, chainId) => __aw
                     const { data: { results }, } = res;
                     const data = results[0].metadata;
                     data.image = data.media;
-                    return Object.assign(Object.assign({}, nft), { metaData: Object.assign(Object.assign({}, data), { imageFormat: ((_c = (_b = (_a = data.image) === null || _a === void 0 ? void 0 : _a.match(/\.[0-9a-z]+$/i)) === null || _b === void 0 ? void 0 : _b.at(0)) === null || _c === void 0 ? void 0 : _c.replace(".", "")) || "" }) });
+                    const imageFormat = yield (0, __1.getAssetFormat)(data.image).catch((e) => "");
+                    return Object.assign(Object.assign({}, nft), { metaData: Object.assign(Object.assign({}, data), { imageFormat }) });
                 }
                 parsed = Object.assign(Object.assign({}, nft), { metaData: {
                         name: nft.title,
@@ -75,10 +77,10 @@ const nearParser = (collectionIdent, nft, account, whitelisted, chainId) => __aw
             break;
         }
     }
-    if (!((_d = parsed.metaData) === null || _d === void 0 ? void 0 : _d.image)) {
+    if (!((_a = parsed.metaData) === null || _a === void 0 ? void 0 : _a.image)) {
         parsed.metaData.image = nft.image;
         parsed.metaData.imageFormat =
-            ((_g = (_f = (_e = nft.image) === null || _e === void 0 ? void 0 : _e.match(/\.[0-9a-z]+$/i)) === null || _f === void 0 ? void 0 : _f.at(0)) === null || _g === void 0 ? void 0 : _g.replace(".", "")) || "";
+            ((_d = (_c = (_b = nft.image) === null || _b === void 0 ? void 0 : _b.match(/\.[0-9a-z]+$/i)) === null || _c === void 0 ? void 0 : _c.at(0)) === null || _d === void 0 ? void 0 : _d.replace(".", "")) || "";
     }
     return parsed;
 });
