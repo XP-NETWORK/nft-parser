@@ -165,16 +165,23 @@ export const Default = async (
     } = nft;
 
     try {
-        const [json, foramt] = await Promise.all([
+        let image = "";
+        let [json, foramt] = await Promise.all([
             axios(proxy + `https://api.algoxnft.com/v1/assets/${tokenId}`),
             getAssetFormat(setupURI(uri)),
         ]);
 
+        if (!foramt && /\.json$/.test(uri)) {
+            const res = (await axios(proxy + setupURI(uri))).data;
+            image = res.image;
+            if (image) {
+                foramt = await getAssetFormat(setupURI(image));
+            }
+        }
+
         const { data } = json;
 
-        const image = /\.json$/.test(uri)
-            ? data.uri || data.arc3_data?.image
-            : uri;
+        image = !image ? data.arc3_data?.image || data.url : image;
 
         return {
             native,
