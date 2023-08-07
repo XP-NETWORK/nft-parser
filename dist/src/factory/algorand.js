@@ -140,14 +140,20 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     var _a, _b, _c;
     const { native, native: { contract, tokenId, chainId, name }, collectionIdent, uri, } = nft;
     try {
-        const [json, foramt] = yield Promise.all([
+        let image = "";
+        let [json, foramt] = yield Promise.all([
             (0, axios_1.default)(__2.proxy + `https://api.algoxnft.com/v1/assets/${tokenId}`),
             (0, __1.getAssetFormat)((0, _1.setupURI)(uri)),
         ]);
+        if (!foramt && /\.json$/.test(uri)) {
+            const res = (yield (0, axios_1.default)(__2.proxy + (0, _1.setupURI)(uri))).data;
+            image = res.image;
+            if (image) {
+                foramt = yield (0, __1.getAssetFormat)((0, _1.setupURI)(image));
+            }
+        }
         const { data } = json;
-        const image = /\.json$/.test(uri)
-            ? data.uri || ((_a = data.arc3_data) === null || _a === void 0 ? void 0 : _a.image)
-            : uri;
+        image = !image ? ((_a = data.arc3_data) === null || _a === void 0 ? void 0 : _a.image) || data.url : image;
         return {
             native,
             chainId,
