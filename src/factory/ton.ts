@@ -2,11 +2,8 @@ import axios from "axios";
 
 import requestPool from "../../tools/requestPool";
 import { NFT, setupURI } from ".";
-
+import { extractType } from "..";
 import { proxy } from "..";
-
-const pool = requestPool(3000);
-const cheerio = require("cherio");
 
 export const tonParser = async (
     collectionIdent: string,
@@ -15,7 +12,13 @@ export const tonParser = async (
     whitelisted: boolean
 ) => {
     let parsed;
+    console.log(nft.uri, "nft.uri");
     switch (true) {
+        case /^tonstorage/.test(nft.uri): {
+            parsed = await TonStorage(nft, account, whitelisted);
+            break;
+        }
+
         default:
             parsed = await Default(nft, account, whitelisted);
             break;
@@ -118,5 +121,42 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
         return nftRes;
     } catch (e: any) {
         console.log(e?.message || e, "in ton Parser");
+    }
+};
+
+const TonStorage = async (nft: any, account: string, whitelisted: boolean) => {
+    const {
+        native: { tokenId },
+    } = nft;
+
+    try {
+        const address = encodeURIComponent(tokenId);
+
+        const uri = `https://tonapi.io/v2/nfts/${address}`;
+        const res = (await axios(uri)).data;
+        if (res) {
+            const image = res.previews?.at(-1)?.url;
+            const nftRes: NFT = {
+                ...nft,
+                owner: account,
+                uri,
+                metaData: {
+                    whitelisted,
+                    image,
+                    imageFormat: extractType(image),
+                    description: res.collection?.description,
+                    name: res.collection?.name,
+                    attributes: res.metadata?.attributes,
+                    collectionName: res.metadata?.name,
+                },
+            };
+
+            console.log(nftRes, "nftRes");
+
+            return nftRes;
+        }
+    } catch (e) {
+        console.log(e, "e");
+        return nft;
     }
 };
