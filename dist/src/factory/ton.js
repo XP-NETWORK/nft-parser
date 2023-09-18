@@ -14,14 +14,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.tonParser = void 0;
 const axios_1 = __importDefault(require("axios"));
-const requestPool_1 = __importDefault(require("../../tools/requestPool"));
 const _1 = require(".");
 const __1 = require("..");
-const pool = (0, requestPool_1.default)(3000);
-const cheerio = require("cherio");
+const __2 = require("..");
 const tonParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
+    console.log(nft.uri, "nft.uri");
     switch (true) {
+        case /^tonstorage/.test(nft.uri): {
+            parsed = yield TonStorage(nft, account, whitelisted);
+            break;
+        }
         default:
             parsed = yield Default(nft, account, whitelisted);
             break;
@@ -30,7 +33,7 @@ const tonParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void
 });
 exports.tonParser = tonParser;
 const getNFTfromTonApi = (address) => __awaiter(void 0, void 0, void 0, function* () {
-    const res = yield (0, axios_1.default)(__1.proxy + `https://api.ton.cat/v2/contracts/nft/${address}`).catch((e) => {
+    const res = yield (0, axios_1.default)(__2.proxy + `https://api.ton.cat/v2/contracts/nft/${address}`).catch((e) => {
         console.log(e, "e");
         return { data: undefined };
     });
@@ -44,7 +47,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     let collectionAddress = "";
     try {
         const url = (0, _1.setupURI)(uri);
-        const res = yield (0, axios_1.default)(__1.proxy + url).catch((e) => ({
+        const res = yield (0, axios_1.default)(__2.proxy + url).catch((e) => ({
             data: undefined,
         }));
         data = res.data;
@@ -104,5 +107,32 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     }
     catch (e) {
         console.log((e === null || e === void 0 ? void 0 : e.message) || e, "in ton Parser");
+    }
+});
+const TonStorage = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _j, _k, _l, _m, _o, _p;
+    const { native: { tokenId }, } = nft;
+    try {
+        const address = encodeURIComponent(tokenId);
+        const uri = `https://tonapi.io/v2/nfts/${address}`;
+        const res = (yield (0, axios_1.default)(uri)).data;
+        if (res) {
+            const image = (_k = (_j = res.previews) === null || _j === void 0 ? void 0 : _j.at(-1)) === null || _k === void 0 ? void 0 : _k.url;
+            const nftRes = Object.assign(Object.assign({}, nft), { owner: account, uri, metaData: {
+                    whitelisted,
+                    image,
+                    imageFormat: (0, __1.extractType)(image),
+                    description: (_l = res.collection) === null || _l === void 0 ? void 0 : _l.description,
+                    name: (_m = res.collection) === null || _m === void 0 ? void 0 : _m.name,
+                    attributes: (_o = res.metadata) === null || _o === void 0 ? void 0 : _o.attributes,
+                    collectionName: (_p = res.metadata) === null || _p === void 0 ? void 0 : _p.name,
+                } });
+            console.log(nftRes, "nftRes");
+            return nftRes;
+        }
+    }
+    catch (e) {
+        console.log(e, "e");
+        return nft;
     }
 });
