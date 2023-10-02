@@ -17,9 +17,8 @@ const axios_1 = __importDefault(require("axios"));
 const _1 = require(".");
 const __1 = require("..");
 const __2 = require("..");
-const tonParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+const tonParser = (_, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     let parsed;
-    console.log(nft.uri, "nft.uri");
     switch (true) {
         case /^tonstorage/.test(nft.uri): {
             parsed = yield TonStorage(nft, account, whitelisted);
@@ -47,7 +46,7 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
     let collectionAddress = "";
     try {
         const url = (0, _1.setupURI)(uri);
-        const res = yield (0, axios_1.default)(__2.proxy + url).catch((e) => ({
+        const res = yield (0, axios_1.default)((url.match(/^data\:application/) ? "" : __2.proxy) + url).catch((e) => ({
             data: undefined,
         }));
         data = res.data;
@@ -111,9 +110,9 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
 });
 const TonStorage = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
     var _j, _k, _l, _m, _o, _p;
-    const { native: { tokenId }, } = nft;
+    const { native: { tokenId }, wrapped, } = nft;
     try {
-        const address = encodeURIComponent(tokenId);
+        const address = encodeURIComponent(wrapped ? wrapped.item_address : tokenId);
         const uri = `https://tonapi.io/v2/nfts/${address}`;
         const res = (yield (0, axios_1.default)(uri)).data;
         if (res) {
@@ -127,12 +126,11 @@ const TonStorage = (nft, account, whitelisted) => __awaiter(void 0, void 0, void
                     attributes: (_o = res.metadata) === null || _o === void 0 ? void 0 : _o.attributes,
                     collectionName: (_p = res.metadata) === null || _p === void 0 ? void 0 : _p.name,
                 } });
-            console.log(nftRes, "nftRes");
             return nftRes;
         }
     }
     catch (e) {
-        console.log(e, "e");
+        //console.log(e, "e");
         return nft;
     }
 });
