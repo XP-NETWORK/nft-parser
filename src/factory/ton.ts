@@ -6,13 +6,13 @@ import { extractType } from "..";
 import { proxy } from "..";
 
 export const tonParser = async (
-    collectionIdent: string,
+    _: string,
     nft: any,
     account: string,
     whitelisted: boolean
 ) => {
     let parsed;
-    console.log(nft.uri, "nft.uri");
+
     switch (true) {
         case /^tonstorage/.test(nft.uri): {
             parsed = await TonStorage(nft, account, whitelisted);
@@ -52,7 +52,9 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
     try {
         const url = setupURI(uri);
 
-        const res = await axios(proxy + url).catch((e) => ({
+        const res = await axios(
+            (url.match(/^data\:application/) ? "" : proxy) + url
+        ).catch((e) => ({
             data: undefined,
         }));
 
@@ -127,10 +129,13 @@ const Default = async (nft: any, account: string, whitelisted: boolean) => {
 const TonStorage = async (nft: any, account: string, whitelisted: boolean) => {
     const {
         native: { tokenId },
+        wrapped,
     } = nft;
 
     try {
-        const address = encodeURIComponent(tokenId);
+        const address = encodeURIComponent(
+            wrapped ? wrapped.item_address : tokenId
+        );
 
         const uri = `https://tonapi.io/v2/nfts/${address}`;
         const res = (await axios(uri)).data;
@@ -151,12 +156,10 @@ const TonStorage = async (nft: any, account: string, whitelisted: boolean) => {
                 },
             };
 
-            console.log(nftRes, "nftRes");
-
             return nftRes;
         }
     } catch (e) {
-        console.log(e, "e");
+        //console.log(e, "e");
         return nft;
     }
 };
