@@ -131,6 +131,7 @@ export const Default = async (
                     response = await moralis(contract, tokenId, chain);
                     response = { data: response };
                     break;
+
                 default:
                     response = undefined;
                     break;

@@ -5,7 +5,6 @@ import { setupURI } from "../src/factory";
 import { proxy } from "../src";
 
 import { fromBuffer } from "file-type";
-import { rejects } from "assert";
 
 export const getWrappedNft = async (
     nft: any,

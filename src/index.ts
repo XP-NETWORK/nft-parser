@@ -12,6 +12,7 @@ import { tronParser } from "./factory/tron";
 import { tonParser } from "./factory/ton";
 import { abeyParser } from "./factory/abey";
 import { nearParser } from "./factory/near";
+import { hederaParser } from "./factory/hedera";
 
 export const videoFormats = [
     "MP4",
@@ -284,6 +285,14 @@ export const nftGeneralParser = async (
 
         case "31":
             parsed = await nearParser(
+                collectionIdent,
+                nft,
+                account,
+                whitelisted
+            );
+            break;
+        case "29":
+            parsed = await hederaParser(
                 collectionIdent,
                 nft,
                 account,
