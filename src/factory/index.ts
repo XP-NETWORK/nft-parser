@@ -237,7 +237,15 @@ const tryBasic = async (url: string) => {
 
         return response.data;
     } catch (error) {
-        return undefined;
+        try {
+            let newUrl = setupURI(url).replace("ipfs.io", "xpnetwork.infura-ipfs.io");
+            console.log("newUrl", newUrl);
+            const response = await axios(newUrl);
+            return response.data;
+        }
+        catch (error) {
+            return undefined;
+        }
     }
 };
 
