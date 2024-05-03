@@ -189,7 +189,15 @@ const tryBasic = (url) => __awaiter(void 0, void 0, void 0, function* () {
         return response.data;
     }
     catch (error) {
-        return undefined;
+        try {
+            let newUrl = (0, exports.setupURI)(url).replace("ipfs.io", "xpnetwork.infura-ipfs.io");
+            console.log("newUrl", newUrl);
+            const response = yield (0, axios_1.default)(newUrl);
+            return response.data;
+        }
+        catch (error) {
+            return undefined;
+        }
     }
 });
 const moralis = (address, tokenId, chain) => __awaiter(void 0, void 0, void 0, function* () {
