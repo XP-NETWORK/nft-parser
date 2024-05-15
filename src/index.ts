@@ -13,6 +13,7 @@ import { tonParser } from "./factory/ton";
 import { abeyParser } from "./factory/abey";
 import { nearParser } from "./factory/near";
 import { hederaParser } from "./factory/hedera";
+import { casperParser } from "./factory/casper";
 
 export const videoFormats = [
     "MP4",
@@ -293,6 +294,14 @@ export const nftGeneralParser = async (
             break;
         case "29":
             parsed = await hederaParser(
+                collectionIdent,
+                nft,
+                account,
+                whitelisted
+            );
+            break;
+        case "39":
+            parsed = await casperParser(
                 collectionIdent,
                 nft,
                 account,
