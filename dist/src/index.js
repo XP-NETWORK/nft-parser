@@ -53,6 +53,7 @@ const ton_1 = require("./factory/ton");
 const abey_1 = require("./factory/abey");
 const near_1 = require("./factory/near");
 const hedera_1 = require("./factory/hedera");
+const casper_1 = require("./factory/casper");
 exports.videoFormats = [
     "MP4",
     "MOV",
@@ -162,6 +163,9 @@ const nftGeneralParser = (nft, account, whitelisted) => __awaiter(void 0, void 0
             break;
         case "29":
             parsed = yield (0, hedera_1.hederaParser)(collectionIdent, nft, account, whitelisted);
+            break;
+        case "39":
+            parsed = yield (0, casper_1.casperParser)(collectionIdent, nft, account, whitelisted);
             break;
         default:
             return yield evmParser(collectionIdent, nft, account, whitelisted);
