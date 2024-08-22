@@ -204,7 +204,7 @@ const tryBasic = async (
     try {
         let url = uri;
         const format: string = uri
-            .match(/\.[0-9a-z]+$/i)[0]
+            .match(/\.[0-9a-z]+$/i)?.[0]
             .replace(".", "")
             .toUpperCase();
 
@@ -228,7 +228,7 @@ const tryBasic = async (
                 whitelisted,
                 image: setupURI(data.image),
                 imageFormat: data.image
-                    .match(/\.[0-9a-z]+$/i)[0]
+                    .match(/\.[0-9a-z]+$/i)?.[0]
                     .replace(".", ""),
                 name: data.name,
                 attributes: data.attributes,

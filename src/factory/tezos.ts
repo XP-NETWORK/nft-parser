@@ -83,8 +83,10 @@ const getMetadata = async (nft: any, account = "", whitelisted = true) => {
     collectionIdent: nft.collectionIdent,
     metaData: {
       whitelisted,
-      image: setupURI(data.displayUri),
-      imageFormat: await getAssetFormat(setupURI(data.displayUri)),
+      image: setupURI(data.displayUri || data.image),
+      imageFormat: await getAssetFormat(
+        setupURI(data.displayUri || data.image)
+      ),
       attributes: data?.attributes,
       description: data?.description,
       name: data?.name,
@@ -131,7 +133,7 @@ export const Default = async (
   account: string,
   whitelisted: boolean
 ): Promise<NFT> => {
-  if (!nft.native.meta) {
+  if (!nft.native.meta?.token) {
     return await getMetadata(nft, account, whitelisted).catch(() => nft);
   }
 
