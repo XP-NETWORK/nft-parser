@@ -108,6 +108,10 @@ const getMetadata = async (nft: any, account = "", whitelisted = true) => {
       collectionName: data?.type,
     },
   };
+
+  console.log("PARSED",parsed);
+  
+
   return parsed;
 };
 

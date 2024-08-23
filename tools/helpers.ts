@@ -71,7 +71,6 @@ export const getAssetFormat = async (imageUri: string): Promise<string> => {
                     const stream = await tryPinataWrapper((url: string) =>
                         axios.get(url, {
                             responseType: "stream",
-                            timeout: 10000,
                         })
                     )(setupURI(imageUri)).catch((e) => reject(e));
 
