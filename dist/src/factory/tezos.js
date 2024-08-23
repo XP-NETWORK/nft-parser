@@ -48,12 +48,13 @@ const getMetadata = (nft, account = "", whitelisted = true) => __awaiter(void 0,
     console.log("URI 2", __1.proxy + (0, _1.setupURI)(nft.uri, true));
     let res;
     try {
-        res = yield (0, axios_1.default)(__1.proxy + (0, _1.setupURI)(nft.uri));
+        res = yield (0, axios_1.default)(__1.proxy + (0, _1.setupURI)(nft.uri), { timeout: 10000 });
     }
     catch (ex) {
-        res = yield (0, axios_1.default)(__1.proxy + (0, _1.setupURI)(nft.uri, true));
+        res = yield (0, axios_1.default)(__1.proxy + (0, _1.setupURI)(nft.uri, true), { timeout: 10000 });
     }
     const { data } = res;
+    console.log("tezos data", data);
     const parsed = {
         native: nft.native,
         chainId: nft.native.chainId,
