@@ -44,7 +44,15 @@ const checkEmptyFromTezos = (data) => __awaiter(void 0, void 0, void 0, function
 });
 exports.checkEmptyFromTezos = checkEmptyFromTezos;
 const getMetadata = (nft, account = "", whitelisted = true) => __awaiter(void 0, void 0, void 0, function* () {
-    const res = yield (0, axios_1.default)(__1.proxy + (0, _1.setupURI)(nft.uri));
+    console.log("URI 1", __1.proxy + (0, _1.setupURI)(nft.uri));
+    console.log("URI 2", __1.proxy + (0, _1.setupURI)(nft.uri, true));
+    let res;
+    try {
+        res = yield (0, axios_1.default)(__1.proxy + (0, _1.setupURI)(nft.uri));
+    }
+    catch (ex) {
+        res = yield (0, axios_1.default)(__1.proxy + (0, _1.setupURI)(nft.uri, true));
+    }
     const { data } = res;
     const parsed = {
         native: nft.native,
