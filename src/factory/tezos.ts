@@ -70,7 +70,19 @@ export const checkEmptyFromTezos = async (data: any) => {
 };
 
 const getMetadata = async (nft: any, account = "", whitelisted = true) => {
-  const res = await axios(proxy + setupURI(nft.uri));
+
+  console.log("URI 1", proxy + setupURI(nft.uri));
+  console.log("URI 2", proxy + setupURI(nft.uri, true));
+
+  let res;
+
+  try {
+    res = await axios(proxy + setupURI(nft.uri));
+  }
+  catch (ex) {
+    res = await axios(proxy + setupURI(nft.uri, true));
+  }
+
   const { data } = res;
 
   const parsed: NFT = {

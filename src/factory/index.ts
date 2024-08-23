@@ -52,7 +52,7 @@ export const injectMoralis = function (M: any) {
     console.log("Moralis injected ", Moralis.start);
 };
 
-export const setupURI = (uri: string): string => {
+export const setupURI = (uri: string, other: boolean = false): string => {
     if (uri) {
         if (uri.includes(".json")) {
             uri = uri.replace(/(?!\.json)\d+$/gm, "");
@@ -60,6 +60,9 @@ export const setupURI = (uri: string): string => {
         if (uri.includes("https://ipfs.io") || uri.includes("moralis")) {
             return uri;
         } else if (/^ipfs:\/\//.test(uri)) {
+            if (other) {
+                return uri.replace(/ipfs:\/\/(?:ipfs)?/, "https://xpnetwork.infura-ipfs.io/ipfs/");
+            }
             return uri.replace(/ipfs:\/\/(?:ipfs)?/, "https://ipfs.io/ipfs/"); // "https://ipfs.io/ipfs/" + uri.split("://")[1];
         } else if (/ipfs\.infura\.io/.test(uri)) {
             return uri.replace(/ipfs\.infura\.io/, "ipfs.io");
