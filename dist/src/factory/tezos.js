@@ -56,8 +56,8 @@ const getMetadata = (nft, account = "", whitelisted = true) => __awaiter(void 0,
         collectionIdent: nft.collectionIdent,
         metaData: {
             whitelisted,
-            image: (0, _1.setupURI)(data.displayUri),
-            imageFormat: yield (0, helpers_1.getAssetFormat)((0, _1.setupURI)(data.displayUri)),
+            image: (0, _1.setupURI)(data.displayUri || data.image),
+            imageFormat: yield (0, helpers_1.getAssetFormat)((0, _1.setupURI)(data.displayUri || data.image)),
             attributes: data === null || data === void 0 ? void 0 : data.attributes,
             description: data === null || data === void 0 ? void 0 : data.description,
             name: data === null || data === void 0 ? void 0 : data.name,
@@ -89,7 +89,8 @@ const tezosParser = (collectionIdent, nft, account, whitelisted) => __awaiter(vo
 });
 exports.tezosParser = tezosParser;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!nft.native.meta) {
+    var _h;
+    if (!((_h = nft.native.meta) === null || _h === void 0 ? void 0 : _h.token)) {
         return yield getMetadata(nft, account, whitelisted).catch(() => nft);
     }
     const { collectionIdent, uri, native, native: { tokenId, chainId, contract, meta: { token: { metadata: { displayUri, image, description, attributes, name, symbol, formats, }, }, }, }, } = nft;

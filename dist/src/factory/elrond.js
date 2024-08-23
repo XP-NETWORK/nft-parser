@@ -137,13 +137,12 @@ const DEFAULT = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
 });
 exports.DEFAULT = DEFAULT;
 const tryBasic = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
+    var _g, _h;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         let url = uri;
-        const format = uri
-            .match(/\.[0-9a-z]+$/i)[0]
-            .replace(".", "")
-            .toUpperCase();
+        const format = (_g = uri
+            .match(/\.[0-9a-z]+$/i)) === null || _g === void 0 ? void 0 : _g[0].replace(".", "").toUpperCase();
         if (imageFormats.includes(format) || __3.videoFormats.includes(format)) {
             url = native.uri;
         }
@@ -160,9 +159,8 @@ const tryBasic = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0
             metaData: {
                 whitelisted,
                 image: (0, _1.setupURI)(data.image),
-                imageFormat: data.image
-                    .match(/\.[0-9a-z]+$/i)[0]
-                    .replace(".", ""),
+                imageFormat: (_h = data.image
+                    .match(/\.[0-9a-z]+$/i)) === null || _h === void 0 ? void 0 : _h[0].replace(".", ""),
                 name: data.name,
                 attributes: data.attributes,
                 description: data.description,
@@ -348,7 +346,7 @@ const ORC = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fun
 });
 exports.ORC = ORC;
 const KINGSGUARD = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _g;
+    var _j;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         //const { data } = await axios(proxy + uri);
@@ -362,8 +360,8 @@ const KINGSGUARD = (nft, account, whitelisted) => __awaiter(void 0, void 0, void
             collectionIdent,
             metaData: {
                 whitelisted,
-                image: `https://media.elrond.com/nfts/asset/QmbtT4ca7TjE8fKd9ufkNm3H2sD9caz4GZ7VPn76Burx4J/${(_g = uri
-                    .match(/([^\/]+$)/)) === null || _g === void 0 ? void 0 : _g.at(0).replace(/\D+/, "")}.jpg`,
+                image: `https://media.elrond.com/nfts/asset/QmbtT4ca7TjE8fKd9ufkNm3H2sD9caz4GZ7VPn76Burx4J/${(_j = uri
+                    .match(/([^\/]+$)/)) === null || _j === void 0 ? void 0 : _j.at(0).replace(/\D+/, "")}.jpg`,
                 imageFormat: "jpg",
             },
         };
@@ -379,7 +377,7 @@ exports.KINGSGUARD = KINGSGUARD;
 exports.ALIEN = exports.ORC;
 ///https://ipfs.io/ipfs/QmcnUiaXw3Gjy1cXDnXTnhWahW2h4kqJiXp88wya9yJYj9/5437.json
 const NBERGS = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _h, _j;
+    var _k, _l;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     console.log("dora");
     try {
@@ -396,8 +394,8 @@ const NBERGS = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
             wrapped: data === null || data === void 0 ? void 0 : data.wrapped,
             metaData: {
                 whitelisted,
-                image: `https://ipfs.io/ipfs/QmcnUiaXw3Gjy1cXDnXTnhWahW2h4kqJiXp88wya9yJYj9/${(_h = uri
-                    .match(/\d+(?=\.json)/)) === null || _h === void 0 ? void 0 : _h.at(0)}.png`,
+                image: `https://ipfs.io/ipfs/QmcnUiaXw3Gjy1cXDnXTnhWahW2h4kqJiXp88wya9yJYj9/${(_k = uri
+                    .match(/\d+(?=\.json)/)) === null || _k === void 0 ? void 0 : _k.at(0)}.png`,
                 imageFormat: "png",
                 name: data === null || data === void 0 ? void 0 : data.name,
                 attributes: data === null || data === void 0 ? void 0 : data.attributes,
@@ -409,12 +407,12 @@ const NBERGS = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, 
     }
     catch (error) {
         console.log(error);
-        return Object.assign(Object.assign({}, nft), (((_j = error.response) === null || _j === void 0 ? void 0 : _j.status) === 404 ? { errorStatus: 404 } : {}));
+        return Object.assign(Object.assign({}, nft), (((_l = error.response) === null || _l === void 0 ? void 0 : _l.status) === 404 ? { errorStatus: 404 } : {}));
     }
 });
 exports.NBERGS = NBERGS;
 const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _k, _l, _m, _o;
+    var _m, _o, _p, _q;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const { data } = yield (0, axios_1.default)(__2.proxy + uri);
@@ -427,11 +425,11 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
             contract,
             collectionIdent,
             wrapped: data.wrapped,
-            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_l = (_k = data.image) === null || _k === void 0 ? void 0 : _k.match(/\.([^.]*)$/)) === null || _l === void 0 ? void 0 : _l.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url
+            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_o = (_m = data.image) === null || _m === void 0 ? void 0 : _m.match(/\.([^.]*)$/)) === null || _o === void 0 ? void 0 : _o.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url
                 ? { animation_url: data.animation_url }
                 : {})), (data.animation_url
                 ? {
-                    animation_url_format: (_o = (_m = data.animation_url) === null || _m === void 0 ? void 0 : _m.match(/\.([^.]*)$/)) === null || _o === void 0 ? void 0 : _o.at(1),
+                    animation_url_format: (_q = (_p = data.animation_url) === null || _p === void 0 ? void 0 : _p.match(/\.([^.]*)$/)) === null || _q === void 0 ? void 0 : _q.at(1),
                 }
                 : {})),
         };
@@ -444,7 +442,7 @@ const WrappedXPNET = (nft, account, whitelisted) => __awaiter(void 0, void 0, vo
 });
 exports.WrappedXPNET = WrappedXPNET;
 const HOKI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _p, _q, _r, _s;
+    var _r, _s, _t, _u;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     try {
         const { data } = yield (0, axios_1.default)(__2.proxy + uri);
@@ -457,11 +455,11 @@ const HOKI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
             contract,
             collectionIdent,
             wrapped: data.wrapped,
-            metaData: Object.assign(Object.assign({ whitelisted, image: (0, _1.setupURI)(data.image.replace("NewUriToReplace", "QmcnpaWrFmJjiq7nSnomyogsL5CVHjmTL1HLFeKeTz3Fia")), imageFormat: (_q = (_p = data.image) === null || _p === void 0 ? void 0 : _p.match(/\.([^.]*)$/)) === null || _q === void 0 ? void 0 : _q.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url
+            metaData: Object.assign(Object.assign({ whitelisted, image: (0, _1.setupURI)(data.image.replace("NewUriToReplace", "QmcnpaWrFmJjiq7nSnomyogsL5CVHjmTL1HLFeKeTz3Fia")), imageFormat: (_s = (_r = data.image) === null || _r === void 0 ? void 0 : _r.match(/\.([^.]*)$/)) === null || _s === void 0 ? void 0 : _s.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url
                 ? { animation_url: data.animation_url }
                 : {})), (data.animation_url
                 ? {
-                    animation_url_format: (_s = (_r = data.animation_url) === null || _r === void 0 ? void 0 : _r.match(/\.([^.]*)$/)) === null || _s === void 0 ? void 0 : _s.at(1),
+                    animation_url_format: (_u = (_t = data.animation_url) === null || _t === void 0 ? void 0 : _t.match(/\.([^.]*)$/)) === null || _u === void 0 ? void 0 : _u.at(1),
                 }
                 : {})),
         };
@@ -473,7 +471,7 @@ const HOKI = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, fu
 });
 exports.HOKI = HOKI;
 const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
-    var _t, _u, _v, _w, _x;
+    var _v, _w, _x, _y, _z;
     const { native, native: { contract, tokenId, chainId }, collectionIdent, uri, } = nft;
     console.log("ds");
     try {
@@ -496,18 +494,18 @@ const Default = (nft, account, whitelisted) => __awaiter(void 0, void 0, void 0,
             contract,
             collectionIdent,
             wrapped: data.wrapped,
-            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_u = (_t = data.image) === null || _t === void 0 ? void 0 : _t.match(/\.([^.]*)$/)) === null || _u === void 0 ? void 0 : _u.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url
+            metaData: Object.assign(Object.assign({ whitelisted, image: data.image, imageFormat: (_w = (_v = data.image) === null || _v === void 0 ? void 0 : _v.match(/\.([^.]*)$/)) === null || _w === void 0 ? void 0 : _w.at(1), name: data.name, attributes: data.attributes, description: data.description }, (data.animation_url
                 ? { animation_url: data.animation_url }
                 : {})), (data.animation_url
                 ? {
-                    animation_url_format: (_w = (_v = data.animation_url) === null || _v === void 0 ? void 0 : _v.match(/\.([^.]*)$/)) === null || _w === void 0 ? void 0 : _w.at(1),
+                    animation_url_format: (_y = (_x = data.animation_url) === null || _x === void 0 ? void 0 : _x.match(/\.([^.]*)$/)) === null || _y === void 0 ? void 0 : _y.at(1),
                 }
                 : {})),
         };
         return nft;
     }
     catch (error) {
-        console.error(((_x = error === null || error === void 0 ? void 0 : error.response) === null || _x === void 0 ? void 0 : _x.status) || error);
+        console.error(((_z = error === null || error === void 0 ? void 0 : error.response) === null || _z === void 0 ? void 0 : _z.status) || error);
         return nft;
     }
 });
