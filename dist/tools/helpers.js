@@ -65,7 +65,6 @@ const getAssetFormat = (imageUri) => __awaiter(void 0, void 0, void 0, function*
                     var _b;
                     const stream = yield (0, exports.tryPinataWrapper)((url) => axios_1.default.get(url, {
                         responseType: "stream",
-                        timeout: 10000,
                     }))((0, factory_1.setupURI)(imageUri)).catch((e) => reject(e));
                     (_b = stream === null || stream === void 0 ? void 0 : stream.data) === null || _b === void 0 ? void 0 : _b.on("data", (chunk) => __awaiter(void 0, void 0, void 0, function* () {
                         var _c;

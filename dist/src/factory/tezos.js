@@ -73,6 +73,7 @@ const getMetadata = (nft, account = "", whitelisted = true) => __awaiter(void 0,
             collectionName: data === null || data === void 0 ? void 0 : data.type,
         },
     };
+    console.log("PARSED", parsed);
     return parsed;
 });
 const tezosParser = (collectionIdent, nft, account, whitelisted) => __awaiter(void 0, void 0, void 0, function* () {
