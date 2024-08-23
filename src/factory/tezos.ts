@@ -77,13 +77,16 @@ const getMetadata = async (nft: any, account = "", whitelisted = true) => {
   let res;
 
   try {
-    res = await axios(proxy + setupURI(nft.uri));
+    res = await axios(proxy + setupURI(nft.uri), { timeout: 10000 });
   }
   catch (ex) {
-    res = await axios(proxy + setupURI(nft.uri, true));
+    res = await axios(proxy + setupURI(nft.uri, true), { timeout: 10000 });
   }
 
   const { data } = res;
+
+  console.log("tezos data",data);
+  
 
   const parsed: NFT = {
     native: nft.native,
