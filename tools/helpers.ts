@@ -90,7 +90,8 @@ export const getAssetFormat = async (imageUri: string): Promise<string> => {
         return format;
     } catch (e: any) {
         console.log(e.message, "reading format");
-        throw e;
+        // throw e;
+        return "jpg"
     }
 };
 
