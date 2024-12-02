@@ -16,7 +16,17 @@ export const casperParser = async (
         default: {
             let uri = nft.uri;
             if (uri) {
-                const res = (await axios(nft.uri));
+                let res;
+                try {
+                    res = await axios(nft.uri);
+                } catch (error) {
+                    res = await axios.get(nft.uri, {
+                        headers: {
+                        "User-Agent":
+                            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
+                        },
+                    });
+                }
                 const contentType = res.headers["content-type"];
                 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = "1";
 
