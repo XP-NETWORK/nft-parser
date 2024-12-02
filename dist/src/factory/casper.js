@@ -21,7 +21,17 @@ const casperParser = (collectionIdent, nft, account, whitelisted) => __awaiter(v
         default: {
             let uri = nft.uri;
             if (uri) {
-                const res = (yield (0, axios_1.default)(nft.uri));
+                let res;
+                try {
+                    res = yield (0, axios_1.default)(nft.uri);
+                }
+                catch (error) {
+                    res = yield axios_1.default.get(nft.uri, {
+                        headers: {
+                            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36",
+                        },
+                    });
+                }
                 const contentType = res.headers["content-type"];
                 process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = "1";
                 if (typeof res.data === "object") {
